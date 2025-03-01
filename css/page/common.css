@@ -1,0 +1,247 @@
+
+html {
+    height: -webkit-fill-available;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #444;
+    margin-top: 20px;
+}
+
+form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+form input[type="color"] {
+    width: 500px;
+}
+
+form input[type="range"] {
+    width: 500px;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="submit"],
+textarea,
+select {
+    width: calc(100% - 30px);
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: box-shadow 0.3s ease;
+}
+
+form input :focus,
+textarea:focus,
+select:focus {
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+    border-color: #007bff;
+    outline: none;
+}
+
+form input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 31.4pc;
+    font-weight: bold;
+}
+
+form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* button:hover {
+    transform: scale(1.05);
+}
+
+i:hover {
+    transform: scale(1.10);
+} */
+
+a i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+a {
+    display: contents;
+    text-decoration: none;
+}
+
+span {
+    margin-left: 5px;
+    color: red;
+}
+
+form textarea,
+form input {
+    margin: 20px 0px 0px 0px;
+    /*padding: 8px 16px 30px 13px;*/
+}
+
+form select {
+    width: 31.4pc;
+    margin-top: 17px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* for ******list ************/
+html {
+    height: -webkit-fill-available;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #444;
+    margin-top: 20px;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* button:hover {
+    transform: scale(1.05);
+}
+
+i:hover {
+    transform: scale(1.10);
+} */
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgb(97, 97, 97);
+    font-size: 16px;
+}
+
+table th {
+    text-align: center;
+    background-color: black;
+    color: white;
+    /* text-transform: uppercase; */
+    font-weight: 600;
+}
+
+table tr:hover {
+    background-color: #e9e9e9;
+}
+
+a i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+a {
+    display: contents;
+    text-decoration: none;
+}
+
+#delete i {
+    display: flex;
+    color: red;
+}
+
+#update i {
+    display: flex;
+    color: blue;
+}
+
+#insert i {
+    color: white;
+}
+
+.tablelist {
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed; /* Forces columns to have equal width */
+    word-wrap: break-word;
+}
+
+.tablelist th, .tablelist td {
+    padding: 4px;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds "..." if text overflows */
+}

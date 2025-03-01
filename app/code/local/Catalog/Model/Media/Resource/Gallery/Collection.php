@@ -1,0 +1,2 @@
+<?php
+class Catalog_Model_Media_Resource_Gallery_Collection extends Core_Model_Resource_Collection_Abstract {}

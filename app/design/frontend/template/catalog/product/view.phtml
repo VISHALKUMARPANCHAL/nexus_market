@@ -1,0 +1,79 @@
+<?php
+$productdata = $this->getProductdata();
+// echo '<pre>';
+// print_r($productdata);
+// echo '</pre>';
+?><div class="container py-5">
+    <div class="card border-0 shadow-lg rounded-4 p-3 p-md-4 mb-5">
+        <div class="row g-4">
+            <!-- Product Images -->
+            <div class="col-lg-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="<?php echo Mage::getBaseUrl() . $productdata->getFilePath()[0] ?>"
+                        alt="<?php echo $productdata->getName() ?>" class="img-fluid rounded-3 shadow-sm"
+                        id="mainImage">
+                </div>
+
+                <div class="d-flex gap-2 mt-3 overflow-auto pb-2">
+                    <?php foreach ($productdata->getFilePath() as $index => $image): ?>
+                    <img src="<?php echo Mage::getBaseUrl() . $image ?>" alt="Thumbnail <?php echo $index + 1 ?>"
+                        class="rounded-3 border border-2 <?php echo $index === 0 ? 'border-primary' : 'border-light'; ?>"
+                        style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; opacity: <?php echo $index === 0 ? '1' : '0.7'; ?>;"
+                        onclick="changeImage(event, this.src, this)">
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-6">
+                <h1 class="fw-bold display-6 mb-3 fs-2"><?php echo $productdata->getName() ?></h1>
+                <div class="bg-light rounded-pill d-inline-block px-3 py-1 mb-4 text-secondary">
+                    <i class="bi bi-upc me-1"></i> SKU: <?php echo $productdata->getSku() ?>
+                </div>
+
+                <div class="mb-4">
+                    <span
+                        class="fs-2 fw-bold text-danger me-3">₹<?php echo number_format($productdata->getPrice(), 2) ?></span>
+                    <span class="fs-5 text-secondary text-decoration-line-through">
+                        ₹<?php echo number_format($productdata->getPrice() + $productdata->getPrice() * 0.2, 2) ?>
+                    </span>
+                    <div class="badge bg-danger mt-2">Save 20%</div>
+                </div>
+
+                <div class="fs-6 lh-lg text-secondary mb-4">
+                    <?php echo $productdata->getDescription() ?>
+                </div>
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
+                    <input type="number" class="form-control w-25 text-center" id="quantity" value="1" min="1">
+                </div>
+
+                <button class="btn btn-primary btn-lg w-100 mb-4 py-3 rounded-3 fw-bold">
+                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                </button>
+
+                <div class="bg-light p-4 rounded-3 mt-2">
+                    <h5 class="fw-bold mb-3 pb-2 border-bottom"><i class="bi bi-info-circle me-2"></i>Key Features</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent px-0 d-flex">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <span class="text-black"><strong>Material:</strong class>
+                                <?php echo $productdata->getMaterial() ?></span>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0 d-flex">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <span class="text-black"><strong>Weight:</strong>
+                                <?php echo $productdata->getWeight() ?></span>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0 d-flex">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <span class="text-black"><strong>Series:</strong>
+                                <?php echo $productdata->getSeries() ?></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+<?php
+$categories = $this->getCategories();
+$attributes = $this->getAttributes();
+$product = $this->getProduct();
+$id = $this->getId();
+?>
+<br>
+<div ss="bg-light py-4">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow rounded-3 mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="m-0 fs-4 text-white">
+                            <i class="fas <?php echo ($id) ? 'fa-edit' : 'fa-plus-circle' ?> me-2"></i>
+                            <?php echo ($id) ? "Update" : "Insert" ?> Product
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="<?php echo $this->getUrl('*/*/save') ?>" method="post"
+                            enctype="multipart/form-data" class="needs-validation" novalidate>
+
+                            <?php if ($id): ?>
+                            <div class="mb-4">
+                                <label for="pid" class="form-label fw-bold">Product ID</label>
+                                <input type="number" class="form-control bg-light" id="pid"
+                                    name="catalog_category[product_id]" value="<?php echo $product->getProductId() ?>"
+                                    readonly>
+                                <div class="form-text text-muted">Product ID cannot be changed</div>
+                            </div>
+                            <?php else: ?>
+                            <input type="hidden" name="catalog_category[product_id]" value="">
+                            <?php endif; ?>
+
+                            <div class="mb-4">
+                                <label for="name" class="form-label fw-bold">Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="catalog_category[name]"
+                                    value="<?php echo ($id) ? $product->getName() : '' ?>" required>
+                                <div class="invalid-feedback">Please provide a product name</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label fw-bold">Description <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description" name="catalog_category[description]"
+                                    rows="4"><?php echo ($id) ? $product->getDescription() : '' ?></textarea>
+                                <div class="form-text text-muted">Provide a detailed description of this product
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="price" class="form-label fw-bold">Price <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group my-3">
+                                        <span class="input-group-text">₹</span>
+                                        <input type="text" class="form-control mx-0 my-0" id="price"
+                                            name="catalog_category[price]"
+                                            value="<?php echo ($id) ? $product->getPrice() : "" ?>" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please provide a valid price</div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="stock" class="form-label fw-bold">Stock Quantity <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="stock"
+                                        name="catalog_category[stock_quantity]"
+                                        value="<?php echo ($id) ? $product->getStockQuantity() : "" ?>" required>
+                                    <div class="invalid-feedback">Please provide stock quantity</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="category_id" class="form-label fw-bold">Category <span
+                                        class="text-danger">*</span></label>
+                                <select name="catalog_category[category_id]" id="category_id" class="form-select">
+                                    <?php foreach ($categories as $data): ?>
+                                    <option value="<?php echo $data->getCategoryId() ?>"
+                                        <?php echo ($id && ($product->getCategoryId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
+                                        <?php echo $data->getName() ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <div class="form-text text-muted">Select the product category</div>
+                            </div>
+
+                            <div class="card mb-4 border-light bg-light">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Additional Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <?php
+                                    foreach ($attributes as $data) {
+                                        echo '<div class="mb-3">';
+                                        echo $this->getHtmlField('lable', ['for' => "id{$data->getAttributeId()}", 'value' => $data->getName(), 'class' => 'form-label fw-bold']);
+                                        $name = "get{$data->getName()}";
+                                        $value = ($id) ? $product->$name() : "";
+                                        echo $this->getHtmlField($data->getType(), [
+                                            'id' => "id{$data->getAttributeId()}",
+                                            'name' => "catalog_attribute[{$data->getAttributeId()}][Value]",
+                                            'value' => $value,
+                                            'class' => 'form-control'
+                                        ]);
+                                        echo $this->getHtmlField('hidden', ['name' => "catalog_attribute[{$data->getAttributeId()}][attribute_id]", 'value' => $data->getAttributeId()]);
+                                        echo '</div>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="img" class="form-label fw-bold">Product Images</label>
+                                <input type="file" class="form-control" name="catalog_media_gallery[img][]" id="img"
+                                    accept="image/*" multiple>
+                                <div class="form-text text-muted">Select one or more product images</div>
+                            </div>
+
+                            <?php if ($id && $product->getFilePath()): ?>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Current Images</label>
+                                <div class="row g-2">
+                                    <?php
+                                        foreach ($product->getFilePath() as $filepath) {
+                                            $baseurl = Mage::getBaseUrl();
+                                            echo '<div class="col-auto">';
+                                            echo '<div class="border p-1 rounded">';
+                                            echo $this->getHtmlField('image', [
+                                                'src' => "{$baseurl}{$filepath}",
+                                                'alt' => "product image",
+                                                'width' => '100px',
+                                                'height' => '100px',
+                                                'class' => 'img-thumbnail'
+                                            ]);
+                                            echo '</div>';
+                                            echo '</div>';
+                                        }
+                                        ?>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            <div class="d-flex mt-4 align-items-center">
+                                <a href="<?php echo ($id) ? '.' : '' ?>./list" class="btn btn-outline-secondary h-50">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                                </a>
+                                <button type="submit" class="btn btn-primary ms-9">
+                                    <i class="fas fa-save me-2"></i><?php echo ($id) ? 'Update' : 'Save' ?> Product
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

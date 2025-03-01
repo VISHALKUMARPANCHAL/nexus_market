@@ -1,0 +1,74 @@
+<?php
+$category = $this->getCategory();
+$availableCatagories = $this->availableCatagories();
+$id = $this->getId();
+?>
+<br>
+<div ss="bg-light py-4">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow rounded-3 mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="m-0 fs-4 text-white">
+                            <i class="fas <?php echo ($id) ? 'fa-edit' : 'fa-plus-circle' ?> me-2"></i>
+                            <?php echo ($id) ? "Update" : "Insert" ?> Category
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="<?php echo $this->getUrl('*/*/save') ?>" method="post" class="needs-validation"
+                            novalidate>
+                            <?php if ($id): ?>
+                                <div class="mb-4">
+                                    <label for="cid" class="form-label fw-bold">Category ID</label>
+                                    <input type="number" class="form-control bg-light" id="cid"
+                                        name="catalog_category[category_id]"
+                                        value="<?php echo $category->getCategoryId() ?>" readonly>
+                                </div>
+                            <?php else: ?>
+                                <input type="hidden" name="catalog_category[category_id]" value="">
+                            <?php endif; ?>
+
+                            <div class="mb-4">
+                                <label for="name" class="form-label fw-bold">Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="catalog_category[name]"
+                                    value="<?php echo ($id) ? $category->getName() : '' ?>" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label fw-bold">Description</label>
+                                <textarea class="form-control" id="description" name="catalog_category[description]"
+                                    rows="4"><?php echo ($id) ? $category->getDescription() : '' ?></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="parent_id" class="form-label fw-bold">Parent Category <span
+                                        class="text-danger">*</span></label>
+                                <select name="catalog_category[parent_id]" id="parent_id" class="form-select" required>
+                                    <option value="1">Master Category</option>
+                                    <?php foreach ($availableCatagories as $data): ?>
+                                        <option value="<?php echo $data->getCategoryId() ?>"
+                                            <?php echo ($id && ($category->getParentId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
+                                            <?php echo $data->getName() ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="d-flex mt-4 align-items-center">
+                                <a class="btn btn-outline-secondary h-50" href="<?php echo ($id) ? '.' : '' ?>./list">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                                </a>
+                                <button type="submit" class="btn btn-primary ms-9">
+                                    <i class="fas fa-save me-2"></i><?php echo ($id) ? 'Update' : 'Save' ?> Category
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
