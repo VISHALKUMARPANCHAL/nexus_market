@@ -1,5 +1,7 @@
 <?php
-$products = $this->getProducts();
+$id = Mage::getSingleton('core/request')->getQuery('id');
+// echo $id;
+$products = $this->getProducts($id);
 ?>
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4 bg-light rounded-3 p-3 shadow-sm">
@@ -92,7 +94,8 @@ $products = $this->getProducts();
                         </div>
                         <div class="card-footer bg-white border-0 pt-0">
                             <div class="d-grid gap-2">
-                                <a href="./view/?id=<?php echo $product->getProductId() ?>" class="btn btn-primary">View
+                                <a href="<?php echo ($id) ? '.' : ''; ?>./view/?id=<?php echo $product->getProductId() ?>"
+                                    class="btn btn-primary">View
                                     Product</a>
                                 <button class="btn btn-outline-secondary"><i class="bi bi-cart-plus me-1"></i>Add to
                                     Cart</button>

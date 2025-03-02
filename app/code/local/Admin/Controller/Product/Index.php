@@ -28,7 +28,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $product->setData($pdata);
 
         $pid = $product->save()->getProductId();
-        // $pid = 75;
+        // $pid = 73;
         $attributetable = Mage::getModel('catalog/product_attribute');
         // echo '<pre>';
         // print_r($pid);

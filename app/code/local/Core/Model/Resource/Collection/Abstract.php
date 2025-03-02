@@ -128,11 +128,17 @@ class Core_Model_Resource_Collection_Abstract
         }
         if (isset($this->_select['HAVING']) && isset($this->_select['GROUP_BY'])) {
             $conditions = [];
+            // echo '<pre>';
+            // print_r($this);
+            // echo '</pre>';
             foreach ($this->_select['HAVING'] as $field => $value) {
                 foreach ($value as $_value) {
                     $conditions[] = $this->preparewhere($field, $_value);
                 }
             }
+            // echo '<pre>';
+            // print_r($conditions);
+            // echo '</pre>';
             $groupsql = sprintf("HAVING %s", implode(',', $conditions));
             $query = $query . " " . $groupsql;
         }
@@ -158,6 +164,7 @@ class Core_Model_Resource_Collection_Abstract
             $query = $query . " " . $ordersql;
         }
         // echo $query;
+        // die;
         return $query;
     }
 
