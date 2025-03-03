@@ -81,9 +81,9 @@ class Core_Model_Abstract
             ->select();
         return $collection;
     }
-    public function save($field = null)
+    public function save()
     {
-        $this->getResource()->save($this, $field);
+        $this->getResource()->save($this);
         return $this;
     }
     public function delete()

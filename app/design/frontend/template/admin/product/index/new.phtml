@@ -94,21 +94,27 @@ $baseurl = Mage::getBaseUrl();
                                 </div>
                                 <div class="card-body">
                                     <?php
-                                    foreach ($attributes as $data) {
-                                        echo '<div class="mb-3">';
-                                        echo $this->getHtmlField('lable', ['for' => "id{$data->getAttributeId()}", 'value' => $data->getName(), 'class' => 'form-label fw-bold']);
-                                        $name = "get{$data->getName()}";
-                                        $value = ($id) ? $product->$name() : "";
-                                        echo $this->getHtmlField($data->getType(), [
-                                            'id' => "id{$data->getAttributeId()}",
-                                            'name' => "catalog_attribute[{$data->getAttributeId()}][Value]",
-                                            'value' => $value,
-                                            'class' => 'form-control'
-                                        ]);
-                                        echo $this->getHtmlField('hidden', ['name' => "catalog_attribute[{$data->getAttributeId()}][attribute_id]", 'value' => $data->getAttributeId()]);
-                                        echo '</div>';
-                                    }
-                                    ?>
+                                    foreach ($attributes as $data): ?>
+                                    <div class="mb-3">
+                                        <?php echo $this->getHtmlField('lable', [
+                                                'for' => "id{$data->getAttributeId()}",
+                                                'value' => $data->getName(),
+                                                'class' => 'form-label fw-bold'
+                                            ]);
+                                            $name = "get{$data->getName()}";
+                                            $value = ($id) ? $product->$name() : "";
+                                            echo $this->getHtmlField($data->getType(), [
+                                                'id' => "id{$data->getAttributeId()}",
+                                                'name' => "catalog_attribute[{$data->getAttributeId()}][Value]",
+                                                'value' => $value,
+                                                'class' => 'form-control'
+                                            ]);
+                                            echo $this->getHtmlField('hidden', ['name' =>
+                                            "catalog_attribute[{$data->getAttributeId()}][attribute_id]", 'value' =>
+                                            $data->getAttributeId()]); ?>
+                                    </div>
+
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
 
@@ -127,7 +133,8 @@ $baseurl = Mage::getBaseUrl();
                                                         'class' => 'img-thumbnail'
                                                     ]); ?>
                                             <?php echo $this->getHtmlField('lable', ["value" => "<i class='bi bi-x-square-fill'></i>", "for" => $filepath]) ?>
-                                            <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "previmg[]"]) ?>
+                                            <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "deletedimg[]"]) ?>
+                                            <?php echo $this->getHtmlField('hidden', ["value" => $filepath]) ?>
                                         </div>
                                     </div>
                                     <?php endforeach; ?>

@@ -1,5 +1,5 @@
 <?php
-class Catalog_Model_Media_Resource_Gallery extends Core_Model_Resource_Abstract
+class Catalog_Model_Resource_Media_Gallery extends Core_Model_Resource_Abstract
 {
     public function __construct()
     {

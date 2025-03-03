@@ -16,4 +16,8 @@ class Catalog_Block_Product_List extends Core_Block_Template
         }
         return $product->getData();
     }
+    public function getCategory($id)
+    {
+        return Mage::getSingleton('catalog/category')->load($id)->getName();
+    }
 }

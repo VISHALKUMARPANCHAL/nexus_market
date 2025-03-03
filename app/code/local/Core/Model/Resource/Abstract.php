@@ -35,11 +35,11 @@ class Core_Model_Resource_Abstract
         // echo "<pre>";
         // print_r($data);
     }
-    public function save($model, $field = null)
+    public function save($model)
     {
         $data = $model->getData();
         $primaryId = 0;
-        $primarykey = (is_null($field)) ? $this->_primaryKey : $field;
+        $primarykey =  $this->_primaryKey;
 
         // echo '<pre>';
         // print_r($primarykey);
@@ -67,6 +67,7 @@ class Core_Model_Resource_Abstract
                 $primaryId
             );
             // echo $sql;
+            // die;
             return $this->getAdapter()->query($sql);
         } else {
             $columns = implode('`,`', array_keys($data));
@@ -89,8 +90,13 @@ class Core_Model_Resource_Abstract
     public function delete($model)
     {
         $id = $model->getData();
+        echo '<pre>';
+        print_r($id);
+        echo '</pre>';
         if (isset($id)) {
             $sql = sprintf("DELETE FROM %s WHERE %s = %s", $this->_tableName, $this->_primaryKey, $id);
+            // echo $sql;
+            // die;
             $this->getAdapter()->query($sql);
             $model->setData(null);
         }

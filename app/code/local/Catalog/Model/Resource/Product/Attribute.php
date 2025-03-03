@@ -1,5 +1,5 @@
 <?php
-class Catalog_Model_Product_Resource_Attribute extends Core_Model_Resource_Abstract
+class Catalog_Model_Resource_Product_Attribute extends Core_Model_Resource_Abstract
 {
     public function __construct()
     {

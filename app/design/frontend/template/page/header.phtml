@@ -100,12 +100,11 @@ $baseurl = Mage::getBaseUrl();
             <?php endif; ?>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="cart.php">
+                    <a class="nav-link d-flex align-items-center" href="<?php echo $baseurl ?>catalog/cart">
                         <i class="bi bi-cart fs-5 me-1"></i> Cart
                     </a>
                 </li>
                 <li class="nav-item ms-2">
-
                     <?php if ($issession): ?>
                     <a class="nav-link d-flex align-items-center text-danger"
                         href="<?php echo $baseurl ?>admin/account/logout">

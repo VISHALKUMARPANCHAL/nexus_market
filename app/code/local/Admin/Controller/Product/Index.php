@@ -65,6 +65,31 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
                 }
             }
         }
+        // die;
+        $deleteimg = $request->getParam('deletedimg');
+        // echo '<pre>';
+        // print_r($deleteimg);
+        // echo '</pre>';
+        if ($deleteimg != "") {
+            $gallery = Mage::getModel('catalog/media_gallery');
+            foreach ($deleteimg as $img) {
+                $mediaid = $gallery->getCollection()->addFieldToFilter('product_id', $pid)->addFieldToFilter('file_path', $img)->getData()[0]->getMediaId();
+
+                if (file_exists($img)) {
+                    unlink($img);
+                }
+                $gallery->setData($mediaid);
+                echo '<pre>';
+                print_r($gallery);
+                echo '</pre>';
+                $gallery->delete();
+            }
+        }
+        // echo '<pre>';
+        // print_r($_POST);
+        // print_r($images);
+        // echo '</pre>';
+        // die;
         $this->redirect('admin/product_index/list');
     }
     public function deleteAction()
