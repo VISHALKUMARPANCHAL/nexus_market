@@ -3,6 +3,8 @@ $productdata = $this->getProductdata();
 // echo '<pre>';
 // print_r($productdata);
 // echo '</pre>';
+$request = Mage::getModel('core/request');
+
 ?><div class="container py-5">
     <div class="card border-0 shadow-lg rounded-4 p-3 p-md-4 mb-5">
         <div class="row g-4">
@@ -44,15 +46,18 @@ $productdata = $this->getProductdata();
                     <?php echo $productdata->getDescription() ?>
                 </div>
 
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
-                    <input type="number" class="form-control w-25 text-center" id="quantity" value="1" min="1">
-                </div>
+                <form action="<?php echo $this->getUrl('checkout/cart/add') ?>" method="post">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
+                        <input type="number" class="form-control w-25 text-center" name="cart[quantity]" id="quantity"
+                            value="1" min="1">
+                    </div>
+                    <input type="hidden" name="cart[product_id]" value="<?php echo $productdata->getProductId(); ?>">
 
-                <button class="btn btn-primary btn-lg w-100 mb-4 py-3 rounded-3 fw-bold">
-                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
-                </button>
-
+                    <button class="btn btn-primary btn-lg w-100 mb-4 py-3 rounded-3 fw-bold" type="submit">
+                        <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                    </button>
+                </form>
                 <div class="bg-light p-4 rounded-3 mt-2">
                     <h5 class="fw-bold mb-3 pb-2 border-bottom"><i class="bi bi-info-circle me-2"></i>Key Features</h5>
                     <ul class="list-group list-group-flush">

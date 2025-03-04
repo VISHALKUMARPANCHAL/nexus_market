@@ -22,8 +22,9 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
 
         $request = $this->getRequest();
         $product = Mage::getModel('catalog/product');
+
         $pdata = $request->getParam('catalog_category');
-        $attr = $request->getParam('catalog_attribute');
+        $attr = $request->getParam('catalog_product_attribute');
         $pdata['sku'] = "{$pdata['category_id']}{$pdata['name']}";
         $product->setData($pdata);
 
@@ -41,6 +42,10 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         // echo '</pre>';
         // die;
         $ct = 0;
+        // echo '<pre>';
+        // print_r($attr);
+        // echo '</pre>';
+        // die;
         foreach ($attr as $value) {
             if (!empty($valueId)) {
                 $value['value_id'] = $valueId[$ct]->getValueId();
@@ -109,10 +114,16 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
     /* for testing purpose only */
     public function testAction()
     {
-        $layout = Mage::getBlock('core/layout');
-        $test = $layout->createBlock('admin/product_index_test')
-            ->setTemplate('admin/product/index/test.phtml');
-        $layout->getChild('content')->addChild('test', $test);
-        $layout->toHtml();
+        echo '123';
+        $filter = Mage::getSingleton('catalog/filter');
+        $filter->getCollection();
+        echo '<pre>';
+        print_r($filter->prepareQuery());
+        echo '</pre>';
+        // $layout = Mage::getBlock('core/layout');
+        // $test = $layout->createBlock('admin/product_index_test')
+        //     ->setTemplate('admin/product/index/test.phtml');
+        // $layout->getChild('content')->addChild('test', $test);
+        // $layout->toHtml();
     }
 }

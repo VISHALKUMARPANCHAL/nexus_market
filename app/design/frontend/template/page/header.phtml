@@ -15,27 +15,19 @@ $baseurl = Mage::getBaseUrl();
         <a class="navbar-brand" href="<?php echo $baseurl;
                                         echo ($module === 'admin') ? "admin" : ""; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" width="200" class="ml--6">
-                <!-- Background shape -->
                 <rect x="10" y="10" width="220" height="80" rx="12" fill="#f8f9fa" />
-
-                <!-- Main icon - shopping cart with database elements -->
                 <g transform="translate(30, 25)">
-                    <!-- Database/catalog shape -->
                     <rect x="0" y="5" width="40" height="30" rx="5" fill="#4361ee" />
                     <rect x="0" y="5" width="40" height="8" rx="5" fill="#3046c5" />
                     <line x1="0" y1="13" x2="40" y2="13" stroke="#3046c5" stroke-width="1" />
                     <line x1="0" y1="22" x2="40" y2="22" stroke="#3046c5" stroke-width="1" />
-
-                    <!-- Shopping cart handle -->
                     <path d="M25 5 L25 -5 L40 -5" stroke="#212529" stroke-width="3" fill="none"
                         stroke-linecap="round" />
 
-                    <!-- Cart wheels -->
                     <circle cx="10" cy="42" r="5" fill="#212529" />
                     <circle cx="30" cy="42" r="5" fill="#212529" />
                 </g>
 
-                <!-- Text -->
                 <g transform="translate(85, 38)">
                     <text font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#212529">
                         NEXUS
@@ -44,11 +36,7 @@ $baseurl = Mage::getBaseUrl();
                         MARKET
                     </text>
                 </g>
-
-                <!-- Accent line -->
                 <line x1="85" y1="65" x2="180" y2="65" stroke="#4361ee" stroke-width="2" />
-
-                <!-- Product grid dots representing catalog items -->
                 <g transform="translate(190, 35)">
                     <circle cx="0" cy="0" r="3" fill="#4361ee" />
                     <circle cx="10" cy="0" r="3" fill="#4361ee" />
@@ -100,7 +88,7 @@ $baseurl = Mage::getBaseUrl();
             <?php endif; ?>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="<?php echo $baseurl ?>catalog/cart">
+                    <a class="nav-link d-flex align-items-center" href="<?php echo $baseurl ?>checkout/cart">
                         <i class="bi bi-cart fs-5 me-1"></i> Cart
                     </a>
                 </li>

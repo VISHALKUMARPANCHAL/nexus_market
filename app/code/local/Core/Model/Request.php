@@ -54,12 +54,15 @@ class Core_Model_Request
         return $_POST;
     }
 
-    public static function getQuery($field)
+    public static function getQuery($field = null)
     {
+        if ($field === null) {
+            return $_GET;
+        }
         if (isset($_GET[$field])) {
             return $_GET[$field];
         } else {
-            return 0;
+            return "";
         }
     }
 }

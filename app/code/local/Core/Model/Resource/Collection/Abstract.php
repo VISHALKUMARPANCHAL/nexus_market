@@ -187,6 +187,9 @@ class Core_Model_Resource_Collection_Abstract
                         }
                         $_value = implode(',', $inarryvalues);
                         $where  = " {$field} {$operator} ({$_value}) ";
+                        echo '<pre>';
+                        print_r($where);
+                        echo '</pre>';
                         break;
 
                     case 'BETWEEN':

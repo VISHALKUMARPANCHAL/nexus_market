@@ -23,15 +23,18 @@ class Catalog_Controller_Product
     }
     public function testAction()
     {
-
-        $collections = Mage::getModel("catalog/product")
-            ->getcollection()
-            ->addAttributeToSelect(["series", "material", "weight"]);
+        $filter = Mage::getModel('catalog/filter')->getProductCollection();
+        echo '<pre>';
+        print_r($filter->prepareQuery());
+        echo '</pre>';
+        // $collections = Mage::getModel("catalog/product")
+        //     ->getcollection()
+        //     ->addAttributeToSelect(["series", "material", "weight"]);
         // ->load("41");
         // ->limit(5);
-        echo "<pre>";
-        print_r($collections->getData());
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($collections->getData());
+        // echo "</pre>";
 
         // ->getCollection()
         // ->addAttributeToSelect(["material", "weight"]);

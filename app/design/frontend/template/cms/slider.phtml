@@ -79,8 +79,11 @@ $images = $this->getImages();
                         <span class="badge bg-warning text-dark">20% OFF</span>
                     </div>
                     <div class="d-flex justify-content-center gap-3">
-                        <button class="btn btn-primary btn-lg px-4">Shop Now</button>
-                        <button class="btn btn-outline-light btn-lg px-4">Learn More</button>
+                        <a href="<?php echo Mage::getBaseUrl() ?>catalog/product/view/?id=<?php echo $image->getProductId() ?>"
+                            class="btn btn-primary btn-lg px-4">Shop Now</a>
+                        <a href="<?php echo Mage::getBaseUrl() ?>catalog/product/list"
+                            class="btn btn-outline-light btn-lg px-4">Learn
+                            More</a>
                     </div>
                 </div>
             </div>
@@ -109,27 +112,31 @@ $images = $this->getImages();
                     <?php foreach ($images as $image): ?>
                     <div class="swiper-slide collection-slide position-relative bg-white p-3 rounded-4"
                         style="height: 450px;">
-                        <div class="h-75 d-flex justify-content-center align-items-center overflow-hidden rounded-3">
-                            <img src="<?php echo Mage::getBaseUrl() . $image->getFilePath() ?>"
-                                alt="<?php echo $image->getName(); ?>" class="w-auto h-100 object-fit-cover">
-                        </div>
-                        <div class="position-absolute bottom-0 start-50 translate-middle-x bg-dark bg-opacity-75 text-white text-center p-3 rounded-3 shadow-sm"
-                            style="width: 60%;">
-                            <h3 class="fw-bold fs-5 mb-1"><?php echo $image->getName() ?></h3>
-                            <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+                        <a
+                            href="<?php echo Mage::getBaseUrl() ?>catalog/product/view/?id=<?php echo $image->getProductId() ?>">
+                            <div
+                                class="h-75 d-flex justify-content-center align-items-center overflow-hidden rounded-3">
+                                <img src="<?php echo Mage::getBaseUrl() . $image->getFilePath() ?>"
+                                    alt="<?php echo $image->getName(); ?>" class="w-auto h-100 object-fit-cover">
+                            </div>
+                            <div class="position-absolute bottom-0 start-50 translate-middle-x bg-dark bg-opacity-75 text-white text-center p-3 rounded-3 shadow-sm"
+                                style="width: 60%;">
+                                <h3 class="fw-bold fs-5 mb-1"><?php echo $image->getName() ?></h3>
+                                <!-- <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
                                 <i class="bi bi-star-fill text-warning"></i>
                                 <i class="bi bi-star-fill text-warning"></i>
                                 <i class="bi bi-star-fill text-warning"></i>
                                 <i class="bi bi-star-fill text-warning"></i>
                                 <i class="bi bi-star-half text-warning"></i>
                                 <span class="ms-1 small">(124)</span>
+                            </div> -->
+                                <p class="fw-bold mb-2">₹<?php echo $image->getPrice() ?> <span
+                                        class="text-decoration-line-through text-light small">₹<?php echo $image->getPrice() * 1.2 ?></span>
+                                </p>
+                                <!-- <button class="btn     btn-sm btn-primary">Add to Cart</button> -->
+                                <!-- <button class="btn btn-sm btn-outline-light ms-1"><i class="bi bi-heart"></i></button> -->
                             </div>
-                            <p class="fw-bold mb-2">₹<?php echo $image->getPrice() ?> <span
-                                    class="text-decoration-line-through text-light small">₹<?php echo $image->getPrice() * 1.2 ?></span>
-                            </p>
-                            <button class="btn btn-sm btn-primary">Add to Cart</button>
-                            <button class="btn btn-sm btn-outline-light ms-1"><i class="bi bi-heart"></i></button>
-                        </div>
+                        </a>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -229,23 +236,23 @@ $images = $this->getImages();
             prevEl: ".swiper-button-prev",
         },
         loop: true,
-        breakpoints: {
-            // when window width is <= 576px
-            576: {
-                slidesPerView: 1,
-                spaceBetween: 10
-            },
-            // when window width is <= 768px
-            768: {
-                slidesPerView: 2,
-                spaceBetween: 15
-            },
-            // when window width is <= 992px
-            992: {
-                slidesPerView: 3,
-                spaceBetween: 20
-            }
-        }
+        // breakpoints: {
+        //     // when window width is <= 576px
+        //     576: {
+        //         slidesPerView: 1,
+        //         spaceBetween: 10
+        //     },
+        //     // when window width is <= 768px
+        //     768: {
+        //         slidesPerView: 2,
+        //         spaceBetween: 15
+        //     },
+        //     // when window width is <= 992px
+        //     992: {
+        //         slidesPerView: 3,
+        //         spaceBetween: 20
+        //     }
+        // }
     });
 
     // Initialize hero animation

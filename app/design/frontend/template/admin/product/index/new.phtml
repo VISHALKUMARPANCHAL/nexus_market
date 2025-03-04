@@ -105,7 +105,7 @@ $baseurl = Mage::getBaseUrl();
                                             $value = ($id) ? $product->$name() : "";
                                             echo $this->getHtmlField($data->getType(), [
                                                 'id' => "id{$data->getAttributeId()}",
-                                                'name' => "catalog_attribute[{$data->getAttributeId()}][Value]",
+                                                'name' => "catalog_product_attribute[{$data->getAttributeId()}][Value]",
                                                 'value' => $value,
                                                 'class' => 'form-control'
                                             ]);
