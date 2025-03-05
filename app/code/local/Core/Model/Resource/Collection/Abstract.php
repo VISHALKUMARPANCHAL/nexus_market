@@ -18,10 +18,15 @@ class Core_Model_Resource_Collection_Abstract
     {
         $this->_select['FROM'] = ["main_table" => $this->_resource->getTableName()];
         // $this->_select['COLUMNS'] = is_array($columns) ? $columns : [$columns];
+        $columns = is_array($columns) ? $columns : [$columns];
+        // echo "1";
+        // echo '<pre>';
+        // print_r($columns);
+        // echo '</pre>';
+        // // die;
         // echo '<pre>';
         // print_r($this->_select);
         // echo '</pre>';
-        $columns = is_array($columns) ? $columns : [$columns];
         foreach ($columns as $column) {
             $this->_select['COLUMNS'][] = "main_table." . $column;
         }
@@ -187,9 +192,9 @@ class Core_Model_Resource_Collection_Abstract
                         }
                         $_value = implode(',', $inarryvalues);
                         $where  = " {$field} {$operator} ({$_value}) ";
-                        echo '<pre>';
-                        print_r($where);
-                        echo '</pre>';
+                        // echo '<pre>';
+                        // print_r($where);
+                        // echo '</pre>';
                         break;
 
                     case 'BETWEEN':

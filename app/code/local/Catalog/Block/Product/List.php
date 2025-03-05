@@ -6,7 +6,7 @@ class Catalog_Block_Product_List extends Core_Block_Template
     {
         $this->setTemplate('catalog/product/list.phtml');
     }
-    public function getProducts($id)
+    public function getProducts()
     {
         $product = Mage::getModel('catalog/filter')->getProductCollection();
         // echo '<pre>';
@@ -25,5 +25,36 @@ class Catalog_Block_Product_List extends Core_Block_Template
     public function getCategory($id)
     {
         return Mage::getSingleton('catalog/category')->load($id)->getName();
+    }
+    public function getAttribute()
+    {
+        return Mage::getModel('catalog/attribute')->getcollection()->getData();
+    }
+    public function getValues($attrId)
+    {
+        $data = Mage::getModel('catalog/product_attribute')->getcollection()
+            // ->select("value")
+            ->addFieldToFilter('attribute_id', $attrId)->getData();
+        return $this->uniquevalues($data);
+        // return $data;
+    }
+    public function getCategories()
+    {
+        $data = Mage::getModel('catalog/category')->getCollection()
+            ->addFieldToFilter('parent_id', 1)
+            ->getData();
+        return $data;
+    }
+    public function uniquevalues($data)
+    {
+        $uniquedata = [];
+        $newdata = [];
+        foreach ($data as $values) {
+            $uniquedata[$values->getValue()] = 0;
+        }
+        foreach (array_keys($uniquedata) as $i) {
+            $newdata[] = $i;
+        }
+        return $newdata;
     }
 }

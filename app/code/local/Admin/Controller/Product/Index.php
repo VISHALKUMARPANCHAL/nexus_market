@@ -21,15 +21,24 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
     {
 
         $request = $this->getRequest();
-        $product = Mage::getModel('catalog/product');
 
-        $pdata = $request->getParam('catalog_category');
-        $attr = $request->getParam('catalog_product_attribute');
+        $pdata = $request->getParam('catalog_product');
         $pdata['sku'] = "{$pdata['category_id']}{$pdata['name']}";
-        $product->setData($pdata);
 
-        $pid = $product->save()->getProductId();
-        // $pid = 73;
+        $product = Mage::getModel('catalog/product')
+            ->load($pdata['product_id'])
+            ->setData($pdata);
+        echo '<pre>';
+        print_r($product);
+        echo '</pre>';
+        $product->save();
+        // die;
+        // $attr = $request->getParam('catalog_product_attribute');
+        // $product->setData($pdata);
+
+        $pid = $product->getProductId();
+        // $pid = $product->save()->getProductId();
+        // $pid = 91;
         $attributetable = Mage::getModel('catalog/product_attribute');
         // echo '<pre>';
         // print_r($pid);
@@ -43,18 +52,22 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         // die;
         $ct = 0;
         // echo '<pre>';
+        // print_r($valueId);
         // print_r($attr);
         // echo '</pre>';
-        // die;
-        foreach ($attr as $value) {
+        foreach ($product as $key => $value) {
             if (!empty($valueId)) {
                 $value['value_id'] = $valueId[$ct]->getValueId();
             }
-            $value['product_id'] = $pid;
+            // $value['product_id'] = $pid;
+            $value['attribute_id'] = $key;
             $attributetable->setData($value);
+            // print_r($attributetable);
+            // die;
             $attributetable->save();
             $ct++;
         }
+        die;
         $ct = 0;
         $images = Mage::getModel('catalog/media_gallery');
         $imageData = [];

@@ -11,7 +11,7 @@ class Core_Controller_Front_Action
     }
     public function redirect($url)
     {
-        header("location:" . Mage::getBaseUrl() . $url);
+        header("Location:" . Mage::getBaseUrl() . $url);
         return $this;
     }
 }

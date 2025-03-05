@@ -11,21 +11,23 @@ class Catalog_Model_Filter extends Core_Model_Abstract
     {
         $request = Mage::getSingleton('core/request');
         $parameter = $request->getQuery();
-        // echo '<pre>';
-        // print_r($request->getQuery());
-        // echo '</pre>';
+        echo '<pre>';
+        print_r($request->getQuery());
+        echo '</pre>';
         if (isset($parameter['id'])) {
             $collection->addCategoryFilter($parameter['id']);
             unset($parameter['id']);
         }
-        // echo '<pre>';
-        // print_r(array_keys($parameter));
-        // echo '</pre>';
+        echo '<pre>';
+        print_r($parameter);
+        echo '</pre>';
         if (!empty($parameter)) {
-            $attributes = Mage::getModel('catalog/attribute')->getcollection();
-            $attributes->addFieldToFilter('name', ["IN" => array_keys($parameter)]);
+            $attributes = Mage::getModel('catalog/attribute')->getcollection()
+                ->addFieldToFilter('name', ["IN" => array_keys($parameter)]);
             foreach ($attributes->getData() as $attribute) {
-                $collection->addAttributeToFilter($attribute->getName(), $parameter[$attribute->getName()]);
+                // if (array_key_exists()) {
+                // }
+                $collection->addAttributeToFilter($attribute->getName(),    $parameter[$attribute->getName()]);
             }
         }
         // echo '<pre>';

@@ -29,6 +29,15 @@ class Core_Model_DB_Adapter
         }
         return $data;
     }
+    public function fetchCol($query, $columnName)
+    {
+        $result = mysqli_query($this->connect(), $query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row[$columnName];
+        }
+        return $data;
+    }
     public function fetchRow($query)
     {
         $result = mysqli_query($this->connect(), $query);

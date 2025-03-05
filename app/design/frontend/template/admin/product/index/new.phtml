@@ -26,18 +26,18 @@ $baseurl = Mage::getBaseUrl();
                             <div class="mb-4">
                                 <label for="pid" class="form-label fw-bold">Product ID</label>
                                 <input type="number" class="form-control bg-light" id="pid"
-                                    name="catalog_category[product_id]" value="<?php echo $product->getProductId() ?>"
+                                    name="catalog_product[product_id]" value="<?php echo $product->getProductId() ?>"
                                     readonly>
                                 <div class="form-text text-muted">Product ID cannot be changed</div>
                             </div>
                             <?php else: ?>
-                            <input type="hidden" name="catalog_category[product_id]" value="">
+                            <input type="hidden" name="catalog_product[product_id]" value="">
                             <?php endif; ?>
 
                             <div class="mb-4">
                                 <label for="name" class="form-label fw-bold">Name <span
                                         class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="catalog_category[name]"
+                                <input type="text" class="form-control" id="name" name="catalog_product[name]"
                                     value="<?php echo ($id) ? $product->getName() : '' ?>" required>
                                 <div class="invalid-feedback">Please provide a product name</div>
                             </div>
@@ -45,7 +45,7 @@ $baseurl = Mage::getBaseUrl();
                             <div class="mb-4">
                                 <label for="description" class="form-label fw-bold">Description <span
                                         class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description" name="catalog_category[description]"
+                                <textarea class="form-control" id="description" name="catalog_product[description]"
                                     rows="4"><?php echo ($id) ? $product->getDescription() : '' ?></textarea>
                                 <div class="form-text text-muted">Provide a detailed description of this product
                                 </div>
@@ -58,7 +58,7 @@ $baseurl = Mage::getBaseUrl();
                                     <div class="input-group my-3">
                                         <span class="input-group-text">₹</span>
                                         <input type="text" class="form-control mx-0 my-0" id="price"
-                                            name="catalog_category[price]"
+                                            name="catalog_product[price]"
                                             value="<?php echo ($id) ? $product->getPrice() : "" ?>" required>
                                     </div>
                                     <div class="invalid-feedback">Please provide a valid price</div>
@@ -68,7 +68,7 @@ $baseurl = Mage::getBaseUrl();
                                     <label for="stock" class="form-label fw-bold">Stock Quantity <span
                                             class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="stock"
-                                        name="catalog_category[stock_quantity]"
+                                        name="catalog_product[stock_quantity]"
                                         value="<?php echo ($id) ? $product->getStockQuantity() : "" ?>" required>
                                     <div class="invalid-feedback">Please provide stock quantity</div>
                                 </div>
@@ -77,7 +77,7 @@ $baseurl = Mage::getBaseUrl();
                             <div class="mb-4">
                                 <label for="category_id" class="form-label fw-bold">Category <span
                                         class="text-danger">*</span></label>
-                                <select name="catalog_category[category_id]" id="category_id" class="form-select">
+                                <select name="catalog_product[category_id]" id="category_id" class="form-select">
                                     <?php foreach ($categories as $data): ?>
                                     <option value="<?php echo $data->getCategoryId() ?>"
                                         <?php echo ($id && ($product->getCategoryId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
@@ -105,7 +105,7 @@ $baseurl = Mage::getBaseUrl();
                                             $value = ($id) ? $product->$name() : "";
                                             echo $this->getHtmlField($data->getType(), [
                                                 'id' => "id{$data->getAttributeId()}",
-                                                'name' => "catalog_product_attribute[{$data->getAttributeId()}][Value]",
+                                                'name' => "catalog_product[{$data->getName()}]",
                                                 'value' => $value,
                                                 'class' => 'form-control'
                                             ]);

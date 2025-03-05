@@ -35,8 +35,24 @@ class Core_Model_Resource_Abstract
         // echo "<pre>";
         // print_r($data);
     }
+    protected function _getDbColumns()
+    {
+        $sql = "SELECT COLUMN_NAME
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = N'{$this->_tableName}'";
+        // echo $sql;
+        return $this->getAdapter()->fetchCol($sql, 'COLUMN_NAME');
+        // echo '<pre>';
+        // print_r($column_name);
+        // echo '</pre>';
+    }
     public function save($model)
     {
+        $dbcolumn = $this->_getDbColumns();
+        echo '<pre>';
+        print_r($dbcolumn);
+        echo '</pre>';
+        // die;
         $data = $model->getData();
         $primaryId = 0;
         $primarykey =  $this->_primaryKey;
@@ -48,16 +64,18 @@ class Core_Model_Resource_Abstract
             $primaryId = $data[$primarykey];
         }
         // echo '<pre>';
+        // print_r($model);
         // print_r($primaryId);
         // echo '</pre>';
         // die;
         if ($primaryId) {
-
             $columns = [];
             unset($data[$primarykey]);
             foreach ($data as $key => $value) {
                 $value = ($value !== null) ? $value : '';
-                $columns[] = sprintf("`%s` = '%s'", $key, addslashes($value));
+                if (in_array($key, $dbcolumn)) {
+                    $columns[] = sprintf("`%s` = '%s'", $key, addslashes($value));
+                }
             }
             $sql = sprintf(
                 "UPDATE %s SET %s WHERE %s = %d",
@@ -66,13 +84,15 @@ class Core_Model_Resource_Abstract
                 $primarykey,
                 $primaryId
             );
-            // echo $sql;
+            echo $sql;
             // die;
             return $this->getAdapter()->query($sql);
         } else {
             $columns = implode('`,`', array_keys($data));
             $values = implode("','", array_values($data));
-            $sql = sprintf("INSERT INTO %s(`%s`) VALUES ('%s')", $this->_tableName, $columns, $values);
+            if (in_array($columns, $dbcolumn)) {
+                $sql = sprintf("INSERT INTO %s(`%s`) VALUES ('%s')", $this->_tableName, $columns, $values);
+            }
             // echo $sql;
             // die;
             $id = $this->getAdapter()->insert($sql);
