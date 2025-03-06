@@ -18,6 +18,67 @@ class Catalog_Model_Product extends Core_Model_Abstract
             return "NA";
         }
     }
+    protected function _afterSave()
+    {
+        echo '<pre>';
+        print_r($this);
+        echo '</pre>';
+
+        $attributes = Mage::getModel('catalog/attribute')->getCollection()->getData();
+        $request = Mage::getModel('core/request');
+        foreach ($attributes as $_attribute) {
+            $productAttributes = Mage::getModel('catalog/product_attribute')
+                ->getCollection()
+                ->addFieldToFilter('product_id', $this->getProductId())
+                ->addFieldToFilter('attribute_id', $_attribute->getAttributeId())
+                ->getData();
+            $value = $this->{$_attribute->getName()};
+            if (isset($productAttributes[0])) {
+                $productAttributes[0]->setValue($value)
+                    ->save();
+            } else {
+                Mage::getModel('catalog/product_attribute')
+                    ->setAttributeId($_attribute->getAttributeId())
+                    ->setProductId($this->getProductId())
+                    ->setValue($value)
+                    ->save();
+            }
+        }
+        // die;
+        $images = Mage::getModel('catalog/media_gallery');
+        $imageData = [];
+        echo '<pre>';
+        print_r($_FILES);
+        echo '</pre>';
+        if (!empty($_FILES['catalog_product']['name']['img'][0])) {
+            foreach ($_FILES['catalog_product']['name']['img'] as $key => $value) {
+                if (move_uploaded_file($_FILES['catalog_product']['tmp_name']['img'][$key], "media/product/$value")) {
+                    $imageData['product_id'] = $this->getProductId();
+                    $imageData['file_path'] = "media/product/$value";
+                    $type = $_FILES['catalog_product']['type']['img'][$key];
+                    $imageData['type'] = substr($type, '0', strpos($type, '/'));
+                    $images->setData($imageData);
+                    if ($value === $request->getParam('main_image')) {
+                        $images->setMainImage(1);
+                    }
+                    $images->save();
+                }
+            }
+        }
+        $deleteimg = $request->getParam('deletedimg');
+        if ($deleteimg != "") {
+            $gallery = Mage::getModel('catalog/media_gallery');
+            foreach ($deleteimg as $img) {
+                $mediaid = $gallery->getCollection()->addFieldToFilter('product_id', $this->getProductId())->addFieldToFilter('file_path', $img)->getData()[0]->getMediaId();
+                if (file_exists($img)) {
+                    unlink($img);
+                }
+                $gallery->setData($mediaid);
+                $gallery->delete();
+            }
+        }
+        // die;
+    }
     protected function _afterLoad()
     {
         if ($this->getProductId()) {

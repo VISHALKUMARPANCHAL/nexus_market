@@ -11,16 +11,17 @@ class Catalog_Model_Filter extends Core_Model_Abstract
     {
         $request = Mage::getSingleton('core/request');
         $parameter = $request->getQuery();
-        echo '<pre>';
-        print_r($request->getQuery());
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($request->getQuery());
+        // echo '</pre>';
         if (isset($parameter['id'])) {
+            $parameter['id'] = str_contains($parameter['id'], ',') ? explode(',', $parameter['id']) : $parameter['id'];
             $collection->addCategoryFilter($parameter['id']);
             unset($parameter['id']);
         }
-        echo '<pre>';
-        print_r($parameter);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($parameter);
+        // echo '</pre>';
         if (!empty($parameter)) {
             $attributes = Mage::getModel('catalog/attribute')->getcollection()
                 ->addFieldToFilter('name', ["IN" => array_keys($parameter)]);

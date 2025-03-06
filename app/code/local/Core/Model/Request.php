@@ -65,4 +65,17 @@ class Core_Model_Request
             return "";
         }
     }
+    public function isAgexRequest()
+    {
+        return $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+    }
+    public function isPost()
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+
+    public function isGet()
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
 }

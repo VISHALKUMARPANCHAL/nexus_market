@@ -9,9 +9,15 @@ class Core_Block_Template
         $this->_child[$key] = $block;
         return $this;
     }
+    public function getLayout()
+    {
+        return Mage::getBlockSingleton('core/layout');
+    }
     public function removeChild($key)
     {
-        $this->_child[$key];
+        if (isset($this->_child[$key])) {
+            unset($this->_child[$key]);
+        }
         return $this;
     }
     public function getChild($key)

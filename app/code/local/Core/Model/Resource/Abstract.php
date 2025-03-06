@@ -49,9 +49,9 @@ class Core_Model_Resource_Abstract
     public function save($model)
     {
         $dbcolumn = $this->_getDbColumns();
-        echo '<pre>';
-        print_r($dbcolumn);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($dbcolumn);
+        // echo '</pre>';
         // die;
         $data = $model->getData();
         $primaryId = 0;
@@ -72,8 +72,8 @@ class Core_Model_Resource_Abstract
             $columns = [];
             unset($data[$primarykey]);
             foreach ($data as $key => $value) {
-                $value = ($value !== null) ? $value : '';
                 if (in_array($key, $dbcolumn)) {
+                    $value = ($value !== null) ? $value : '';
                     $columns[] = sprintf("`%s` = '%s'", $key, addslashes($value));
                 }
             }
@@ -84,28 +84,27 @@ class Core_Model_Resource_Abstract
                 $primarykey,
                 $primaryId
             );
-            echo $sql;
+            // echo $sql;
             // die;
             return $this->getAdapter()->query($sql);
         } else {
-            $columns = implode('`,`', array_keys($data));
-            $values = implode("','", array_values($data));
-            if (in_array($columns, $dbcolumn)) {
-                $sql = sprintf("INSERT INTO %s(`%s`) VALUES ('%s')", $this->_tableName, $columns, $values);
+            $columns = [];
+            $values = [];
+            foreach ($data as $key => $value) {
+                if (in_array($key, $dbcolumn)) {
+                    $values[] =  $value;
+                    $columns[] = $key;
+                }
             }
-            // echo $sql;
-            // die;
+
+            $columns = implode('`,`', $columns);
+            $values = implode("','", $values);
+            $sql = sprintf("INSERT INTO %s(`%s`) VALUES ('%s')", $this->_tableName, $columns, $values);
+
             $id = $this->getAdapter()->insert($sql);
 
-            $model->load($id);
-            // echo $id;
-            // echo '<pre>';
-            // print_r($model);
-            // echo '</pre>';
-
-            // echo "Insert";
+            $model->{$this->_primaryKey} = $id;
         }
-        // echo get_class($model);
     }
     public function delete($model)
     {

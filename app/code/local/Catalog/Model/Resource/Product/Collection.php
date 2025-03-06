@@ -20,12 +20,18 @@ class Catalog_Model_Resource_Product_Collection extends Core_Model_Resource_Coll
     }
     public function addCategoryFilter($id)
     {
-        $this->addFieldToFilter('category_id', $id);
+        // echo '<pre>';
+        // print_r($id);
+        // die;
+        // echo '</pre>';
+        $condition = (is_array($id)) ? ["IN" => $id] : $id;
+        $this->addFieldToFilter('category_id', $condition);
         return $this;
     }
     public function addAttributeToFilter($field, $value)
     {
+        $value = explode(',', $value);
         $this->addAttributeToSelect([$field]);
-        $this->addFieldToFilter("cpa_{$field}.value", $value);
+        $this->addFieldToFilter("cpa_{$field}.value", ["IN" => $value]);
     }
 }

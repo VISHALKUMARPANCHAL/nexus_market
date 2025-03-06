@@ -17,7 +17,7 @@ class Core_Model_Resource_Collection_Abstract
     public function select($columns = ["*"])
     {
         $this->_select['FROM'] = ["main_table" => $this->_resource->getTableName()];
-        // $this->_select['COLUMNS'] = is_array($columns) ? $columns : [$columns];
+        $this->_select['COLUMNS'] = [];
         $columns = is_array($columns) ? $columns : [$columns];
         // echo "1";
         // echo '<pre>';

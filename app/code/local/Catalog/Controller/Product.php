@@ -13,13 +13,14 @@ class Catalog_Controller_Product
     }
     public function listAction()
     {
-        $layout = Mage::getBlock('core/layout');
+        $layout = Mage::getBlockSingleton('core/layout');
+        if (0) {
+            $layout->removeChild('header');
+        }
         $list = $layout->createBlock('catalog/product_list')
             ->setTemplate('catalog/product/list.phtml');
         $layout->getChild('content')->addChild('list', $list);
         $layout->toHtml();
-        // echo "class : " . __CLASS__ . "<br>";
-        // echo "function : " . __FUNCTION__;
     }
     public function testAction()
     {

@@ -19,7 +19,10 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
     }
     public function saveAction()
     {
-
+        // echo '<pre>';
+        // print_r($_POST);
+        // echo '</pre>';
+        // die;
         $request = $this->getRequest();
 
         $pdata = $request->getParam('catalog_product');
@@ -28,86 +31,83 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $product = Mage::getModel('catalog/product')
             ->load($pdata['product_id'])
             ->setData($pdata);
-        echo '<pre>';
-        print_r($product);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($product);
+        // echo '</pre>';
+
+        // echo '<pre>';
+        // print_r($product);
+        // print_r($_FILES);
+        // echo '</pre>';
         $product->save();
+        // die;
+        // $pid = $product->getProductId();
         // die;
         // $attr = $request->getParam('catalog_product_attribute');
         // $product->setData($pdata);
 
-        $pid = $product->getProductId();
         // $pid = $product->save()->getProductId();
         // $pid = 91;
-        $attributetable = Mage::getModel('catalog/product_attribute');
+        // $attributetable = Mage::getModel('catalog/product_attribute');
         // echo '<pre>';
         // print_r($pid);
         // echo '</pre>';
         // die;
-        $valueId = $attributetable->getCollection()->addFieldToFilter('product_id', $pid)->getData();
+        // $valueId = $attributetable->getCollection()->addFieldToFilter('product_id', $pid)->getData();
         // echo '<pre>';
         // print_r($valueId->getData());
         // print_r($attr);
         // echo '</pre>';
         // die;
-        $ct = 0;
+        // $ct = 0;
         // echo '<pre>';
         // print_r($valueId);
         // print_r($attr);
         // echo '</pre>';
-        foreach ($product as $key => $value) {
-            if (!empty($valueId)) {
-                $value['value_id'] = $valueId[$ct]->getValueId();
-            }
-            // $value['product_id'] = $pid;
-            $value['attribute_id'] = $key;
-            $attributetable->setData($value);
-            // print_r($attributetable);
-            // die;
-            $attributetable->save();
-            $ct++;
-        }
-        die;
-        $ct = 0;
-        $images = Mage::getModel('catalog/media_gallery');
-        $imageData = [];
-        if (!empty($_FILES['catalog_media_gallery']['name']['img'][0])) {
-            foreach ($_FILES['catalog_media_gallery']['name']['img'] as $key => $value) {
-                if (move_uploaded_file($_FILES['catalog_media_gallery']['tmp_name']['img'][$key], "media/product/$value")) {
-                    $imageData['product_id'] = $pid;
-                    $imageData['file_path'] = "media/product/$value";
-                    $type = $_FILES['catalog_media_gallery']['type']['img'][$key];
-                    $imageData['type'] = substr($type, '0', strpos($type, '/'));
-                    $images->setData($imageData);
-                    $images->save();
-                }
-            }
-        }
+        // foreach ($product as $key => $value) {
+        //     if (!empty($valueId)) {
+        //         $value['value_id'] = $valueId[$ct]->getValueId();
+        //     }
+        //     // $value['product_id'] = $pid;
+        //     $value['attribute_id'] = $key;
+        //     $attributetable->setData($value);
+        //     // print_r($attributetable);
+        //     // die;
+        //     $attributetable->save();
+        //     $ct++;
+        // }
         // die;
-        $deleteimg = $request->getParam('deletedimg');
-        // echo '<pre>';
-        // print_r($deleteimg);
-        // echo '</pre>';
-        if ($deleteimg != "") {
-            $gallery = Mage::getModel('catalog/media_gallery');
-            foreach ($deleteimg as $img) {
-                $mediaid = $gallery->getCollection()->addFieldToFilter('product_id', $pid)->addFieldToFilter('file_path', $img)->getData()[0]->getMediaId();
+        // $ct = 0;
+        // $images = Mage::getModel('catalog/media_gallery');
+        // $imageData = [];
+        // if (!empty($_FILES['catalog_media_gallery']['name']['img'][0])) {
+        //     foreach ($_FILES['catalog_media_gallery']['name']['img'] as $key => $value) {
+        //         if (move_uploaded_file($_FILES['catalog_media_gallery']['tmp_name']['img'][$key], "media/product/$value")) {
+        //             $imageData['product_id'] = $pid;
+        //             $imageData['file_path'] = "media/product/$value";
+        //             $type = $_FILES['catalog_media_gallery']['type']['img'][$key];
+        //             $imageData['type'] = substr($type, '0', strpos($type, '/'));
+        //             $images->setData($imageData);
+        //             if ($value === $request->getParam('main_Image')) {
+        //                 $images->setMainImage(1);
+        //             }
+        //             $images->save();
+        //         }
+        //     }
+        // }
+        // $deleteimg = $request->getParam('deletedimg');
+        // if ($deleteimg != "") {
+        //     $gallery = Mage::getModel('catalog/media_gallery');
+        //     foreach ($deleteimg as $img) {
+        //         $mediaid = $gallery->getCollection()->addFieldToFilter('product_id', $pid)->addFieldToFilter('file_path', $img)->getData()[0]->getMediaId();
 
-                if (file_exists($img)) {
-                    unlink($img);
-                }
-                $gallery->setData($mediaid);
-                echo '<pre>';
-                print_r($gallery);
-                echo '</pre>';
-                $gallery->delete();
-            }
-        }
-        // echo '<pre>';
-        // print_r($_POST);
-        // print_r($images);
-        // echo '</pre>';
-        // die;
+        //         if (file_exists($img)) {
+        //             unlink($img);
+        //         }
+        //         $gallery->setData($mediaid);
+        //         $gallery->delete();
+        //     }
+        // }
         $this->redirect('admin/product_index/list');
     }
     public function deleteAction()

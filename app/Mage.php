@@ -25,6 +25,17 @@ class Mage
             return self::$registory[$className];
         }
     }
+    public static function getBlockSingleton($className)
+    {
+        $class = str_replace('/', '_Block_', $className);
+        $class = ucwords($class, '_');
+        if (isset(self::$registory[$className])) {
+            return self::$registory[$className];
+        } else {
+            self::$registory[$className] = new $class;
+            return self::$registory[$className];
+        }
+    }
     public static function getBlock($className)
     {
         $class = str_replace('/', '_Block_', $className);

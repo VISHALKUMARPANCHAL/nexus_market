@@ -1,6 +1,7 @@
 <!-- <h1>head phtml</h1> -->
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <?php foreach ($this->getJs() as $js):    ?>
     <script src="<?php echo Mage::getBaseUrl() . 'js/' . $js . '?v=1' ?>">

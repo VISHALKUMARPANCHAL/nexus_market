@@ -2,6 +2,7 @@
 
 class Admin_Block_Product_Index_List extends Core_Block_Template
 {
+
     public function getData()
     {
         $product = Mage::getSingleton('catalog/product')

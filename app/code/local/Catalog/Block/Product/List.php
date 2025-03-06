@@ -5,6 +5,10 @@ class Catalog_Block_Product_List extends Core_Block_Template
     public function __construct()
     {
         $this->setTemplate('catalog/product/list.phtml');
+        $filter = $this->getLayout()->createBlock('catalog/product_list_filter');
+        $products = $this->getLayout()->createBlock('catalog/product_list_products');
+        $this->addChild("filter", $filter);
+        $this->addChild("products", $products);
     }
     public function getProducts()
     {
@@ -22,7 +26,7 @@ class Catalog_Block_Product_List extends Core_Block_Template
         // }
         // return $product->getData();
     }
-    public function getCategory($id)
+    public function getCategoryName($id)
     {
         return Mage::getSingleton('catalog/category')->load($id)->getName();
     }
