@@ -5,28 +5,28 @@
                 Categories
             </b></label>
         <?php foreach ($this->getcategories() as $category): ?>
-            <div class="filter-option">
-                <label>
-                    <input type="checkbox" name="id" value="<?php echo htmlspecialchars($category->getCategoryId()); ?>"
-                        class="filter-checkbox">
-                    <?php echo htmlspecialchars($category->getName()); ?>
-                </label>
-            </div>
+        <div class="filter-option">
+            <label>
+                <input type="checkbox" name="id" value="<?php echo htmlspecialchars($category->getCategoryId()); ?>"
+                    class="filter-checkbox">
+                <?php echo htmlspecialchars($category->getName()); ?>
+            </label>
+        </div>
         <?php endforeach; ?>
         <?php foreach ($this->getAttribute() as $attribute): ?>
-            <div class="filter-option">
-                <label><b><?php echo ($attribute->getName()) ?></b></label>
-                <br>
-                <?php $attrs = $this->getValues($attribute->getAttributeId());
+        <div class="filter-option">
+            <label><b><?php echo ($attribute->getName()) ?></b></label>
+            <br>
+            <?php $attrs = $this->getValues($attribute->getAttributeId());
                 foreach ($attrs as $attr): ?>
-                    <label>
-                        <input type="checkbox" name="<?php echo htmlspecialchars($attribute->getName()); ?>"
-                            value="<?php echo htmlspecialchars($attr); ?>" class="filter-checkbox">
-                        <?php echo htmlspecialchars(ucfirst($attr)); ?>
-                    </label>
-                    <br>
-                <?php endforeach; ?>
-            </div>
+            <label>
+                <input type="checkbox" name="<?php echo htmlspecialchars($attribute->getName()); ?>"
+                    value="<?php echo htmlspecialchars($attr); ?>" class="filter-checkbox">
+                <?php echo htmlspecialchars(ucfirst($attr)); ?>
+            </label>
+            <br>
+            <?php endforeach; ?>
+        </div>
         <?php endforeach; ?>
         <div class="d-grid gap-2">
             <!-- <button class="btn btn-primary" onclick="filterProducts()">Apply Filters</button> -->
@@ -34,175 +34,137 @@
         </div>
     </div>
 </div>
-
 <script>
-    // $(document).ready(function() {
-    //     function toggleCheckbox(id) {
-    //         var checkbox = $('#' + id);
-    //         checkbox.prop('checked', !checkbox.prop('checked'));
-    //     }
+const FilterApp = {
+    init: function() {
+        this.bindEvents();
+    },
 
-    //     function clearFilters() {
-    //         $('.filter-checkbox').prop('checked', false);
-    //         window.history.pushState({}, '', window.location.pathname);
-    //         updatePage();
-    //     }
+    bindEvents: function() {
+        $('.filter-checkbox').on('input', this.fetchFilteredProducts);
+    },
 
-    //     function updateURL() {
-    //         let urlParams = new URLSearchParams();
-    //         $('.filter-checkbox:checked').each(function() {
-    //             let name = $(this).attr('name');
-    //             if (!urlParams.has(name)) {
-    //                 urlParams.append(name, $(this).val());
-    //             } else {
-    //                 let values = urlParams.getAll(name);
-    //                 values.push($(this).val());
-    //                 urlParams.set(name, values.join(','));
-    //             }
-    //         });
-    //         window.history.pushState({}, '', `?${urlParams.toString()}`);
-    //         updatePage();
-    //     }
+    fetchFilteredProducts: function() {
+        let formData = FilterApp.collectFilterData();
+        // console.log("Collected Filters:", formData);
+        // Encode and update URL
+        FilterApp.updateEncodedURL(formData);
 
-    //     function setCheckboxesFromURL() {
-    //         let urlParams = new URLSearchParams(window.location.search);
-    //         $('.filter-checkbox').each(function() {
-    //             let filterType = $(this).attr('name');
-    //             let values = urlParams.get(filterType)?.split(',') || [];
-    //             $(this).prop('checked', values.includes($(this).val()));
-    //         });
-    //     }
+        $('#products-container').html('<p>Loading products...</p>');
 
-    //     function updatePage() {
-    //         let urlParams = new URLSearchParams(window.location.search);
-    //         $.ajax({
-    //             url: 'fetch_products.php', // Change this to your server endpoint
-    //             type: 'GET',
-    //             data: urlParams.toString(),
-    //             success: function(response) {
-    //                 $('#col-lg-9').html(response);
-    //             }
-    //         });
-    //     }
+        $.ajax({
+            url: 'http://localhost/ecommerceweb/catalog/product/list/',
+            type: 'GET',
+            data: formData,
+            success: function(response) {
+                console.log(response);
 
-    //     setCheckboxesFromURL();
+                let $response = $(response);
+                let $productsGrid = $response.find('#products-container');
+                console.log($productsGrid);
 
-    //     $('.filter-checkbox').on('change', function() {
-    //         updateURL();
-    //     });
-
-    //     $('#search-input').on('keyup', function() {
-    //         let filter = $(this).val().toLowerCase();
-    //         $('.col-md-4').each(function() {
-    //             let productName = $(this).find('.product-title').text().toLowerCase();
-    //             $(this).toggle(productName.indexOf(filter) > -1);
-    //         });
-    //     });
-
-    //     $('#sort-select').on('change', function() {
-    //         let selectedOption = $(this).val();
-    //         let urlParams = new URLSearchParams(window.location.search);
-    //         urlParams.set('sort', selectedOption);
-    //         window.history.pushState({}, '', `?${urlParams.toString()}`);
-    //         updatePage();
-    //     });
-
-    //     updatePage();
-    // });
-
-
-
-
-
-
-
-
-
-    $(document).ready(function() {
-        function toggleCheckbox(id) {
-            var checkbox = $('#' + id);
-            checkbox.prop('checked', !checkbox.prop('checked'));
-        }
-
-        function clearFilters() {
-            $('.filter-checkbox').prop('checked', false);
-            window.history.pushState({}, '', window.location.pathname);
-            location.reload();
-        }
-
-        function updateURL() {
-            let urlParams = new URLSearchParams(window.location.search);
-            let filters = {};
-
-            $('.filter-checkbox').each(function() {
-                let name = $(this).attr('name');
-                if ($(this).prop('checked')) {
-                    if (!filters[name]) {
-                        filters[name] = [];
-                    }
-                    filters[name].push($(this).val());
-                } else {
-                    if (urlParams.has(name)) {
-                        let existingValues = urlParams.get(name).split(',').filter(val => val !== $(this)
-                            .val());
-                        if (existingValues.length > 0) {
-                            urlParams.set(name, existingValues.join(','));
-                        } else {
-                            urlParams.delete(name);
-                        }
-                    }
-                }
-            });
-
-            $.each(filters, function(key, value) {
-                urlParams.set(key, value.join(','));
-            });
-
-            window.history.pushState({}, '', `?${urlParams.toString()}`);
-            location.reload();
-        }
-
-        function setCheckboxesFromURL() {
-            let urlParams = new URLSearchParams(window.location.search);
-            $('.filter-checkbox').each(function() {
-                let filterType = $(this).attr('name');
-                let values = urlParams.get(filterType)?.split(',') || [];
-                $(this).prop('checked', values.includes($(this).val()));
-            });
-        }
-
-        setCheckboxesFromURL();
-
-        $('.filter-checkbox').on('change', function() {
-            updateURL();
-        });
-
-        $('#search-input').on('keyup', function() {
-            let filter = $(this).val().toLowerCase();
-            $('.col-md-4').each(function() {
-                let productName = $(this).find('.product-title').text().toLowerCase();
-                $(this).toggle(productName.indexOf(filter) > -1);
-            });
-        });
-
-        $('#sort-select').on('change', function() {
-            let selectedOption = $(this).val();
-            let productsContainer = $('#products-container');
-            let productCards = $('.col-md-4').toArray();
-
-            let sortFn;
-            switch (selectedOption) {
-                case 'price-asc':
-                    sortFn = (a, b) => parseFloat($(a).find('.product-price').text().replace('$', '')) -
-                        parseFloat($(b).find('.product-price').text().replace('$', ''));
-                    break;
-                case 'price-desc':
-                    sortFn = (a, b) => parseFloat($(b).find('.product-price').text().replace('$', '')) -
-                        parseFloat($(a).find('.product-price').text().replace('$', ''));
-                    break;
+                $('#products-container').html($productsGrid);
+            },
+            error: function(error) {
+                console.log('Error fetching products:', error);
+                $('#products-container').html('<p>Failed to load products. Please try again.</p>');
             }
-            productCards.sort(sortFn);
-            productsContainer.empty().append(productCards);
         });
+    },
+
+    collectFilterData: function() {
+        let filters = {};
+
+        $('.filter-checkbox:checked').each(function() {
+            let name = $(this).attr('name');
+            if (!filters[name]) {
+                filters[name] = [];
+            }
+            filters[name].push($(this).val());
+        });
+        console.log(filters);
+        return filters;
+    },
+
+    syncPriceInputs: function() {
+        $('#max-price').val($('#price-slider').val());
+        FilterApp.fetchFilteredProducts();
+    },
+
+    debounce: function(func, delay) {
+        let timer;
+        return function() {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, arguments), delay);
+        };
+    },
+
+    updateEncodedURL: function(filters) {
+        try {
+            // Convert object to JSON and encode with Base64
+            let jsonString = JSON.stringify(filters);
+            // console.log(jsonString);
+            let encodedData = btoa(jsonString); // Base64 encode
+
+            // Update the URL with encoded data
+            window.history.pushState({}, '', `?data=${encodedData}`);
+        } catch (error) {
+            console.error('Encoding failed:', error);
+        }
+    },
+
+    fetchProductsFromEncodedURL: function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let encodedData = urlParams.get('data');
+        console.log(encodedData);
+
+        if (encodedData) {
+            try {
+                // Decode Base64 back to JSON
+                let decodedData = atob(encodedData);
+                let filters = JSON.parse(decodedData);
+                // console.log(filters);
+                if (filters) {
+                    FilterApp.restoreFilters(filters);
+                    this.fetchFilteredProducts();
+                }
+            } catch (error) {
+                console.error('Decoding failed:', error);
+            }
+        }
+    },
+
+    restoreFilters: function(filters) {
+        $.each(filters, function(key, value) {
+            if (Array.isArray(value)) {
+                $('.filter-checkbox[name="' + key + '"]').each(function() {
+                    $(this).prop('checked', value.includes($(this).val()));
+                });
+            } else {
+                $('#' + key).val(value);
+            }
+        });
+    }
+}
+
+$(document).ready(function() {
+    FilterApp.init();
+    FilterApp.fetchProductsFromEncodedURL();
+});
+
+function toggleAttribute(header) {
+    console.log(header);
+    var options = header.nextElementSibling;
+    if (options.classList.contains('active')) {
+        options.classList.remove('active');
+    } else {
+        options.classList.add('active');
+    }
+}
+
+document.querySelectorAll('.attribute-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+        toggleAttribute(this);
     });
+});
 </script>

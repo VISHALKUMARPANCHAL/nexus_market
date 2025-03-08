@@ -13,9 +13,7 @@ class Catalog_Block_Product_List extends Core_Block_Template
     public function getProducts()
     {
         $product = Mage::getModel('catalog/filter')->getProductCollection();
-        // echo '<pre>';
-        // print_r($product->getData());
-        // echo '</pre>';
+
         return $product->getData();
 
         // $product = Mage::getModel('catalog/product')

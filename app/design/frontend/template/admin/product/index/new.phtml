@@ -5,22 +5,7 @@ $product = $this->getProduct();
 $id = $this->getId();
 $baseurl = Mage::getBaseUrl();
 ?>
-<script>
-// function getPrevImages(image) {
-//     let fileListDiv = document.getElementById("fileList");
-//     console.log(fileListDiv);
-// fileListDiv.innerHTML = "";
-// let label = document.createElement("label");
-// let radio = document.createElement("input");
-// radio.type = "radio";
-// radio.name = "main_Image";
-// radio.value = image;
-// label.appendChild(radio);
-// label.appendChild(document.createTextNode(" " + image));
-// fileListDiv.appendChild(label);
-// fileListDiv.appendChild(document.createElement("br"));
-// }
-</script>
+
 <br>
 <div ss="bg-light py-4">
 
@@ -137,15 +122,17 @@ $baseurl = Mage::getBaseUrl();
 
                             <?php if ($id && $product->getFilePath()):
                             ?>
-                            <div class="mb-4" id="fileList">
-
+                            <div class="mb-4">
+                                <!-- <div id="fileList"></div> -->
                                 <label class="form-label fw-bold">Current Images</label>
                                 <div class="row g-2 flex-column">
-                                    <?php foreach ($product->getFilePath() as $filepath): ?>
-                                    <!-- <script>
-                                    getPrevImages("<?php //echo $filepath 
-                                                    ?>");
-                                    </script> -->
+                                    <?php
+                                        echo '<pre>';
+                                        print_r($product);
+                                        echo '</pre>';
+
+                                        foreach ($product->getFilePath() as $filepath): ?>
+
                                     <div class="col-auto">
                                         <div class="border p-1 rounded text-danger">
                                             <?php echo $this->getHtmlField('image', [
@@ -156,9 +143,9 @@ $baseurl = Mage::getBaseUrl();
                                                         'class' => 'img-thumbnail'
                                                     ]); ?>
                                             <?php echo $this->getHtmlField('lable', ["value" => "<i class='bi bi-x-square-fill'></i>", "for" => $filepath]) ?>
-                                            <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "deletedimg[]"]) ?>
+                                            <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "catalog_product[deleted_image][]"]) ?>
                                             <?php echo $this->getHtmlField('hidden', ["value" => $filepath]) ?>
-                                            <?php echo $this->getHtmlField('radio', ["name" => "main_image", "value" => $filepath]); ?>
+                                            <?php echo $this->getHtmlField('radio', ["name" => "catalog_product[main_image]", "value" => $filepath]); ?>
 
                                         </div>
                                     </div>
@@ -167,12 +154,14 @@ $baseurl = Mage::getBaseUrl();
                             </div>
                             <?php endif;
                             ?>
+                            <div id="fileList"></div>
+
                             <div class="mb-4">
                                 <label for="img"
                                     class="form-label fw-bold"><?php echo ($id) ? 'Add More Images' : 'Product Images' ?></label>
                                 <input type="file" class="form-control" name="catalog_product[img][]" id="img"
                                     accept="image/*" multiple>
-                                <!-- <div id="fileList"></div> -->
+
                                 <div class="form-text text-muted">Select one or more product images</div>
                             </div>
                             <div class="d-flex mt-4 align-items-center">
@@ -191,35 +180,16 @@ $baseurl = Mage::getBaseUrl();
     </div>
 </div>
 <script>
-function getPrevImages(images) {
-    // let fileListDiv = document.getElementById("fileList");
-    // let files = event.target.files;
-    // fileListDiv.innerHTML = "";
-    console.log(images);
-
-    // for (let i = 0; i < files.length; i++) {
-    //     let label = document.createElement("label");
-    //     let radio = document.createElement("input");
-    //     radio.type = "radio";
-    //     radio.name = "main_Image";
-    //     radio.value = files[i].name;
-
-    //     label.appendChild(radio);
-    //     label.appendChild(document.createTextNode(" " + files[i].name));
-    //     fileListDiv.appendChild(label);
-    //     fileListDiv.appendChild(document.createElement("br"));
-    // }
-}
 document.getElementById("img").addEventListener("change", function(event) {
     let fileListDiv = document.getElementById("fileList");
-    // fileListDiv.innerHTML = "";
+    fileListDiv.innerHTML = "";
 
     let files = event.target.files;
     for (let i = 0; i < files.length; i++) {
         let label = document.createElement("label");
         let radio = document.createElement("input");
         radio.type = "radio";
-        radio.name = "main_image";
+        radio.name = "catalog_product[main_image]";
         radio.value = files[i].name;
         label.appendChild(radio);
         label.appendChild(document.createTextNode(" " + files[i].name));
