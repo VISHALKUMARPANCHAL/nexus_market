@@ -1,10 +1,15 @@
+<?php
+// echo '<pre>';
+// print_r($this->getImagePath('57'));
+// echo '</pre>';
+?>
 <div class="col-lg-9">
     <div class="products-grid row g-4" id="products-container">
         <?php foreach ($this->getProducts() as $product): ?>
         <div class="col-md-4">
             <div class="card h-100 product-card border-0 shadow-sm rounded-3 overflow-hidden">
                 <div class="position-relative">
-                    <img src="<?php echo Mage::getBaseUrl() . $product->getFilePath(); ?>"
+                    <img src="<?php echo Mage::getBaseUrl() . $this->getImagePath($product->getProductId()); ?>"
                         class="card-img-top product-image" alt="<?php echo $product->getName() ?>">
                 </div>
                 <div class="card-body p-3">

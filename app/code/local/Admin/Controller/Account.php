@@ -28,14 +28,14 @@ class Admin_Controller_Account extends Core_Controller_Admin_Action
     {
         $session = Mage::getSingleton('core/session');
         $params = $this->getRequest()->getParams();
-        echo '<pre>';
-        print_r($params);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($params);
+        // echo '</pre>';
         // die;
         $admin = Mage::getSingleton('admin/user')->load($params['username'], 'username');
-        echo '<pre>';
-        print_r($admin);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($admin);
+        // echo '</pre>';
         if ($admin->getUsername() == $params['username'] && $admin->getPasswordHash() == $params['password']) {
             // echo 'yes';
             // die;

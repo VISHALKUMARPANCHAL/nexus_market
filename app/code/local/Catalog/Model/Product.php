@@ -53,15 +53,17 @@ class Catalog_Model_Product extends Core_Model_Abstract
             $previmage->save();
         }
         $imageData = [];
+
         if (!empty($_FILES['catalog_product']['name']['img'][0])) {
             foreach ($_FILES['catalog_product']['name']['img'] as $key => $value) {
-                if (move_uploaded_file($_FILES['catalog_product']['tmp_name']['img'][$key], "media/product/$value")) {
+                $uniquename = sprintf("%s_%s_%s",  $this->getProductId(), date("YmdHis"), $value,);
+                if (move_uploaded_file($_FILES['catalog_product']['tmp_name']['img'][$key], "media/product/$uniquename")) {
                     $imageData['product_id'] = $this->getProductId();
-                    $imageData['file_path'] = "media/product/$value";
+                    $imageData['file_path'] = "media/product/$uniquename";
                     $type = $_FILES['catalog_product']['type']['img'][$key];
                     $imageData['type'] = substr($type, '0', strpos($type, '/'));
                     $images->setData($imageData);
-                    if ($value === $this->getMainImage()) {
+                    if ($uniquename === $this->getMainImage()) {
                         $images->setMainImage(1);
                     } else {
                         $images->setMainImage(0);
@@ -102,9 +104,9 @@ class Catalog_Model_Product extends Core_Model_Abstract
             }
             $file_path = [];
             $main_image = [];
-            echo '<pre>';
-            print_r($collection2->getData());
-            echo '</pre>';
+            // echo '<pre>';
+            // print_r($collection2->getData());
+            // echo '</pre>';
             foreach ($collection2->getData() as $_data) {
                 $file_path[] = $_data->getFilePath();
                 $main_image[] = $_data->getMainImage();

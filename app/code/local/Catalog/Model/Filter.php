@@ -7,13 +7,11 @@ class Catalog_Model_Filter extends Core_Model_Abstract
         $this->applyFilter($collection);
         return $collection;
     }
-    public function applyFilter($collection)
+    public function applyFilter2($collection)
     {
         $request = Mage::getSingleton('core/request');
         $parameter = $request->getQuery();
-        // echo '<pre>';
-        // print_r($parameter);
-        // echo '</pre>';
+
         if (isset($parameter['id'])) {
             $collection->addCategoryFilter($parameter['id']);
             unset($parameter['id']);
@@ -25,22 +23,19 @@ class Catalog_Model_Filter extends Core_Model_Abstract
             }
         }
     }
-    public function applyFilter2($collection)
+    public function applyFilter($collection)
     {
         $request = Mage::getSingleton('core/request');
         $parameter = $request->getQuery();
-        // echo '<pre>';
-        // print_r($parameter);
-        // echo '</pre>';
         if (isset($parameter['id'])) {
-            echo "123";
-            $parameter['id'] = str_contains($parameter['id'], ',') ? explode(',', $parameter['id']) : $parameter['id'];
+            // $parameter['id'] = str_contains($parameter['id'], ',') ? explode(',', $parameter['id']) : $parameter['id'];
             $collection->addCategoryFilter($parameter['id']);
             unset($parameter['id']);
         }
         if (!empty($parameter)) {
             $attributes = Mage::getModel('catalog/attribute')->getcollection()
                 ->addFieldToFilter('name', ["IN" => array_keys($parameter)]);
+
             foreach ($attributes->getData() as $attribute) {
                 // if (array_key_exists()) {
                 // }
@@ -50,6 +45,5 @@ class Catalog_Model_Filter extends Core_Model_Abstract
         // echo '<pre>';
         // print_r($attributes->getData());
         // echo '</pre>';
-
     }
 }

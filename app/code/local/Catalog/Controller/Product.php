@@ -14,9 +14,9 @@ class Catalog_Controller_Product
     public function listAction()
     {
         $layout = Mage::getBlockSingleton('core/layout');
-        if (0) {
-            $layout->removeChild('header');
-        }
+        // if (0) {
+        //     $layout->removeChild('header');
+        // }
         $list = $layout->createBlock('catalog/product_list')
             ->setTemplate('catalog/product/list.phtml');
         $layout->getChild('content')->addChild('list', $list);
@@ -25,9 +25,9 @@ class Catalog_Controller_Product
     public function testAction()
     {
         $filter = Mage::getModel('catalog/filter')->getProductCollection();
-        echo '<pre>';
-        print_r($filter->prepareQuery());
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($filter->prepareQuery());
+        // echo '</pre>';
         // $collections = Mage::getModel("catalog/product")
         //     ->getcollection()
         //     ->addAttributeToSelect(["series", "material", "weight"]);

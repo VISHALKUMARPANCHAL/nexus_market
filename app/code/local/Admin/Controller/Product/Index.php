@@ -25,7 +25,12 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         // die;
         $request = $this->getRequest();
         $pdata = $request->getParam('catalog_product');
-        $pdata['sku'] = "{$pdata['category_id']}{$pdata['name']}";
+        $name = str_replace(' ', '', strtoupper(substr($pdata['name'], 0, 5)));
+        $pdata['sku'] = "{$pdata['category_id']}{$name}";
+        // echo '<pre>';
+        // print_r($pdata);
+        // echo '</pre>';
+        // die;
         $product = Mage::getModel('catalog/product')
             ->load($pdata['product_id'])
             ->setData($pdata);

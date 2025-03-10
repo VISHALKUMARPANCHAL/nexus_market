@@ -30,7 +30,7 @@ class Catalog_Model_Resource_Product_Collection extends Core_Model_Resource_Coll
     }
     public function addAttributeToFilter($field, $value)
     {
-        $value = explode(',', $value);
+        // $value = explode(',', $value);
         $this->addAttributeToSelect([$field]);
         $this->addFieldToFilter("cpa_{$field}.value", ["IN" => $value]);
     }

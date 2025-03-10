@@ -245,3 +245,15 @@ a {
     overflow: hidden;
     text-overflow: ellipsis; /* Adds "..." if text overflows */
 }
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 50px;
+    margin: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: repeating-conic-gradient(rgb(13 110 253) 0 90deg,#ccc 0 180deg);
+    animation: l21 0.4s infinite linear;
+  }
+  @keyframes l21 {
+    100% {transform: rotate(.5turn)}
+  }

@@ -49,14 +49,15 @@ $request = Mage::getModel('core/request');
                 <form action="<?php echo $this->getUrl('checkout/cart/add') ?>" method="post">
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
-                        <input type="number" class="form-control w-25 text-center" name="cart[quantity]" id="quantity"
+                        <input type="number" class="form-control w-25 text-center" name="quantity" id="quantity"
                             value="1" min="1">
                     </div>
-                    <input type="hidden" name="cart[product_id]" value="<?php echo $productdata->getProductId(); ?>">
+                    <input type="hidden" name="product_id" value="<?php echo $productdata->getProductId(); ?>">
 
                     <button class="btn btn-primary btn-lg w-100 mb-4 py-3 rounded-3 fw-bold" type="submit">
                         <i class="bi bi-cart-plus me-2"></i> Add to Cart
                     </button>
+
                 </form>
                 <div class="bg-light p-4 rounded-3 mt-2">
                     <h5 class="fw-bold mb-3 pb-2 border-bottom"><i class="bi bi-info-circle me-2"></i>Key Features</h5>

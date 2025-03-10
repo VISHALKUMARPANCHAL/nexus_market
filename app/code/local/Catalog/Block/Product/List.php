@@ -4,7 +4,6 @@ class Catalog_Block_Product_List extends Core_Block_Template
 
     public function __construct()
     {
-        $this->setTemplate('catalog/product/list.phtml');
         $filter = $this->getLayout()->createBlock('catalog/product_list_filter');
         $products = $this->getLayout()->createBlock('catalog/product_list_products');
         $this->addChild("filter", $filter);
@@ -12,17 +11,18 @@ class Catalog_Block_Product_List extends Core_Block_Template
     }
     public function getProducts()
     {
-        $product = Mage::getModel('catalog/filter')->getProductCollection();
-
-        return $product->getData();
-
-        // $product = Mage::getModel('catalog/product')
-        //     ->getCollection()->leftJoin(['catalog_media_gallery' => 'catalog_media_gallery'], 'main_table.product_id=catalog_media_gallery.product_id', ["file_path" => 'file_path'])
-        //     ->groupBy(['main_table.product_id']);
-        // if ($id) {
-        //     $product = $product->having('category_id', $id);
-        // }
-        // return $product->getData();
+        $products = Mage::getModel('catalog/filter')->getProductCollection()->getData();
+        return $products;
+    }
+    public function getImagePath($pid)
+    {
+        $product = Mage::getModel('catalog/product')->load($pid);
+        $key = array_search(1, $product->getMainImage());
+        if ($key != "") {
+            return $product->getFilePath()[$key];
+        } else {
+            return isset($product->getFilePath()[0]) ? $product->getFilePath()[0] : "";
+        }
     }
     public function getCategoryName($id)
     {

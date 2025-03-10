@@ -109,9 +109,9 @@ class Core_Model_Resource_Abstract
     public function delete($model)
     {
         $id = $model->getData();
-        echo '<pre>';
-        print_r($id);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($id);
+        // echo '</pre>';
         if (isset($id)) {
             $sql = sprintf("DELETE FROM %s WHERE %s = %s", $this->_tableName, $this->_primaryKey, $id);
             // echo $sql;
