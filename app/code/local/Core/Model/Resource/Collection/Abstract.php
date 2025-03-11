@@ -19,16 +19,14 @@ class Core_Model_Resource_Collection_Abstract
         $this->_select['FROM'] = ["main_table" => $this->_resource->getTableName()];
         $this->_select['COLUMNS'] = [];
         $columns = is_array($columns) ? $columns : [$columns];
-        // echo "1";
-        // echo '<pre>';
-        // print_r($columns);
-        // echo '</pre>';
-        // // die;
-        // echo '<pre>';
-        // print_r($this->_select);
-        // echo '</pre>';
-        foreach ($columns as $column) {
-            $this->_select['COLUMNS'][] = "main_table." . $column;
+        foreach ($columns as $aleas => $column) {
+            // Mage::log($aleas);
+            // Mage::log($column);
+            if (is_integer($aleas)) {
+                $this->_select['COLUMNS'][] = "main_table." . $column;
+            } else {
+                $this->_select['COLUMNS'][] = sprintf("%s AS %s", $aleas, $column);
+            }
         }
         return $this;
     }
@@ -363,5 +361,14 @@ class Core_Model_Resource_Collection_Abstract
     private function _getTableName($table)
     {
         return array_values($table)[0];
+    }
+    public function getFirstItem()
+    {
+        $data = $this->getData();
+        if (isset($data[0])) {
+            return $data[0];
+        } else {
+            return $this->_model;
+        }
     }
 }

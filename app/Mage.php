@@ -7,6 +7,12 @@ class Mage
         $front = new Core_Controller_Front();
         $front->init();
     }
+    public static function log($data)
+    {
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+    }
 
     public static function getModel($className)
     {

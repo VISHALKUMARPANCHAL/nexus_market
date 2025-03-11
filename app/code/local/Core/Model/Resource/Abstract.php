@@ -100,7 +100,7 @@ class Core_Model_Resource_Abstract
             $columns = implode('`,`', $columns);
             $values = implode("','", $values);
             $sql = sprintf("INSERT INTO %s(`%s`) VALUES ('%s')", $this->_tableName, $columns, $values);
-
+            // echo $sql;
             $id = $this->getAdapter()->insert($sql);
 
             $model->{$this->_primaryKey} = $id;
@@ -108,15 +108,18 @@ class Core_Model_Resource_Abstract
     }
     public function delete($model)
     {
-        $id = $model->getData();
-        // echo '<pre>';
-        // print_r($id);
-        // echo '</pre>';
-        if (isset($id)) {
-            $sql = sprintf("DELETE FROM %s WHERE %s = %s", $this->_tableName, $this->_primaryKey, $id);
-            // echo $sql;
-            // die;
-            $this->getAdapter()->query($sql);
+        $data = $model->getData();
+        $primaryId = 0;
+        if (isset($data[$this->_primaryKey]) && $data[$this->_primaryKey]) {
+            $primaryId = $data[$this->_primaryKey];
+        }
+        $sql = sprintf(
+            "DELETE FROM %s WHERE %s = %d",
+            $this->_tableName,
+            $this->_primaryKey,
+            $primaryId
+        );
+        if ($this->getAdapter()->query($sql)) {
             $model->setData(null);
         }
     }

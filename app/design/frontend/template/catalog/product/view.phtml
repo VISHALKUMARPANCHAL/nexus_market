@@ -18,10 +18,10 @@ $request = Mage::getModel('core/request');
 
                 <div class="d-flex gap-2 mt-3 overflow-auto pb-2">
                     <?php foreach ($productdata->getFilePath() as $index => $image): ?>
-                    <img src="<?php echo Mage::getBaseUrl() . $image ?>" alt="Thumbnail <?php echo $index + 1 ?>"
-                        class="rounded-3 border border-2 <?php echo $index === 0 ? 'border-primary' : 'border-light'; ?>"
-                        style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; opacity: <?php echo $index === 0 ? '1' : '0.7'; ?>;"
-                        onclick="changeImage(event, this.src, this)">
+                        <img src="<?php echo Mage::getBaseUrl() . $image ?>" alt="Thumbnail <?php echo $index + 1 ?>"
+                            class="rounded-3 border border-2 <?php echo $index === 0 ? 'border-primary' : 'border-light'; ?>"
+                            style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; opacity: <?php echo $index === 0 ? '1' : '0.7'; ?>;"
+                            onclick="changeImage(event, this.src, this)">
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -49,8 +49,10 @@ $request = Mage::getModel('core/request');
                 <form action="<?php echo $this->getUrl('checkout/cart/add') ?>" method="post">
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
+                        <button type="button" class="btn btn-outline-secondary" id="decrease">-</button>
                         <input type="number" class="form-control w-25 text-center" name="quantity" id="quantity"
-                            value="1" min="1">
+                            value="1" min="1" readonly>
+                        <button type="button" class="btn btn-outline-secondary" id="increase">+</button>
                     </div>
                     <input type="hidden" name="product_id" value="<?php echo $productdata->getProductId(); ?>">
 
@@ -83,3 +85,18 @@ $request = Mage::getModel('core/request');
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#increase").click(function() {
+            let quantity = parseInt($("#quantity").val());
+            $("#quantity").val(quantity + 1);
+        });
+
+        $("#decrease").click(function() {
+            let quantity = parseInt($("#quantity").val());
+            if (quantity > 1) {
+                $("#quantity").val(quantity - 1);
+            }
+        });
+    });
+</script>
