@@ -27,6 +27,11 @@ class Checkout_Model_Cart extends Core_Model_Abstract
         foreach ($cart_items as $cart_item) {
             $total += $cart_item->getSubTotal();
         }
+        $discount = Mage::getModel('checkout/coupon')->calculateDiscount($this->getCouponCode(), $total);
+        $this->setCouponDiscount($discount);
+        if (!empty($this->getCouponDiscount())) {
+            $total -= $this->getCouponDiscount();
+        }
         $this->setTotalAmount($total);
     }
     public function removeItem($id)
@@ -37,6 +42,22 @@ class Checkout_Model_Cart extends Core_Model_Abstract
                 $item->delete();
             }
         }
+        return $this;
+    }
+    public function updateItem($itemId, $quantity)
+    {
+        $items = $this->getItemCollection()->getData();
+        // echo '<pre>';
+        // print_r($this);
+        // print_r($items);
+        // echo '</pre>';
+        foreach ($items as $item) {
+            if ($item->getItemId() == $itemId) {
+                $item->setProductQuantity($quantity);
+                $item->save();
+            }
+        }
+        // die;
         return $this;
     }
 }

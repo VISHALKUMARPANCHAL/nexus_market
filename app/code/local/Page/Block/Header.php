@@ -18,4 +18,12 @@ class Page_Block_Header extends Core_Block_Template
         // $categories = $cat->getData();
         // return $categories;
     }
+    public function countCartItems()
+    {
+        $cartItems = Mage::getSingleton('checkout/session')
+            ->getCart()
+            ->getItemCollection()
+            ->getData();
+        return count($cartItems);
+    }
 }

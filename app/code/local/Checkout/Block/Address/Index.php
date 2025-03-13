@@ -1,5 +1,5 @@
 <?php
-class Checkout_Block_Cart_Index extends Core_Block_Template
+class Checkout_Block_Address_Index extends Core_Block_Template
 {
     public function getItems()
     {
@@ -21,5 +21,9 @@ class Checkout_Block_Cart_Index extends Core_Block_Template
             $totalAmount += $item->getSubTotal();
         }
         return $totalAmount;
+    }
+    public function getShippingMethods()
+    {
+        return Mage::getModel('checkout/cart_shipping')->getShippingMethods();
     }
 }

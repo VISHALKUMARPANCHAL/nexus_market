@@ -86,16 +86,23 @@ $baseurl = Mage::getBaseUrl();
             </ul>
             <?php endif; ?>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="<?php echo $baseurl ?>checkout/cart">
                         <i class="bi bi-cart fs-5 me-1"></i> Cart
                     </a>
 
-                </li>
+                </li> -->
+
                 <div class="navbar-actions">
-                    <a href="<?php echo $this->getUrl('checkout/cart/index') ?>" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count">3</span>
+                    <a href="<?php echo $this->getUrl('checkout/cart/index') ?>"
+                        class="nav-link d-flex align-items-center text-primary position-relative">
+                        <i class="fas fa-shopping-cart fs-5 me-1"></i> Cart
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <?php
+                            echo $this->countCartItems()
+                            ?>
+
+                        </span>
                     </a>
                 </div>
 

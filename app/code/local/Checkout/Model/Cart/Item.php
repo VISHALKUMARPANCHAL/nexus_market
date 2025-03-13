@@ -11,10 +11,14 @@ class Checkout_Model_Cart_Item extends Core_Model_Abstract
         $cart_item = $this->getCollection()
             ->addFieldtoFilter('cart_id', $this->getCartId())
             ->addFieldtoFilter('product_id', $this->getProductId())
-            ->getData();
-        if (!empty($cart_item)) {
-            $this->setProductQuantity($cart_item[0]->getProductQuantity() + $this->getProductQuantity());
-            $this->setItemId($cart_item[0]->getItemId());
+            ->getFirstItem();
+        if ($cart_item->getItemId()) {
+            if ($this->getItemId()) {
+                $this->setProductQuantity($this->getProductQuantity());
+            } else {
+                $this->setProductQuantity($cart_item->getProductQuantity() + $this->getProductQuantity());
+                $this->setItemId($cart_item->getItemId());
+            }
         }
         $price = $this->getProduct()->getPrice();
         $this->setPrice($price);
