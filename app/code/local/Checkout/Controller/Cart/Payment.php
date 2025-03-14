@@ -1,5 +1,5 @@
 <?php
-class Checkout_Controller_Cart_Shipping extends Core_Controller_Front_Action
+class Checkout_Controller_Cart_Payment extends Core_Controller_Front_Action
 {
     public function saveAction()
     {
@@ -10,8 +10,7 @@ class Checkout_Controller_Cart_Shipping extends Core_Controller_Front_Action
         // die;
         Mage::getModel('checkout/session')
             ->getCart()
-            ->setShippingMethod($data['method_shipping'])
-            ->setShippingPrice($data['shipping_price'])
+            ->setPaymentMethod($data['payment_method'])
             ->save();
         $this->redirect('checkout/cart_address/index');
     }

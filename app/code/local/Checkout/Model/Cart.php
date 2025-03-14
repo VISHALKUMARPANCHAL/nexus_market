@@ -32,6 +32,10 @@ class Checkout_Model_Cart extends Core_Model_Abstract
         if (!empty($this->getCouponDiscount())) {
             $total -= $this->getCouponDiscount();
         }
+        if (!empty($this->getShippingPrice())) {
+            $total += $this->getShippingPrice();
+        }
+
         $this->setTotalAmount($total);
     }
     public function removeItem($id)

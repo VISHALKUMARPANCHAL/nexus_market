@@ -1,7 +1,12 @@
 <?php
 $shippingMethods = $this->getShippingMethods();
-// echo '<pre>';    
-// print_r($shippingMethods);
+$paymentMethods = $this->getPaymentMethods();
+$billingAddress = $this->getBillingAddress();
+$shippingAddress = $this->getShippingAddress();
+$isAddressSame = $this->getIsAddressSame();
+// echo '<pre>';
+// print_r($billingAddress);
+// print_r($shippingAddress);
 // echo '</pre>';
 ?>
 <section class="py-5 bg-light">
@@ -15,11 +20,13 @@ $shippingMethods = $this->getShippingMethods();
                         <h5 class="fw-bold mb-0">Shipping & Billing Details</h5>
                     </div>
                     <div class="card-body p-4">
-                        <form id="shipping-billing-form" action="<?php echo $this->getUrl('*/*/saveAddress') ?>"
-                            method="post">
-                            <div class="mb-3">
-                                <label for="billing-email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="billing-email" name="billing[email]">
+                        <form id="shipping-billing-form" class="mw-100"
+                            action="<?php echo $this->getUrl('*/cart_address/saveAddress') ?>" method="post">
+                            <div class="mb-3 d-flex flex-column justify-content-center align-items-center text-center">
+                                <label for=" billing-email" class="form-label">Email</label>
+                                <input type="email"
+                                    value="<?php echo ($billingAddress) ? $billingAddress->getEmail() : "" ?>"
+                                    class="form-control m-0 w-25" id="billing-email" name="billing[email]">
                             </div>
                             <div class="row">
                                 <!-- Billing Address -->
@@ -28,32 +35,38 @@ $shippingMethods = $this->getShippingMethods();
                                     <div class="mb-3">
                                         <label for="billing-first_name" class="form-label">First Name</label>
                                         <input type="text" class="form-control" id="billing-first_name"
+                                            value="<?php echo ($billingAddress) ? $billingAddress->getFirstName() : "" ?>"
                                             name="billing[first_name]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="billing-last_name" class="form-label">Last Name</label>
                                         <input type="text" class="form-control" id="billing-last_name"
+                                            value="<?php echo ($billingAddress) ? $billingAddress->getLastName() : "" ?>"
                                             name="billing[last_name]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="billing-phone_number" class="form-label">Phone Number</label>
                                         <input type="tel" class="form-control" id="billing-phone_number"
+                                            value="<?php echo ($billingAddress) ? $billingAddress->getPhoneNumber() : "" ?>"
                                             name="billing[phone_number]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="billing-street_address" class="form-label">Address</label>
                                         <input type="text" class="form-control" id="billing-street_address"
+                                            value="<?php echo ($billingAddress) ? $billingAddress->getStreetAddress() : "" ?>"
                                             name="billing[street_address]">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="billing-city" class="form-label">City</label>
                                             <input type="text" class="form-control" id="billing-city"
+                                                value="<?php echo ($billingAddress) ? $billingAddress->getCity() : "" ?>"
                                                 name="billing[city]">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="billing-state" class="form-label">Region</label>
                                             <input type="text" class="form-control" id="billing-state"
+                                                value="<?php echo ($billingAddress) ? $billingAddress->getRegion() : "" ?>"
                                                 name="billing[region]">
                                         </div>
                                     </div>
@@ -61,16 +74,25 @@ $shippingMethods = $this->getShippingMethods();
                                         <div class="col-md-6 mb-3">
                                             <label for="billing-zip" class="form-label">Zip Code</label>
                                             <input type="text" class="form-control" id="billing-zip"
+                                                value="<?php echo ($billingAddress) ? $billingAddress->getZipCode() : "" ?>"
                                                 name="billing[zipcode]">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="billing-country" class="form-label">Country</label>
                                             <select class="form-select" id="billing-country" name="billing[country]">
                                                 <option value="">Select Country</option>
-                                                <option value="IN">India</option>
-                                                <option value="US">United States</option>
-                                                <option value="CA">Canada</option>
-                                                <option value="UK">United Kingdom</option>
+                                                <option value="India"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "India") ? "selected" : "" ?>>
+                                                    India</option>
+                                                <option value="United States"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "United States") ? "selected" : "" ?>>
+                                                    United States</option>
+                                                <option value="Canada"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "Canada") ? "selected" : "" ?>>
+                                                    Canada</option>
+                                                <option value="United Kingdom"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "United Kingdom") ? "selected" : "" ?>>
+                                                    United Kingdom</option>
                                             </select>
                                         </div>
                                     </div>
@@ -78,10 +100,11 @@ $shippingMethods = $this->getShippingMethods();
 
                                 <!-- Shipping Address -->
                                 <div class="col-md-6">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="mb-0">Shipping Address</h5>
+                                    <div class=" mb-3">
+                                        <h5 class="mb-0"> Shipping Address</h5><br>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="same-address">
+                                            <input class="form-check-input" type="checkbox" id="same-address"
+                                                <?php echo ($isAddressSame) ? "checked" : "" ?>>
                                             <label class="form-check-label" for="same-address">
                                                 Same as billing address
                                             </label>
@@ -91,60 +114,80 @@ $shippingMethods = $this->getShippingMethods();
 
                                     <div class="mb-3">
                                         <input type="hidden" class="form-control" id="shipping-email"
+                                            value="<?php echo ($shippingAddress) ? $shippingAddress->getEmail() : "" ?>"
                                             name="shipping[email]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="shipping-first_name" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="shipping-first_name"
-                                            name="shipping[first_name]">
+                                        <input type="text"
+                                            value="<?php echo ($shippingAddress) ? $shippingAddress->getFirstName() : "" ?>"
+                                            class="form-control" id="shipping-first_name" name="shipping[first_name]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="shipping-last_name" class="form-label">Last Name</label>
                                         <input type="text" class="form-control" id="shipping-last_name"
+                                            value="<?php echo ($shippingAddress) ? $shippingAddress->getLastName() : "" ?>"
                                             name="shipping[last_name]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="shipping-phone_number" class="form-label">Phone</label>
-                                        <input type="tel" class="form-control" id="shipping-phone_number"
+                                        <input type="tel"
+                                            value="<?php echo ($shippingAddress) ? $shippingAddress->getPhoneNumber() : "" ?>"
+                                            class="form-control" id="shipping-phone_number"
                                             name="shipping[phone_number]">
                                     </div>
                                     <div class="mb-3">
                                         <label for="shipping-street_address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="shipping-street_address"
+                                        <input type="text"
+                                            value="<?php echo ($shippingAddress) ? $shippingAddress->getStreetAddress() : "" ?>"
+                                            class="form-control" id="shipping-street_address"
                                             name="shipping[street_address]">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="shipping-city" class="form-label">City</label>
-                                            <input type="text" class="form-control" id="shipping-city"
-                                                name="shipping[city]">
+                                            <input type="text"
+                                                value="<?php echo ($shippingAddress) ? $shippingAddress->getCity() : "" ?>"
+                                                class="form-control" id="shipping-city" name="shipping[city]">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="shipping-state" class="form-label">Region</label>
-                                            <input type="text" class="form-control" id="shipping-state"
-                                                name="shipping[region]">
+                                            <input type="text"
+                                                value="<?php echo ($shippingAddress) ? $shippingAddress->getRegion() : "" ?>"
+                                                class="form-control" id="shipping-state" name="shipping[region]">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="shipping-zip" class="form-label">Zip Code</label>
-                                            <input type="text" class="form-control" id="shipping-zip"
-                                                name="shipping[zipcode]">
+                                            <input type="text"
+                                                value="<?php echo ($shippingAddress) ? $shippingAddress->getZipCode() : "" ?>"
+                                                class="form-control" id="shipping-zip" name="shipping[zipcode]">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="shipping-country" class="form-label">Country</label>
                                             <select class="form-select" id="shipping-country" name="shipping[country]">
                                                 <option value="">Select Country</option>
-                                                <option value="IN">India</option>
-                                                <option value="US">United States</option>
-                                                <option value="CA">Canada</option>
-                                                <option value="UK">United Kingdom</option>
+                                                <option value="India"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "India") ? "selected" : "" ?>>
+                                                    India</option>
+                                                <option value="United States"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "United States") ? "selected" : "" ?>>
+                                                    United States</option>
+                                                <option value="Canada"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "Canada") ? "selected" : "" ?>>
+                                                    Canada</option>
+                                                <option value="United Kingdom"
+                                                    <?php echo ($billingAddress && $billingAddress->getCountry() == "United Kingdom") ? "selected" : "" ?>>
+                                                    United Kingdom</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <input type="submit" value="save">
+                            <div class="d-flex flex-column justify-content-center align-items-center text-center">
+                                <input type="submit" value="save">
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -159,15 +202,15 @@ $shippingMethods = $this->getShippingMethods();
                             <div class="col-12">
                                 <form action="<?php echo $this->getUrl('*/cart_shipping/save'); ?>" method="post"
                                     id="shippingForm">
-
                                     <?php foreach ($shippingMethods as $key => $value): ?>
                                     <div class="form-check mb-3">
-                                        <input type="radio" name="shipping_method" class="form-check-input"
-                                            id="standard_shipping" value="<?php echo $key; ?>"
-                                            onchange="submitForm(<?php echo $value; ?>)">
+                                        <input type="radio" name="method_shipping" class="form-check-input"
+                                            id="<?php echo $key; ?>" value="<?php echo $key; ?>"
+                                            onchange="submitForm(<?php echo $value; ?>)"
+                                            <?php echo ($this->getCart()->getShippingMethod() === $key) ? "checked" : "" ?>>
                                         <label
                                             class="form-check-label d-flex justify-content-between align-items-center w-100"
-                                            for="standard_shipping">
+                                            for="<?php echo $key; ?>">
                                             <div>
                                                 <span class="fw-bold"><?php echo $key ?></span>
                                                 <p class="text-muted mb-0 small">Delivery within
@@ -197,57 +240,19 @@ $shippingMethods = $this->getShippingMethods();
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="nav flex-column nav-pills me-3" id="payment-tabs" role="tablist">
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="radio" name="payment_method"
-                                            id="credit_card" value="card" checked>
-                                        <label class="form-check-label" for="credit_card">Credit/Debit Card</label>
-                                    </div>
-                                    <div id="credit-card-form" class="mb-4">
-                                        <div class="mb-3">
-                                            <label for="card_number" class="form-label">Card Number</label>
-                                            <input type="text" class="form-control" id="card_number"
-                                                placeholder="1234 5678 9012 3456">
+                                    <form action="<?php echo $this->getUrl('*/cart_payment/save') ?>" method="post"
+                                        id="paymentForm">
+                                        <?php foreach ($paymentMethods as $value): ?>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment_method"
+                                                <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
+                                                id="<?php echo $value; ?>" value="<?php echo $value; ?>"
+                                                onchange="submitPaymentForm()">
+                                            <label class="form-check-label"
+                                                for="<?php echo $value; ?>"><?php echo $value; ?></label>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="expiry_date" class="form-label">Expiry Date</label>
-                                                <input type="text" class="form-control" id="expiry_date"
-                                                    placeholder="MM/YY">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="cvv" class="form-label">CVV</label>
-                                                <input type="text" class="form-control" id="cvv" placeholder="123">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="card_name" class="form-label">Name on Card</label>
-                                            <input type="text" class="form-control" id="card_name">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="radio" name="payment_method"
-                                            id="net_banking" value="netbanking">
-                                        <label class="form-check-label" for="net_banking">Net Banking</label>
-                                    </div>
-
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="upi"
-                                            value="upi">
-                                        <label class="form-check-label" for="upi">UPI</label>
-                                    </div>
-
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="wallet"
-                                            value="wallet">
-                                        <label class="form-check-label" for="wallet">Wallet</label>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="cod"
-                                            value="cod">
-                                        <label class="form-check-label" for="cod">Cash on Delivery</label>
-                                    </div>
+                                        <?php endforeach; ?>
+                                    </form>
                                 </div>
                             </div>
 
@@ -266,9 +271,10 @@ $shippingMethods = $this->getShippingMethods();
                                             <img src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/discover.svg"
                                                 alt="Discover" height="30">
                                         </div>
-                                        <p class="text-muted small mb-0">Your payment information is processed securely.
+                                        <p class="text-muted small mb-0">on delevery time Your payment information is
+                                            processed securely.
                                             We do not store credit card details nor have access to your credit card
-                                            information.</p>
+                                            information. we also accept cash payment</p>
                                     </div>
                                 </div>
                             </div>
@@ -291,15 +297,22 @@ $shippingMethods = $this->getShippingMethods();
                                             echo $subtotal;
                                             ?></span>
                                 </div>
+                                <?php if ($this->getCart()->getShippingMethod()): ?>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Shipping</span>
-                                    <span class="text-success">Free</span>
+                                    <span class="text-success">
+                                        <?php
+                                            echo ($this->getCart()->getShippingPrice() == 0) ? "Free" :
+                                                '+₹' . $this->getCart()->getShippingPrice(); ?></span>
                                 </div>
+                                <?php endif; ?>
+                                <?php if ($this->getCart()->getCouponCode()): ?>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Discount</span>
                                     <span
                                         class="text-success">-₹<?php echo $this->getCart()->getCouponDiscount() ?></span>
                                 </div>
+                                <?php endif; ?>
                                 <hr>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="fw-bold">Total</span>
@@ -316,9 +329,8 @@ $shippingMethods = $this->getShippingMethods();
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a href="<?php echo $this->getUrl('catalog/product/list') ?>"
-                                        class="text-decoration-none">
-                                        <i class="fas fa-long-arrow-alt-left me-2"></i> Continue Shopping
+                                    <a href="<?php echo $this->getUrl('*/cart/index') ?>" class="text-decoration-none">
+                                        <i class="fas fa-long-arrow-alt-left me-2"></i> Back to Cart
                                     </a>
                                 </div>
                             </div>
@@ -335,43 +347,51 @@ function submitForm(price) {
     document.getElementById("shipping_price").value = price;
     document.getElementById("shippingForm").submit();
 }
+
+function submitPaymentForm() {
+    document.getElementById("paymentForm").submit();
+}
+
+function ckeckTheCkeckbox() {
+    const sameAddressCheckbox = document.getElementById('same-address');
+    if (sameAddressCheckbox.checked) {
+        document.getElementById('shipping-first_name').value = document.getElementById(
+            'billing-first_name').value;
+        document.getElementById('shipping-email').value = document.getElementById(
+            'billing-email').value;
+        document.getElementById('shipping-last_name').value = document.getElementById(
+            'billing-last_name').value;
+        document.getElementById('shipping-phone_number').value = document.getElementById(
+            'billing-phone_number').value;
+        document.getElementById('shipping-street_address').value = document.getElementById(
+            'billing-street_address').value;
+        document.getElementById('shipping-city').value = document.getElementById('billing-city')
+            .value;
+        document.getElementById('shipping-state').value = document.getElementById('billing-state')
+            .value;
+        document.getElementById('shipping-zip').value = document.getElementById('billing-zip')
+            .value;
+        document.getElementById('shipping-country').value = document.getElementById(
+            'billing-country').value;
+
+        // Disable shipping fields
+        document.querySelectorAll('[name^="shipping"]').forEach(field => {
+            field.disabled = true;
+        });
+    } else {
+        // Enable shipping fields
+        document.querySelectorAll('[name^="shipping"]').forEach(field => {
+            field.disabled = false;
+        });
+    }
+}
 // Initialize when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
 
-    const sameAddressCheckbox = document.getElementById('same-address');
-
-    sameAddressCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            document.getElementById('shipping-first_name').value = document.getElementById(
-                'billing-first_name').value;
-            document.getElementById('shipping-email').value = document.getElementById(
-                'billing-email').value;
-            document.getElementById('shipping-last_name').value = document.getElementById(
-                'billing-last_name').value;
-            document.getElementById('shipping-phone_number').value = document.getElementById(
-                'billing-phone_number').value;
-            document.getElementById('shipping-street_address').value = document.getElementById(
-                'billing-street_address').value;
-            document.getElementById('shipping-city').value = document.getElementById('billing-city')
-                .value;
-            document.getElementById('shipping-state').value = document.getElementById('billing-state')
-                .value;
-            document.getElementById('shipping-zip').value = document.getElementById('billing-zip')
-                .value;
-            document.getElementById('shipping-country').value = document.getElementById(
-                'billing-country').value;
-
-            // Disable shipping fields
-            document.querySelectorAll('[name^="shipping"]').forEach(field => {
-                field.disabled = true;
-            });
-        } else {
-            // Enable shipping fields
-            document.querySelectorAll('[name^="shipping"]').forEach(field => {
-                field.disabled = false;
-            });
-        }
+    document.getElementById('same-address').addEventListener('change', function() {
+        ckeckTheCkeckbox();
     });
+    // ckeckTheCkeckbox();
 
     // Payment method tabs
     const paymentMethods = document.querySelectorAll('input[name="payment_method"]');

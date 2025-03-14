@@ -1,11 +1,11 @@
 <?php
-class Checkout_Controller_Address extends Core_Controller_Front_Action
+class Checkout_Controller_Cart_Address extends Core_Controller_Front_Action
 {
     public function indexAction()
     {
         $layout = Mage::getBlock('core/layout');
-        $index = $layout->createBlock('checkout/address_index')
-            ->setTemplate('checkout/address/index.phtml');
+        $index = $layout->createBlock('checkout/cart_address_index')
+            ->setTemplate('checkout/cart/address/index.phtml');
         $layout->getChild('content')->addChild('index', $index);
         $layout->toHtml();
     }
@@ -13,7 +13,10 @@ class Checkout_Controller_Address extends Core_Controller_Front_Action
     public function saveAddressAction()
     {
         $data = $this->getRequest()->getParams();
-
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
+        // die;
         $cart = Mage::getSingleton('checkout/session')
             ->getCart();
         $cart->setEmail($data['billing']['email'])
@@ -41,6 +44,6 @@ class Checkout_Controller_Address extends Core_Controller_Front_Action
             }
             $address->save();
         }
-        $this->redirect('checkout/address/index');
+        $this->redirect('checkout/cart_address/index');
     }
 }
