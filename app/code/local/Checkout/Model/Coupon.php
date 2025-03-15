@@ -22,10 +22,6 @@ class Checkout_Model_Coupon
             } else {
                 $discountPrice = str_replace("₹", "", $discountstr);
             }
-            // echo '<pre>';
-            // print_r($discountPrice);
-            // echo '</pre>';
-            // die;
             return $discountPrice;
         }
         return 0;

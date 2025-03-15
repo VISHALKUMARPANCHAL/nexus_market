@@ -20,14 +20,14 @@ $id = $this->getId();
                         <form action="<?php echo $this->getUrl('*/*/save') ?>" method="post" class="needs-validation"
                             novalidate>
                             <?php if ($id): ?>
-                                <div class="mb-4">
-                                    <label for="cid" class="form-label fw-bold">Category ID</label>
-                                    <input type="number" class="form-control bg-light" id="cid"
-                                        name="catalog_category[category_id]"
-                                        value="<?php echo $category->getCategoryId() ?>" readonly>
-                                </div>
+                            <div class="mb-4">
+                                <label for="cid" class="form-label fw-bold">Category ID</label>
+                                <input type="number" class="form-control bg-light" id="cid"
+                                    name="catalog_category[category_id]"
+                                    value="<?php echo $category->getCategoryId() ?>" readonly>
+                            </div>
                             <?php else: ?>
-                                <input type="hidden" name="catalog_category[category_id]" value="">
+                            <input type="hidden" name="catalog_category[category_id]" value="">
                             <?php endif; ?>
 
                             <div class="mb-4">
@@ -49,10 +49,10 @@ $id = $this->getId();
                                 <select name="catalog_category[parent_id]" id="parent_id" class="form-select" required>
                                     <option value="1">Master Category</option>
                                     <?php foreach ($availableCatagories as $data): ?>
-                                        <option value="<?php echo $data->getCategoryId() ?>"
-                                            <?php echo ($id && ($category->getParentId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
-                                            <?php echo $data->getName() ?>
-                                        </option>
+                                    <option value="<?php echo $data->getCategoryId() ?>"
+                                        <?php echo ($id && ($category->getParentId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
+                                        <?php echo $data->getName() ?>
+                                    </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

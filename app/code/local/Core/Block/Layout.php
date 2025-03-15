@@ -21,7 +21,7 @@ class Core_Block_Layout extends Core_Block_Template
 
     public function prapareJsCss()
     {
-        $head = $this->getChild('head')
+        $this->getChild('head')
             ->addJs('page/common.js')
             ->addCss('page/common.css');
     }

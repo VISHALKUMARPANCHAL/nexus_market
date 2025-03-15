@@ -34,7 +34,6 @@ class Admin_Block_Html_Elements_Range
             $html .= sprintf(' step = "%s"', $this->_data['step']);
         }
         $html .= "/>";
-        // die;
         return $html;
     }
 }

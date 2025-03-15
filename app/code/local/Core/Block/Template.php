@@ -50,8 +50,6 @@ class Core_Block_Template
         $request = Mage::getModel('core/request');
         $_url = [];
         $url = explode('/', $url);
-        // print_r($request->getModuleName());
-
         $_url[] = $url[0] == '*' ? $request->getModuleName() : $url[0];
         $_url[] = $url[1] == '*' ?  $request->getControllerName() : $url[1];
         $_url[] = $url[2] == '*' ?  $request->getActionName() : $url[2];

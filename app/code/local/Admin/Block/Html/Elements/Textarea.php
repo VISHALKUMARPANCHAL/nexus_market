@@ -25,7 +25,6 @@ class Admin_Block_Html_Elements_Textarea
             $html .= sprintf(' value = "%s"', $this->_data['value']);
         }
         $html .= "></textarea>";
-        // die;
         return $html;
     }
 }

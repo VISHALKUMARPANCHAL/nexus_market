@@ -110,9 +110,6 @@ $baseurl = Mage::getBaseUrl();
                                                 'value' => $value,
                                                 'class' => 'form-control'
                                             ]);
-                                            // echo $this->getHtmlField('hidden', ['name' =>
-                                            // "catalog_attribute[{$data->getAttributeId()}][attribute_id]", 'value' =>
-                                            // $data->getAttributeId()]); 
                                             ?>
                                     </div>
 
@@ -123,16 +120,9 @@ $baseurl = Mage::getBaseUrl();
                             <?php if ($id && $product->getFilePath()):
                             ?>
                             <div class="mb-4">
-                                <!-- <div id="fileList"></div> -->
                                 <label class="form-label fw-bold">Current Images</label>
                                 <div class="row g-2 flex-column">
-                                    <?php
-                                        // echo '<pre>';
-                                        // print_r($product);
-                                        // echo '</pre>';
-
-                                        foreach ($product->getFilePath() as $filepath): ?>
-
+                                    <?php foreach ($product->getFilePath() as $filepath): ?>
                                     <div class="col-auto">
                                         <div class="border p-1 rounded text-danger">
                                             <?php echo $this->getHtmlField('image', [
@@ -146,7 +136,6 @@ $baseurl = Mage::getBaseUrl();
                                             <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "catalog_product[deleted_image][]"]) ?>
                                             <?php echo $this->getHtmlField('hidden', ["value" => $filepath]) ?>
                                             <?php echo $this->getHtmlField('radio', ["name" => "catalog_product[main_image]", "value" => $filepath]); ?>
-
                                         </div>
                                     </div>
                                     <?php endforeach; ?>
@@ -179,22 +168,3 @@ $baseurl = Mage::getBaseUrl();
         </div>
     </div>
 </div>
-<script>
-document.getElementById("img").addEventListener("change", function(event) {
-    let fileListDiv = document.getElementById("fileList");
-    fileListDiv.innerHTML = "";
-
-    let files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-        let label = document.createElement("label");
-        let radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "catalog_product[main_image]";
-        radio.value = files[i].name;
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(" " + files[i].name));
-        fileListDiv.appendChild(label);
-        fileListDiv.appendChild(document.createElement("br"));
-    }
-});
-</script>

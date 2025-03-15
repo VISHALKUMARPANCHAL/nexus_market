@@ -49,13 +49,8 @@ class Core_Model_DB_Adapter
     }
     public function insert($query)
     {
-        // echo $query;
         $result = mysqli_query($this->connect(), $query);
-        // echo '<pre>';
-        // print_r($result);
-        // echo '</pre>';
         while ($result) {
-            // echo '0';
             return mysqli_insert_id($this->connect());
         }
         return false;

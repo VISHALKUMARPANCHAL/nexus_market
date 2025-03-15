@@ -7,6 +7,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $new = $layout->createBlock('admin/product_index_new')
             ->setTemplate('admin/product/index/new.phtml');
         $layout->getChild('content')->addChild('new', $new);
+        $layout->getChild('head')->addJs('page/admin/product/new.js', $new);
         $layout->toHtml();
     }
     public function listAction()
@@ -19,18 +20,10 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
     }
     public function saveAction()
     {
-        // echo '<pre>';
-        // print_r($_POST);
-        // echo '</pre>';
-        // die;
         $request = $this->getRequest();
         $pdata = $request->getParam('catalog_product');
         $name = str_replace(' ', '', strtoupper(substr($pdata['name'], 0, 5)));
         $pdata['sku'] = "{$pdata['category_id']}{$name}";
-        // echo '<pre>';
-        // print_r($pdata);
-        // echo '</pre>';
-        // die;
         $product = Mage::getModel('catalog/product')
             ->load($pdata['product_id'])
             ->setData($pdata);
@@ -50,20 +43,9 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $product->delete();
         $this->redirect('admin/product_index/list');
     }
-
-    /* for testing purpose only */
     public function testAction()
     {
-        // echo '123';
         $filter = Mage::getSingleton('catalog/filter');
         $filter->getCollection();
-        // echo '<pre>';
-        // print_r($filter->prepareQuery());
-        // echo '</pre>';
-        // $layout = Mage::getBlock('core/layout');
-        // $test = $layout->createBlock('admin/product_index_test')
-        //     ->setTemplate('admin/product/index/test.phtml');
-        // $layout->getChild('content')->addChild('test', $test);
-        // $layout->toHtml();
     }
 }

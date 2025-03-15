@@ -1,4 +1,4 @@
-
+/* 
 html,
 body {
     position: relative;
@@ -30,4 +30,57 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+ */
+
+
+
+
+:root {
+    --swiper-theme-color: #ffffff;
+}
+
+.hero-swiper {
+    height: 70vh;
+    width: 100%;
+}
+
+.hero-slide::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    z-index: 2;
+}
+
+.collection-slide img {
+    transition: transform 0.5s ease;
+}
+
+.collection-slide:hover img {
+    transform: scale(1.05);
+}
+
+.animate-fade-up {
+    animation: fadeUp 0.8s ease forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -25,7 +25,6 @@ class Admin_Block_Html_Elements_Submit
             $html .= sprintf(' value = "%s"', $this->_data['value']);
         }
         $html .= "/>";
-        // die;
         return $html;
     }
 }

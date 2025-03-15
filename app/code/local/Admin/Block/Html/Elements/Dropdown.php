@@ -18,11 +18,7 @@ class Admin_Block_Html_Elements_Dropdown
         if (isset($this->_data["name"])) {
             $html .= sprintf(' name = "%s"', $this->_data['name']);
         }
-
         $html .= ">";
-
-
-
         if (isset($this->_data["options"])) {
             foreach ($this->_data['options'] as $data => $value) {
                 if ($value == 'default') {
@@ -32,10 +28,7 @@ class Admin_Block_Html_Elements_Dropdown
                 }
             }
         }
-
-
         $html .= '</select>';
-
         return $html;
     }
 }

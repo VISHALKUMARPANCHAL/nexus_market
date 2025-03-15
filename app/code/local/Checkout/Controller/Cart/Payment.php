@@ -4,10 +4,6 @@ class Checkout_Controller_Cart_Payment extends Core_Controller_Front_Action
     public function saveAction()
     {
         $data = $this->getRequest()->getParams();
-        // echo '<pre>';
-        // print_r($data);
-        // echo '</pre>';
-        // die;
         Mage::getModel('checkout/session')
             ->getCart()
             ->setPaymentMethod($data['payment_method'])

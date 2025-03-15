@@ -35,10 +35,8 @@ class Catalog_Block_Product_List extends Core_Block_Template
     public function getValues($attrId)
     {
         $data = Mage::getModel('catalog/product_attribute')->getcollection()
-            // ->select("value")
             ->addFieldToFilter('attribute_id', $attrId)->getData();
         return $this->uniquevalues($data);
-        // return $data;
     }
     public function getCategories()
     {

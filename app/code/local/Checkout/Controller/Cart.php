@@ -60,12 +60,5 @@ class Checkout_Controller_Cart extends Core_Controller_Front_Action
             ->getItemCollection(5);
         $itemCollection->select(['SUM(main_table.sub_total)' => 'sumoftotal', 'item_id']);
         Mage::log($itemCollection->prepareQuery());
-        // // echo "123";
-        // $collection = Mage::getModel('checkout/cart')->getCollection();
-        // // $collection2 = Mage::getModel('checkout/cart_item')->getCollection();
-        // echo '<pre>';
-        // print_r($collection);
-        // // print_r($collection2);
-        // echo '</pre>';
     }
 }

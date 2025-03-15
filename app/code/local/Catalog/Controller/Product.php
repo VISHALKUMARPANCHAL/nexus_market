@@ -3,12 +3,10 @@ class Catalog_Controller_Product
 {
     public function viewAction()
     {
-        // $product = Mage::getModel('catalog/product');
-
         $layout = Mage::getBlock('core/layout');
         $view = $layout->createBlock('catalog/product_view');
         $layout->getChild('content')->addChild('view', $view);
-        // print_r($layout->getChild('content'));
+        $layout->getChild('head')->addJs('page/catalog/product/view.js');
         $layout->toHtml();
     }
     public function listAction()
@@ -20,6 +18,7 @@ class Catalog_Controller_Product
         $list = $layout->createBlock('catalog/product_list')
             ->setTemplate('catalog/product/list.phtml');
         $layout->getChild('content')->addChild('list', $list);
+        $layout->getChild('head')->addJs('page/catalog/product/list.js');
         $layout->toHtml();
     }
     public function testAction()

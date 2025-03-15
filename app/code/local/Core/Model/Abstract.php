@@ -72,9 +72,6 @@ class Core_Model_Abstract
     }
     public function getCollection()
     {
-        // echo '<pre>';
-        // print_r($this);
-        // echo '</pre>';
         $collection = new $this->_collectionClass;
         $collection->setResource($this->getResource())
             ->setModel($this)

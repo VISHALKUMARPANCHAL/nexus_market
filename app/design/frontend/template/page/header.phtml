@@ -9,8 +9,6 @@ if ($module === 'admin') {
 }
 $baseurl = Mage::getBaseUrl();
 ?>
-<style>
-</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
     <div class="container">
         <a class="navbar-brand" href="<?php echo $baseurl;
@@ -52,11 +50,6 @@ $baseurl = Mage::getBaseUrl();
             </svg>
         </a>
 
-        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button> -->
-
         <div class="collapse navbar-collapse" id="navbarNav">
             <?php if (!($module === 'admin')): ?>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -65,16 +58,15 @@ $baseurl = Mage::getBaseUrl();
                 <li class="nav-item dropdown position-relative">
                     <a class="nav-link dropdown-toggle fw-semibold px-3"
                         href="<?php echo "{$baseurl}catalog/product/list/?id={$data->getCategoryId()}"; ?>"
-                        id="category<?php echo $data->getCategoryId() ?>" role="button">
-                        <?php echo $data->getName() ?>
+                        id="category<?php echo $data->getCategoryId(); ?>" role="button"><?php echo $data->getName(); ?>
                     </a>
                     <ul class="dropdown-menu border-0 position-absolute">
                         <?php foreach ($masterCategories as $data2): ?>
                         <?php if ($data->getCategoryId() == $data2->getParentId()): ?>
                         <li>
                             <a class="dropdown-item py-2"
-                                href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $data2->getCategoryId() ?>">
-                                <?php echo $data2->getName() ?>
+                                href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $data2->getCategoryId(); ?>">
+                                <?php echo $data2->getName(); ?>
                             </a>
                         </li>
                         <?php endif; ?>
@@ -86,12 +78,7 @@ $baseurl = Mage::getBaseUrl();
             </ul>
             <?php endif; ?>
             <ul class="navbar-nav ms-auto">
-                <!-- <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="<?php echo $baseurl ?>checkout/cart">
-                        <i class="bi bi-cart fs-5 me-1"></i> Cart
-                    </a>
-
-                </li> -->
+                <?php if (!($module === 'admin')): ?>
 
                 <div class="navbar-actions">
                     <a href="<?php echo $this->getUrl('checkout/cart/index') ?>"
@@ -99,13 +86,13 @@ $baseurl = Mage::getBaseUrl();
                         <i class="fas fa-shopping-cart fs-5 me-1"></i> Cart
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             <?php
-                            echo $this->countCartItems()
-                            ?>
+                                echo $this->countCartItems()
+                                ?>
 
                         </span>
                     </a>
                 </div>
-
+                <?php endif; ?>
                 <li class="nav-item ms-2">
                     <?php if ($issession): ?>
                     <a class="nav-link d-flex align-items-center text-danger"
@@ -124,15 +111,3 @@ $baseurl = Mage::getBaseUrl();
         </div>
     </div>
 </nav>
-<script>
-// var filter = {
-//     xyz: function() {
-//         this.p = 10;
-//     },
-//     abc: function() {
-//         alert(this.p);
-//     }
-// }
-// filter.xyz()
-// filter.abc()
-</script>

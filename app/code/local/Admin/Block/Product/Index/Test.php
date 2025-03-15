@@ -1,8 +1,6 @@
 <?php
 class Admin_Block_Product_Index_Test extends Core_Block_Template
 {
-
-
     public function getHtmlField($field, $data)
     {
         $field = ucfirst(strtolower($field));

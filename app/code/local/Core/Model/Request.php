@@ -33,14 +33,6 @@ class Core_Model_Request
     {
         return $this->_actionName;
     }
-    // public function getBaseDir()
-    // {
-    //     return $this->_baseDir;
-    // }
-    // public function getBaseUrl()
-    // {
-    //     return $this->_baseUrl;
-    // }
     public static function getParam($field)
     {
         if (isset($_POST[$field])) {

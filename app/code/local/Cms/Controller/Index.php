@@ -8,9 +8,9 @@ class Cms_Controller_index extends Core_Controller_Front_Action
         $slider = $layout->createBlock('cms/index')
             ->setTemplate('cms/slider.phtml');
         $layout->getChild('content')->addChild('slider', $slider);
-        // $layout->getChild('head')->addChild('slider', $slider);
+        $layout->getChild('head')
+            ->addCss('page/cms/slider.css')
+            ->addJs('page/cms/slider.js');
         $layout->toHtml();
-        // echo "class : " . __CLASS__ . "<br>";
-        // echo "function : " . __FUNCTION__;
     }
 }

@@ -100,7 +100,7 @@ class Core_Model_Resource_Abstract
             $columns = implode('`,`', $columns);
             $values = implode("','", $values);
             $sql = sprintf("INSERT INTO %s(`%s`) VALUES ('%s')", $this->_tableName, $columns, $values);
-            echo $sql;
+            // echo $sql;
             $id = $this->getAdapter()->insert($sql);
 
             $model->{$this->_primaryKey} = $id;

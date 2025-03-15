@@ -54,6 +54,12 @@ class Checkout_Block_Cart_Address_Index extends Core_Block_Template
     {
         $billingAddress = $this->getBillingAddress()->getData();
         $shippingAddress = $this->getShippingAddress()->getData();
+        if (empty($billingAddress) && empty($shippingAddress)) {
+            return false;
+        }
+        // Mage::log($billingAddress);
+        // Mage::log($shippingAddress);
+        // die;
         unset($billingAddress['address_type']);
         unset($shippingAddress['address_type']);
         unset($billingAddress['address_id']);

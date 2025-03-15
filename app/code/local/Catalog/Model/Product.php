@@ -104,18 +104,12 @@ class Catalog_Model_Product extends Core_Model_Abstract
             }
             $file_path = [];
             $main_image = [];
-            // echo '<pre>';
-            // print_r($collection2->getData());
-            // echo '</pre>';
             foreach ($collection2->getData() as $_data) {
                 $file_path[] = $_data->getFilePath();
                 $main_image[] = $_data->getMainImage();
             }
             $this->_data['file_path'] = $file_path;
             $this->_data['main_image'] = $main_image;
-            // echo "<pre>";
-            // print_r($collection->getData());
-            // echo "</pre>";
         }
         return $this;
     }

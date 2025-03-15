@@ -4,17 +4,11 @@ $paymentMethods = $this->getPaymentMethods();
 $billingAddress = $this->getBillingAddress();
 $shippingAddress = $this->getShippingAddress();
 $isAddressSame = $this->getIsAddressSame();
-// echo '<pre>';
-// print_r($billingAddress);
-// print_r($shippingAddress);
-// echo '</pre>';
 ?>
 <section class="py-5 bg-light">
     <div class="container py-4">
         <div class="row">
             <div class="col-lg-10 mx-auto">
-
-                <!-- Shipping & Billing Forms -->
                 <div class="card shadow-sm border-0 rounded-3 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="fw-bold mb-0">Shipping & Billing Details</h5>
@@ -29,7 +23,6 @@ $isAddressSame = $this->getIsAddressSame();
                                     class="form-control m-0 w-25" id="billing-email" name="billing[email]">
                             </div>
                             <div class="row">
-                                <!-- Billing Address -->
                                 <div class="col-md-6 mb-4">
                                     <h5 class="mb-3">Billing Address</h5>
                                     <div class="mb-3">
@@ -75,7 +68,7 @@ $isAddressSame = $this->getIsAddressSame();
                                             <label for="billing-zip" class="form-label">Zip Code</label>
                                             <input type="text" class="form-control" id="billing-zip"
                                                 value="<?php echo ($billingAddress) ? $billingAddress->getZipCode() : "" ?>"
-                                                name="billing[zipcode]">
+                                                name="billing[zip_code]">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="billing-country" class="form-label">Country</label>
@@ -97,8 +90,6 @@ $isAddressSame = $this->getIsAddressSame();
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Shipping Address -->
                                 <div class="col-md-6">
                                     <div class=" mb-3">
                                         <h5 class="mb-0"> Shipping Address</h5><br>
@@ -162,7 +153,7 @@ $isAddressSame = $this->getIsAddressSame();
                                             <label for="shipping-zip" class="form-label">Zip Code</label>
                                             <input type="text"
                                                 value="<?php echo ($shippingAddress) ? $shippingAddress->getZipCode() : "" ?>"
-                                                class="form-control" id="shipping-zip" name="shipping[zipcode]">
+                                                class="form-control" id="shipping-zip" name="shipping[zip_code]">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="shipping-country" class="form-label">Country</label>
@@ -191,8 +182,6 @@ $isAddressSame = $this->getIsAddressSame();
                         </form>
                     </div>
                 </div>
-
-                <!-- Shipping Method -->
                 <div class="card shadow-sm border-0 rounded-3 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="fw-bold mb-0">Shipping Method</h5>
@@ -224,14 +213,14 @@ $isAddressSame = $this->getIsAddressSame();
                                         </label>
                                     </div>
                                     <?php endforeach; ?>
-                                    <input type="hidden" name="shipping_price" id="shipping_price">
+                                    <input type="hidden" name="price_shipping" id="shipping_price">
+
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Payment Method -->
                 <div class="card shadow-sm border-0 rounded-3 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="fw-bold mb-0">Payment Method</h5>
@@ -256,7 +245,6 @@ $isAddressSame = $this->getIsAddressSame();
                                 </div>
                             </div>
 
-                            <!-- Supported payment cards -->
                             <div class="col-md-5">
                                 <div class="card bg-light border-0">
                                     <div class="card-body">
@@ -281,8 +269,6 @@ $isAddressSame = $this->getIsAddressSame();
                         </div>
                     </div>
                 </div>
-
-                <!-- Order summary and checkout -->
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-white py-3">
                         <h5 class="fw-bold mb-0">Order Summary</h5>
@@ -320,8 +306,7 @@ $isAddressSame = $this->getIsAddressSame();
                                 </div>
                             </div>
                             <div class="col-lg-4 d-flex align-items-end">
-                                <button type="button" class="btn btn-primary btn-lg w-100 text-uppercase py-3"
-                                    onclick="document.getElementById('shipping-billing-form').submit();">
+                                <button type="button" class="btn btn-primary btn-lg w-100 text-uppercase py-3">
                                     <i class="fas fa-lock me-2"></i> Proceed to Pay
                                 </button>
                             </div>
@@ -341,70 +326,3 @@ $isAddressSame = $this->getIsAddressSame();
         </div>
     </div>
 </section>
-
-<script>
-function submitForm(price) {
-    document.getElementById("shipping_price").value = price;
-    document.getElementById("shippingForm").submit();
-}
-
-function submitPaymentForm() {
-    document.getElementById("paymentForm").submit();
-}
-
-function ckeckTheCkeckbox() {
-    const sameAddressCheckbox = document.getElementById('same-address');
-    if (sameAddressCheckbox.checked) {
-        document.getElementById('shipping-first_name').value = document.getElementById(
-            'billing-first_name').value;
-        document.getElementById('shipping-email').value = document.getElementById(
-            'billing-email').value;
-        document.getElementById('shipping-last_name').value = document.getElementById(
-            'billing-last_name').value;
-        document.getElementById('shipping-phone_number').value = document.getElementById(
-            'billing-phone_number').value;
-        document.getElementById('shipping-street_address').value = document.getElementById(
-            'billing-street_address').value;
-        document.getElementById('shipping-city').value = document.getElementById('billing-city')
-            .value;
-        document.getElementById('shipping-state').value = document.getElementById('billing-state')
-            .value;
-        document.getElementById('shipping-zip').value = document.getElementById('billing-zip')
-            .value;
-        document.getElementById('shipping-country').value = document.getElementById(
-            'billing-country').value;
-
-        // Disable shipping fields
-        document.querySelectorAll('[name^="shipping"]').forEach(field => {
-            field.disabled = true;
-        });
-    } else {
-        // Enable shipping fields
-        document.querySelectorAll('[name^="shipping"]').forEach(field => {
-            field.disabled = false;
-        });
-    }
-}
-// Initialize when the document is ready
-document.addEventListener('DOMContentLoaded', function() {
-
-    document.getElementById('same-address').addEventListener('change', function() {
-        ckeckTheCkeckbox();
-    });
-    // ckeckTheCkeckbox();
-
-    // Payment method tabs
-    const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
-    const creditCardForm = document.getElementById('credit-card-form');
-
-    paymentMethods.forEach(method => {
-        method.addEventListener('change', function() {
-            if (this.id === 'credit_card') {
-                creditCardForm.style.display = 'block';
-            } else {
-                creditCardForm.style.display = 'none';
-            }
-        });
-    });
-});
-</script>

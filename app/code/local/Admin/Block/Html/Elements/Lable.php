@@ -16,7 +16,6 @@ class Admin_Block_Html_Elements_Lable
             $html .= sprintf('%s', $this->_data['value']);
         }
         $html .= "</label>";
-        // die;
         return $html;
     }
 }
