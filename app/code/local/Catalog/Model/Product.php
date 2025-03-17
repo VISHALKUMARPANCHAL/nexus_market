@@ -21,7 +21,7 @@ class Catalog_Model_Product extends Core_Model_Abstract
     protected function _afterSave()
     {
         $attributes = Mage::getModel('catalog/attribute')->getCollection()->getData();
-        $request = Mage::getModel('core/request');
+        // $request = Mage::getModel('core/request');
         foreach ($attributes as $_attribute) {
             $productAttributes = Mage::getModel('catalog/product_attribute')
                 ->getCollection()
@@ -63,7 +63,7 @@ class Catalog_Model_Product extends Core_Model_Abstract
                     $type = $_FILES['catalog_product']['type']['img'][$key];
                     $imageData['type'] = substr($type, '0', strpos($type, '/'));
                     $images->setData($imageData);
-                    if ($uniquename === $this->getMainImage()) {
+                    if ($value === $this->getMainImage()) {
                         $images->setMainImage(1);
                     } else {
                         $images->setMainImage(0);
@@ -74,13 +74,20 @@ class Catalog_Model_Product extends Core_Model_Abstract
         }
         $deleteimg = $this->getDeletedImage();
         if (!empty($deleteimg)) {
+            // echo "123";
+            // die;
             $gallery = Mage::getModel('catalog/media_gallery');
             foreach ($deleteimg as $img) {
-                $mediaid = $gallery->getCollection()->addFieldToFilter('product_id', $this->getProductId())->addFieldToFilter('file_path', $img)->getData()[0]->getMediaId();
+                $mediaid = $gallery->getCollection()
+                    ->addFieldToFilter('product_id', $this->getProductId())
+                    ->addFieldToFilter('file_path', $img)->getFirstItem()
+                    ->getMediaId();
                 if (file_exists($img)) {
                     unlink($img);
                 }
-                $gallery->setData($mediaid);
+                $gallery->setMediaId($mediaid);
+                // Mage::log($gallery);
+                // die;
                 $gallery->delete();
             }
         }

@@ -24,10 +24,13 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $pdata = $request->getParam('catalog_product');
         $name = str_replace(' ', '', strtoupper(substr($pdata['name'], 0, 5)));
         $pdata['sku'] = "{$pdata['category_id']}{$name}";
+        // Mage::log($pdata);
         $product = Mage::getModel('catalog/product')
             ->load($pdata['product_id'])
             ->setData($pdata);
+        // Mage::log($product);
         $product->save();
+        // die;
         $this->redirect('admin/product_index/list');
     }
     public function deleteAction()

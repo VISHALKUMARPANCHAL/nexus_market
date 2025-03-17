@@ -24,6 +24,11 @@ class Admin_Block_Html_Elements_Radio
         if (isset($this->_data["value"])) {
             $html .= sprintf(' value = "%s"', $this->_data['value']);
         }
+        if (isset($this->_data["checked"])) {
+            if ($this->_data["checked"] == "yes") {
+                $html .= sprintf(' checked');
+            }
+        }
         $html .= "/>";
         // die;
         return $html;

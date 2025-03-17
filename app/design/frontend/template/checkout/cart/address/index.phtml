@@ -192,26 +192,26 @@ $isAddressSame = $this->getIsAddressSame();
                                 <form action="<?php echo $this->getUrl('*/cart_shipping/save'); ?>" method="post"
                                     id="shippingForm">
                                     <?php foreach ($shippingMethods as $key => $value): ?>
-                                    <div class="form-check mb-3">
-                                        <input type="radio" name="method_shipping" class="form-check-input"
-                                            id="<?php echo $key; ?>" value="<?php echo $key; ?>"
-                                            onchange="submitForm(<?php echo $value; ?>)"
-                                            <?php echo ($this->getCart()->getShippingMethod() === $key) ? "checked" : "" ?>>
-                                        <label
-                                            class="form-check-label d-flex justify-content-between align-items-center w-100"
-                                            for="<?php echo $key; ?>">
-                                            <div>
-                                                <span class="fw-bold"><?php echo $key ?></span>
-                                                <p class="text-muted mb-0 small">Delivery within
-                                                    <?php echo ($key == "Standard Shipping") ? "5-7 business days" : "" ?>
-                                                    <?php echo ($key == "Express Shipping") ? "2-3 business days" : "" ?>
-                                                    <?php echo ($key == "Priority Shipping") ? "24 hours" : "" ?>
-                                                </p>
-                                            </div>
-                                            <span
-                                                class="text-success"><?php echo ($value == 0) ? "Free" : "₹$value" ?></span>
-                                        </label>
-                                    </div>
+                                        <div class="form-check mb-3">
+                                            <input type="radio" name="method_shipping" class="form-check-input"
+                                                id="<?php echo $key; ?>" value="<?php echo $key; ?>"
+                                                onchange="submitForm(<?php echo $value; ?>)"
+                                                <?php echo ($this->getCart()->getShippingMethod() === $key) ? "checked" : "" ?>>
+                                            <label
+                                                class="form-check-label d-flex justify-content-between align-items-center w-100"
+                                                for="<?php echo $key; ?>">
+                                                <div>
+                                                    <span class="fw-bold"><?php echo $key ?></span>
+                                                    <p class="text-muted mb-0 small">Delivery within
+                                                        <?php echo ($key == "Standard Shipping") ? "5-7 business days" : "" ?>
+                                                        <?php echo ($key == "Express Shipping") ? "2-3 business days" : "" ?>
+                                                        <?php echo ($key == "Priority Shipping") ? "24 hours" : "" ?>
+                                                    </p>
+                                                </div>
+                                                <span
+                                                    class="text-success"><?php echo ($value == 0) ? "Free" : "$$value" ?></span>
+                                            </label>
+                                        </div>
                                     <?php endforeach; ?>
                                     <input type="hidden" name="price_shipping" id="shipping_price">
 
@@ -232,14 +232,14 @@ $isAddressSame = $this->getIsAddressSame();
                                     <form action="<?php echo $this->getUrl('*/cart_payment/save') ?>" method="post"
                                         id="paymentForm">
                                         <?php foreach ($paymentMethods as $value): ?>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="payment_method"
-                                                <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
-                                                id="<?php echo $value; ?>" value="<?php echo $value; ?>"
-                                                onchange="submitPaymentForm()">
-                                            <label class="form-check-label"
-                                                for="<?php echo $value; ?>"><?php echo $value; ?></label>
-                                        </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_method"
+                                                    <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
+                                                    id="<?php echo $value; ?>" value="<?php echo $value; ?>"
+                                                    onchange="submitPaymentForm()">
+                                                <label class="form-check-label"
+                                                    for="<?php echo $value; ?>"><?php echo $value; ?></label>
+                                            </div>
                                         <?php endforeach; ?>
                                     </form>
                                 </div>
@@ -278,31 +278,31 @@ $isAddressSame = $this->getIsAddressSame();
                             <div class="col-lg-8">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Subtotal</span>
-                                    <span>₹<?php
+                                    <span>$<?php
                                             $subtotal = $this->getTotalAmount();
                                             echo $subtotal;
                                             ?></span>
                                 </div>
                                 <?php if ($this->getCart()->getShippingMethod()): ?>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Shipping</span>
-                                    <span class="text-success">
-                                        <?php
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Shipping</span>
+                                        <span class="text-success">
+                                            <?php
                                             echo ($this->getCart()->getShippingPrice() == 0) ? "Free" :
-                                                '+₹' . $this->getCart()->getShippingPrice(); ?></span>
-                                </div>
+                                                '+$' . $this->getCart()->getShippingPrice(); ?></span>
+                                    </div>
                                 <?php endif; ?>
                                 <?php if ($this->getCart()->getCouponCode()): ?>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Discount</span>
-                                    <span
-                                        class="text-success">-₹<?php echo $this->getCart()->getCouponDiscount() ?></span>
-                                </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Discount</span>
+                                        <span
+                                            class="text-success">-$<?php echo $this->getCart()->getCouponDiscount() ?></span>
+                                    </div>
                                 <?php endif; ?>
                                 <hr>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="fw-bold">Total</span>
-                                    <span class="fw-bold">₹<?php echo $this->getCart()->getTotalAmount(); ?></span>
+                                    <span class="fw-bold">$<?php echo $this->getCart()->getTotalAmount(); ?></span>
                                 </div>
                             </div>
                             <div class="col-lg-4 d-flex align-items-end">

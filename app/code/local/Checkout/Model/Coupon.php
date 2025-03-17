@@ -5,9 +5,9 @@ class Checkout_Model_Coupon
     {
         $coupons = [
             "NEWYEAR15"  => "15%",
-            "FLAT200"    => "200₹",
+            "FLAT200"    => "200$",
             "SPRING5"    => "5%",
-            "DISCOUNT50" => "50₹",
+            "DISCOUNT50" => "50$",
             "MEGA50"     => "50%"
         ];
         return $coupons;
@@ -20,7 +20,7 @@ class Checkout_Model_Coupon
             if (str_contains($discountstr, '%')) {
                 $discountPrice = (str_replace("%", "", $discountstr) * $subTotal) / 100;
             } else {
-                $discountPrice = str_replace("₹", "", $discountstr);
+                $discountPrice = str_replace("$", "", $discountstr);
             }
             return $discountPrice;
         }

@@ -53,8 +53,15 @@ $baseurl = Mage::getBaseUrl();
         <div class="collapse navbar-collapse" id="navbarNav">
             <?php if (!($module === 'admin')): ?>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <?php $count = 0;
+                    $more = [];
+                    ?>
                 <?php foreach ($masterCategories as $data): ?>
                 <?php if ($data->getParentId() == 1): ?>
+                <?php if ($count === 6) {
+                                $more[] = $data;
+                                continue;
+                            } ?>
                 <li class="nav-item dropdown position-relative">
                     <a class="nav-link dropdown-toggle fw-semibold px-3"
                         href="<?php echo "{$baseurl}catalog/product/list/?id={$data->getCategoryId()}"; ?>"
@@ -74,7 +81,29 @@ $baseurl = Mage::getBaseUrl();
                     </ul>
                 </li>
                 <?php endif; ?>
+                <?php $count++; ?>
                 <?php endforeach; ?>
+                <?php if (!empty($more)): ?>
+                <li class="nav-item dropdown position-relative">
+                    <a class="nav-link dropdown-toggle fw-semibold px-3"
+                        id="category<?php echo $data->getCategoryId(); ?>" role="button">more
+                    </a>
+                    <ul class="dropdown-menu border-0 position-absolute">
+                        <?php foreach ($more as $_more): ?>
+
+                        <li>
+                            <a class="dropdown-item py-2"
+                                href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $_more->getCategoryId(); ?>">
+                                <?php echo $_more->getName(); ?>
+                            </a>
+                        </li>
+
+                        <?php endforeach; ?>
+
+                    </ul>
+                </li>
+                <?php endif; ?>
+
             </ul>
             <?php endif; ?>
             <ul class="navbar-nav ms-auto">

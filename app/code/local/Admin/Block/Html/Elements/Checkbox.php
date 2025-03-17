@@ -21,6 +21,11 @@ class Admin_Block_Html_Elements_Checkbox
         if (isset($this->_data["value"])) {
             $html .= sprintf(' value = "%s"', $this->_data['value']);
         }
+        if (isset($this->_data["selected"])) {
+            if ($this->_data["selected"] == "yes") {
+                $html .= sprintf(' selected');
+            }
+        }
         $html .= "/>";
         // die;
         return $html;

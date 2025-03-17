@@ -24,15 +24,15 @@ $baseurl = Mage::getBaseUrl();
                             enctype="multipart/form-data" class="needs-validation" novalidate>
 
                             <?php if ($id): ?>
-                            <div class="mb-4">
-                                <label for="pid" class="form-label fw-bold">Product ID</label>
-                                <input type="number" class="form-control bg-light" id="pid"
-                                    name="catalog_product[product_id]" value="<?php echo $product->getProductId() ?>"
-                                    readonly>
-                                <div class="form-text text-muted">Product ID cannot be changed</div>
-                            </div>
+                                <div class="mb-4">
+                                    <label for="pid" class="form-label fw-bold">Product ID</label>
+                                    <input type="number" class="form-control bg-light" id="pid"
+                                        name="catalog_product[product_id]" value="<?php echo $product->getProductId() ?>"
+                                        readonly>
+                                    <div class="form-text text-muted">Product ID cannot be changed</div>
+                                </div>
                             <?php else: ?>
-                            <input type="hidden" name="catalog_product[product_id]" value="">
+                                <input type="hidden" name="catalog_product[product_id]" value="">
                             <?php endif; ?>
 
                             <div class="mb-4">
@@ -57,7 +57,7 @@ $baseurl = Mage::getBaseUrl();
                                     <label for="price" class="form-label fw-bold">Price <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group my-3">
-                                        <span class="input-group-text">₹</span>
+                                        <span class="input-group-text">$</span>
                                         <input type="text" class="form-control mx-0 my-0" id="price"
                                             name="catalog_product[price]"
                                             value="<?php echo ($id) ? $product->getPrice() : "" ?>" required>
@@ -80,10 +80,10 @@ $baseurl = Mage::getBaseUrl();
                                         class="text-danger">*</span></label>
                                 <select name="catalog_product[category_id]" id="category_id" class="form-select">
                                     <?php foreach ($categories as $data): ?>
-                                    <option value="<?php echo $data->getCategoryId() ?>"
-                                        <?php echo ($id && ($product->getCategoryId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
-                                        <?php echo $data->getName() ?>
-                                    </option>
+                                        <option value="<?php echo $data->getCategoryId() ?>"
+                                            <?php echo ($id && ($product->getCategoryId() === $data->getCategoryId())) ? 'selected' : ''; ?>>
+                                            <?php echo $data->getName() ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <div class="form-text text-muted">Select the product category</div>
@@ -96,8 +96,8 @@ $baseurl = Mage::getBaseUrl();
                                 <div class="card-body">
                                     <?php
                                     foreach ($attributes as $data): ?>
-                                    <div class="mb-3">
-                                        <?php echo $this->getHtmlField('lable', [
+                                        <div class="mb-3">
+                                            <?php echo $this->getHtmlField('lable', [
                                                 'for' => "id{$data->getAttributeId()}",
                                                 'value' => $data->getName(),
                                                 'class' => 'form-label fw-bold'
@@ -111,7 +111,7 @@ $baseurl = Mage::getBaseUrl();
                                                 'class' => 'form-control'
                                             ]);
                                             ?>
-                                    </div>
+                                        </div>
 
                                     <?php endforeach; ?>
                                 </div>
@@ -119,28 +119,28 @@ $baseurl = Mage::getBaseUrl();
 
                             <?php if ($id && $product->getFilePath()):
                             ?>
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Current Images</label>
-                                <div class="row g-2 flex-column">
-                                    <?php foreach ($product->getFilePath() as $filepath): ?>
-                                    <div class="col-auto">
-                                        <div class="border p-1 rounded text-danger">
-                                            <?php echo $this->getHtmlField('image', [
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Current Images</label>
+                                    <div class="row g-2 flex-column">
+                                        <?php foreach ($product->getFilePath() as $filepath): ?>
+                                            <div class="col-auto">
+                                                <div class="border p-1 rounded text-danger">
+                                                    <?php echo $this->getHtmlField('image', [
                                                         'src' => "{$baseurl}{$filepath}",
                                                         'alt' => "product image",
-                                                        'width' => '100px',
+                                                        'width' => 'Additional Details',
                                                         'height' => '100px',
                                                         'class' => 'img-thumbnail'
                                                     ]); ?>
-                                            <?php echo $this->getHtmlField('lable', ["value" => "<i class='bi bi-x-square-fill'></i>", "for" => $filepath]) ?>
-                                            <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "catalog_product[deleted_image][]"]) ?>
-                                            <?php echo $this->getHtmlField('hidden', ["value" => $filepath]) ?>
-                                            <?php echo $this->getHtmlField('radio', ["name" => "catalog_product[main_image]", "value" => $filepath]); ?>
-                                        </div>
+                                                    <?php echo $this->getHtmlField('lable', ["value" => "<i class='bi bi-x-square-fill'></i>", "for" => $filepath]) ?>
+                                                    <?php echo $this->getHtmlField('checkbox', ["value" => $filepath, "id" => $filepath, "name" => "catalog_product[deleted_image][]"]) ?>
+                                                    <?php echo $this->getHtmlField('hidden', ["value" => $filepath]) ?>
+                                                    <?php echo $this->getHtmlField('radio', ["name" => "catalog_product[main_image]", "value" => $filepath, "checked" => ($filepath === $product->getFilePath()[array_search(1, $product->getMainImage())]) ? "yes" : "no"]); ?>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
-                                    <?php endforeach; ?>
                                 </div>
-                            </div>
                             <?php endif;
                             ?>
                             <div id="fileList"></div>
