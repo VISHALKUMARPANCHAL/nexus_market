@@ -51,7 +51,8 @@ $request = Mage::getModel('core/request');
                             value="1" min="1">
                         <button type="button" class="btn btn-outline-secondary" id="increase">+</button>
                     </div>
-                    <input type="hidden" name="product_id" value="<?php echo $productdata->getProductId(); ?>">
+                    <input type="hidden" name="product_id" id="product_id"
+                        value="<?php echo $productdata->getProductId(); ?>">
 
                     <button class="btn btn-primary btn-lg w-100 mb-4 py-3 rounded-3 fw-bold" type="submit">
                         <i class="bi bi-cart-plus me-2"></i> Add to Cart
@@ -82,3 +83,26 @@ $request = Mage::getModel('core/request');
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        // $("form").on('submit', function(event) {
+        //     event.preventDefault();
+        //     $.ajax({
+        //         url: "http://localhost/ecommerceweb/checkout/cart/add",
+        //         type: "POST",
+        //         data: {
+        //             product_id: $('#product_id').val(),
+        //             quantity: $('#quantity').val()
+        //         },
+        //         dataType: "json",
+        //         success: function() {
+        //             alert("add to cart successfully");
+        //         },
+        //         error: function() {
+        //             alert("error");
+        //         }
+        //     });
+
+        // });
+    });
+</script>

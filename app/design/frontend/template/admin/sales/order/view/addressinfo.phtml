@@ -1,0 +1,44 @@
+<?php
+$billingAddress = $this->getBillingAddress();
+$shippingAddress = $this->getShippingAddress();
+// Mage::log($billingAddress);
+// Mage::log($shippingAddress);
+
+
+?>
+<!-- Billing Address -->
+<div class="col-md-6">
+    <div class="card address-card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-file-invoice"></i> Billing Address</h5>
+        </div>
+        <div class="card-body">
+            <h6><?php echo $billingAddress->getFirstName(); ?> <?php echo $billingAddress->getLastName(); ?></h6>
+            <p class="mb-1"><?php echo $billingAddress->getStreetAddress(); ?></p>
+            <p class="mb-1"><?php echo $billingAddress->getCity(); ?>, <?php echo $billingAddress->getRegion(); ?></p>
+            <p class="mb-1"><?php echo $billingAddress->getCountry(); ?> - <?php echo $billingAddress->getZipCode(); ?>
+            </p>
+            <p class="mb-1"><i class="fas fa-phone-alt me-2"></i><?php echo $billingAddress->getPhoneNumber(); ?></p>
+            <small class="text-muted">Address ID: <?php echo $billingAddress->getAddressId(); ?></small>
+        </div>
+    </div>
+</div>
+
+<!-- Shipping Address -->
+<div class="col-md-6">
+    <div class="card address-card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-shipping-fast"></i> Shipping Address</h5>
+        </div>
+        <div class="card-body">
+            <h6><?php echo $shippingAddress->getFirstName(); ?> <?php echo $shippingAddress->getLastName(); ?></h6>
+            <p class="mb-1"><?php echo $shippingAddress->getStreetAddress(); ?></p>
+            <p class="mb-1"><?php echo $shippingAddress->getCity(); ?>, <?php echo $shippingAddress->getRegion(); ?></p>
+            <p class="mb-1"><?php echo $shippingAddress->getCountry(); ?> -
+                <?php echo $shippingAddress->getZipCode(); ?>
+            </p>
+            <p class="mb-1"><i class="fas fa-phone-alt me-2"></i><?php echo $shippingAddress->getPhoneNumber(); ?></p>
+            <small class="text-muted">Address ID: <?php echo $shippingAddress->getAddressId(); ?></small>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<?php
+$orderData = $this->getOrdeInfo();
+// Mage::log($orderData);
+
+?>
+<div class="card-header order-header">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h4 class="mb-0">Order #<?php echo $orderData->getOrderId() ?></h4>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <span class="badge bg-warning">Pending</span>
+            <small class="text-muted ms-2">Placed on: <?php echo $orderData->getUpdatedAt(); ?></small>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-6">
+            <p class="mb-1"><strong>Customer Email:</strong> <?php echo $orderData->getEmail(); ?></p>
+            <p class="mb-1"><strong>Customer ID:</strong> <?php echo $orderData->getCustomerId(); ?></p>
+            <p class="mb-1"><strong>IP Address:</strong> <?php echo $orderData->getIpAddress(); ?></p>
+        </div>
+        <div class="col-md-6">
+            <p class="mb-1"><strong>Payment Method:</strong> <?php echo $orderData->getPaymentMethod(); ?></p>
+            <p class="mb-1"><strong>Shipping Method:</strong> <?php echo $orderData->getShippingMethod(); ?></p>
+            <p class="mb-1"><strong>Coupon Used:</strong> <?php echo $orderData->getCouponCode(); ?>
+                (-₹<?php echo $orderData->getCouponDiscount(); ?>)</p>
+        </div>
+    </div>
+</div>

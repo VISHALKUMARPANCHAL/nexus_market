@@ -24,8 +24,6 @@ class Checkout_Model_Cart_Convert_Order
 
         $billingAddress = $cart
             ->getBillingAddress()
-            // Mage::log($billingAddress);
-            // die;
             ->getFirstItem()
             ->getData();
         $orderAddress = Mage::getModel('sales/order_address');

@@ -1,0 +1,21 @@
+.order-header {
+  background-color: #f8f9fa;
+  border-left: 4px solid #0d6efd;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1.5rem;
+}
+
+.badge-pending {
+  background-color: #ffc107;
+}
+
+.badge-complete {
+  background-color: #198754;
+}
+
+.address-card {
+  min-height: 290px;
+}

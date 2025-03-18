@@ -28,7 +28,7 @@ class Core_Model_Resource_Abstract
     public function load($value, $field = null)
     {
         $field = (is_null($field)) ? $this->_primaryKey : $field;
-        $sql = "SELECT * FROM {$this->_tableName} WHERE {$field}='{$value}' LIMIT 1";
+        $sql = "SELECT * FROM `{$this->_tableName}` WHERE {$field}='{$value}' LIMIT 1";
         // echo $sql;
         // die;
         return $this->getAdapter()->fetchRow($sql);

@@ -1,19 +1,9 @@
-function submitForm(price) {
-    document.getElementById("shipping_price").value = price;
-    document.getElementById("shippingForm").submit();
-}
-
-function submitPaymentForm() {
-    document.getElementById("paymentForm").submit();
-}
 
 function ckeckTheCkeckbox() {
     const sameAddressCheckbox = document.getElementById('same-address');
     if (sameAddressCheckbox.checked) {
         document.getElementById('shipping-first_name').value = document.getElementById(
             'billing-first_name').value;
-        document.getElementById('shipping-email').value = document.getElementById(
-            'billing-email').value;
         document.getElementById('shipping-last_name').value = document.getElementById(
             'billing-last_name').value;
         document.getElementById('shipping-phone_number').value = document.getElementById(

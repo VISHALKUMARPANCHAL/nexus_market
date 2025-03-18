@@ -53,6 +53,7 @@ $paymentMethods = $this->getPaymentMethods();
                                 </label>
                             </div>
                             <?php endforeach; ?>
+                            <span class="text-danger" id="shipping-method-error"></span>
                             <input type="hidden" name="price_shipping" id="shipping_price">
                         </form>
                     </div>
@@ -76,6 +77,7 @@ $paymentMethods = $this->getPaymentMethods();
                                             <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
                                             id="<?php echo $value; ?>" value="<?php echo $value; ?>"
                                             onchange="submitPaymentForm()">
+
                                         <label
                                             class="form-check-label d-flex align-items-center py-3 px-3 border rounded-3 transition-all"
                                             style="transition: all 0.3s ease;" for="<?php echo $value; ?>">
@@ -90,6 +92,8 @@ $paymentMethods = $this->getPaymentMethods();
                                         </label>
                                     </div>
                                     <?php endforeach; ?>
+                                    <span class="text-danger" id="payment-method-error"></span>
+
                                 </form>
                             </div>
 
@@ -184,6 +188,7 @@ $paymentMethods = $this->getPaymentMethods();
                                     </div>
                                 </div>
                                 <a href="<?php echo $this->getUrl('*/cart_order/placeOrder'); ?>"
+                                    onclick="return validate()"
                                     class="btn btn-primary btn-lg w-100 text-uppercase py-3 rounded-pill shadow-lg">
                                     <i class="fas fa-lock me-2"></i> Place Order
                                 </a>
@@ -195,3 +200,32 @@ $paymentMethods = $this->getPaymentMethods();
         </div>
     </div>
 </section>
+<script>
+function submitForm(price) {
+    document.getElementById("shipping_price").value = price;
+    document.getElementById("shippingForm").submit();
+}
+
+function submitPaymentForm() {
+    document.getElementById("paymentForm").submit();
+}
+
+function validate() {
+    let isValid = true;
+    let shippingOptions = document.querySelectorAll('input[name="method_shipping"]');
+    let isShippingSelected = Array.from(shippingOptions).some(option => option.checked);
+    $("#shipping-method-error").text("");
+    if (!isShippingSelected) {
+        $("#shipping-method-error").text("Please Choose Shipping Method");
+        isValid = false;
+    }
+    let paymentMethod = document.querySelectorAll('input[name="payment_method"]');
+    let isPaymentSelected = Array.from(paymentMethod).some(option => option.checked);
+    $("#payment-method-error").text("");
+    if (!isPaymentSelected) {
+        $("#payment-method-error").text("Please Choose Payment Method");
+        isValid = false;
+    }
+    return isValid;
+}
+</script>

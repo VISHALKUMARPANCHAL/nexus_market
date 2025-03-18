@@ -7,7 +7,7 @@ class Checkout_Controller_Cart_Shipping extends Core_Controller_Front_Action
         $index = $layout->createBlock('checkout/cart_shipping_index')
             ->setTemplate('checkout/cart/shipping/index.phtml');
         $layout->getChild('content')->addChild('index', $index);
-        $layout->getChild('head')->addJs('page/checkout/cart/address/index.js');
+        // $layout->getChild('head')->addJs('page/checkout/cart/address/index.js');
         $layout->toHtml();
     }
     public function saveShippingAction()
