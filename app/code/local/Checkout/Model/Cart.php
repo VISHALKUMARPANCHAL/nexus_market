@@ -20,6 +20,21 @@ class Checkout_Model_Cart extends Core_Model_Abstract
         return Mage::getModel('checkout/cart_item')->getCollection()
             ->addFieldtoFilter('cart_id', $this->getCartId());
     }
+    public function getAddressCollection()
+    {
+        return Mage::getModel('checkout/cart_address')->getCollection()
+            ->addFieldtoFilter('cart_id', $this->getCartId());
+    }
+    public function getBillingAddress()
+    {
+        return $this->getAddressCollection()
+            ->addFieldtoFilter('address_type', 'billing');
+    }
+    public function getShippingAddress()
+    {
+        return $this->getAddressCollection()
+            ->addFieldtoFilter('address_type', 'shipping');
+    }
     protected function _beforeSave()
     {
         $cart_items = $this->getItemCollection()->getData();

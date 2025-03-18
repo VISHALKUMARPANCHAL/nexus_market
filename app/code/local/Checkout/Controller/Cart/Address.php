@@ -62,6 +62,6 @@ class Checkout_Controller_Cart_Address extends Core_Controller_Front_Action
             }
             $address->save();
         }
-        $this->redirect('checkout/cart_address/index');
+        $this->redirect('checkout/cart_shipping/index');
     }
 }

@@ -1,0 +1,197 @@
+<?php
+$shippingMethods = $this->getShippingMethods();
+$paymentMethods = $this->getPaymentMethods();
+?>
+<section class="py-5 bg-gradient-light" style="background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Checkout Header with animated underline -->
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-2 position-relative">
+                    <h2 class="display-6 fw-bold text-primary mb-0 position-relative">
+                        Complete Your Purchase
+                        <span
+                            class="position-absolute bottom-0 start-0 w-50 border-bottom border-3 border-primary animate__animated animate__fadeIn"></span>
+                    </h2>
+                </div>
+
+                <!-- Shipping Method Card -->
+                <div class="card shadow-lg border-0 rounded-4 mb-4 animate__animated animate__fadeIn">
+                    <div class="card-header bg-white py-4 px-4 border-bottom">
+                        <h5 class="fw-bold mb-0 text-primary">
+                            <i class="fas fa-truck me-2"></i> Shipping Method
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="<?php echo $this->getUrl('*/cart_shipping/saveShipping'); ?>" method="post"
+                            id="shippingForm">
+                            <?php foreach ($shippingMethods as $key => $value): ?>
+                            <div class="form-check custom-radio mb-3">
+                                <input type="radio" name="method_shipping" class="form-check-input mt-4"
+                                    id="<?php echo $key; ?>" value="<?php echo $key; ?>"
+                                    onchange="submitForm(<?php echo $value; ?>)"
+                                    <?php echo ($this->getCart()->getShippingMethod() === $key) ? "checked" : "" ?>>
+                                <label
+                                    class="form-check-label d-flex justify-content-between align-items-center w-100 py-3 px-3 border rounded-3 transition-all"
+                                    style="transition: all 0.3s ease;" for="<?php echo $key; ?>">
+                                    <div>
+                                        <span class="fw-bold"><?php echo $key ?></span>
+                                        <p class="text-muted mb-0 small">
+                                            <?php if ($key == "Standard Shipping"): ?>
+                                            <i class="far fa-calendar-alt me-1"></i> Delivery within 5-7 business days
+                                            <?php elseif ($key == "Express Shipping"): ?>
+                                            <i class="fas fa-shipping-fast me-1"></i> Delivery within 2-3 business days
+                                            <?php elseif ($key == "Priority Shipping"): ?>
+                                            <i class="fas fa-bolt me-1"></i> Delivery within 24 hours
+                                            <?php endif; ?>
+                                        </p>
+                                    </div>
+                                    <span
+                                        class="badge <?php echo ($value == 0) ? "bg-success" : "bg-primary" ?> rounded-pill px-3 py-2 shadow-sm">
+                                        <?php echo ($value == 0) ? "FREE" : "$$value" ?>
+                                    </span>
+                                </label>
+                            </div>
+                            <?php endforeach; ?>
+                            <input type="hidden" name="price_shipping" id="shipping_price">
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Payment Method Card -->
+                <div class="card shadow-lg border-0 rounded-4 mb-4 animate__animated animate__fadeIn">
+                    <div class="card-header bg-white py-4 px-4 border-bottom">
+                        <h5 class="fw-bold mb-0 text-primary">
+                            <i class="fas fa-credit-card me-2"></i> Payment Method
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <form action="<?php echo $this->getUrl('*/cart_shipping/savePayment') ?>" method="post"
+                                    id="paymentForm">
+                                    <?php foreach ($paymentMethods as $value): ?>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input mt-3" type="radio" name="payment_method"
+                                            <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
+                                            id="<?php echo $value; ?>" value="<?php echo $value; ?>"
+                                            onchange="submitPaymentForm()">
+                                        <label
+                                            class="form-check-label d-flex align-items-center py-3 px-3 border rounded-3 transition-all"
+                                            style="transition: all 0.3s ease;" for="<?php echo $value; ?>">
+                                            <?php if ($value == "Credit Card"): ?>
+                                            <i class="far fa-credit-card me-2 text-primary"></i>
+                                            <?php elseif ($value == "PayPal"): ?>
+                                            <i class="fab fa-paypal me-2 text-primary"></i>
+                                            <?php elseif ($value == "Cash on Delivery"): ?>
+                                            <i class="fas fa-money-bill-wave me-2 text-primary"></i>
+                                            <?php endif; ?>
+                                            <?php echo $value; ?>
+                                        </label>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </form>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="card bg-light border-0 rounded-4">
+                                    <div class="card-body p-4">
+                                        <h6 class="mb-3 text-primary"><i class="fas fa-shield-alt me-2"></i> We Accept
+                                        </h6>
+                                        <div class="d-flex flex-wrap gap-2 mb-3">
+                                            <img src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                                                alt="Visa" height="30" class="rounded">
+                                            <img src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                                                alt="American Express" height="30" class="rounded">
+                                            <img src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                                                alt="Mastercard" height="30" class="rounded">
+                                            <img src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/discover.svg"
+                                                alt="Discover" height="30" class="rounded">
+                                        </div>
+                                        <p class="text-muted small mb-0">
+                                            <i class="fas fa-lock me-1"></i> Your payment information is processed
+                                            securely.
+                                            We do not store credit card details nor have access to your credit card
+                                            information.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary Card -->
+                <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeIn">
+                    <div class="card-header bg-white py-4 px-4 border-bottom">
+                        <h5 class="fw-bold mb-0 text-primary">
+                            <i class="fas fa-file-invoice-dollar me-2"></i> Order Summary
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="bg-light rounded-4 p-4 mb-4">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="fs-6 text-muted">Subtotal</span>
+                                        <span class="fs-6 fw-bold">$<?php
+                                                                    $subtotal = $this->getTotalAmount();
+                                                                    echo $subtotal;
+                                                                    ?></span>
+                                    </div>
+                                    <?php if ($this->getCart()->getShippingMethod()): ?>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="fs-6 text-muted">Shipping</span>
+                                        <span
+                                            class="<?php echo ($this->getCart()->getShippingPrice() == 0) ? "text-success fw-bold" : "" ?>">
+                                            <?php echo ($this->getCart()->getShippingPrice() == 0) ? "Free" : '+$' . $this->getCart()->getShippingPrice(); ?>
+                                        </span>
+                                    </div>
+                                    <?php endif; ?>
+                                    <?php if ($this->getCart()->getCouponCode()): ?>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="fs-6 text-muted">Discount
+                                            <span
+                                                class="badge bg-success text-white ms-2"><?php echo $this->getCart()->getCouponCode() ?></span>
+                                        </span>
+                                        <span
+                                            class="text-success fs-6 fw-bold">-$<?php echo $this->getCart()->getCouponDiscount() ?></span>
+                                    </div>
+                                    <?php endif; ?>
+                                    <hr class="my-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold fs-5">Total</span>
+                                        <span
+                                            class="fw-bold fs-4 text-primary">$<?php echo $this->getCart()->getTotalAmount(); ?></span>
+                                    </div>
+                                </div>
+
+                                <a href="<?php echo $this->getUrl('*/cart/index') ?>"
+                                    class="btn btn-outline-primary rounded-pill">
+                                    <i class="fas fa-long-arrow-alt-left me-2"></i> Back to Cart
+                                </a>
+                            </div>
+                            <div class="col-lg-4 d-flex flex-column justify-content-between ps-lg-4 mt-4 mt-lg-0">
+                                <div class="bg-light rounded-4 p-4 mb-4">
+                                    <div class="d-flex mb-3">
+                                        <div class="me-3 text-primary">
+                                            <i class="fas fa-shield-alt fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Secure Checkout</h6>
+                                            <p class="text-muted small mb-0">100% secure payment</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="<?php echo $this->getUrl('*/cart_order/placeOrder'); ?>"
+                                    class="btn btn-primary btn-lg w-100 text-uppercase py-3 rounded-pill shadow-lg">
+                                    <i class="fas fa-lock me-2"></i> Place Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

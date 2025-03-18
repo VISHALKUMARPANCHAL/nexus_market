@@ -92,6 +92,12 @@ class Core_Model_Abstract
     }
     protected function _beforeSave()
     {
+        // echo '<pre>';
+        // print_r($this->getResource()->getPrimaryKey());
+        // echo '</pre>';
+        // if(is_null($this))
+        // die;
+
         return $this;
     }
     protected function _afterSave()
