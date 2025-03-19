@@ -52,7 +52,7 @@ class Core_Model_Resource_Collection_Abstract
     public function prepareQuery()
     {
 
-        $query = sprintf("SELECT %s FROM %s AS %s", implode(', ', $this->_select['COLUMNS']), array_values($this->_select['FROM'])[0], array_keys($this->_select['FROM'])[0]);
+        $query = sprintf("SELECT %s FROM `%s` AS %s", implode(', ', $this->_select['COLUMNS']), array_values($this->_select['FROM'])[0], array_keys($this->_select['FROM'])[0]);
 
         if (isset($this->_select['LEFT_JOIN'])) {
             $leftjoinsql = "";

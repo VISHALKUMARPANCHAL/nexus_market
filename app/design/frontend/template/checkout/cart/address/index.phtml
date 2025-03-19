@@ -14,15 +14,16 @@ $cart = $this->getCart();
                     </div>
                     <div class="card-body p-4">
                         <form action="<?php echo $this->getUrl('*/cart_address/saveAddress') ?>" method="post"
-                            id="shipping-billing-form" class="mw-100" onsubmit="return validate()">
+                            id="shipping-billing-form" class="mw-100">
 
                             <!-- Email Section -->
-                            <div class="mb-4 d-flex flex-column justify-content-center align-items-center text-center">
+                            <div class=" mb-4 d-flex flex-column justify-content-center align-items-center
+                            text-center">
                                 <div class="form-floating w-50">
                                     <input type="email" value="<?php echo ($cart) ? $cart->getEmail() : "" ?>"
-                                        class="form-control" id="billing-email" name="billing[email]"
-                                        placeholder="Email">
-                                    <span class="text-danger" id="email-error"></span>
+                                        class="form-control validate-email validate-required" id="billing-email"
+                                        name="billing[email]" placeholder="Email">
+
                                     <label for="billing-email">Email Address<span class="text-danger">*</span></label>
                                 </div>
                             </div>
@@ -39,19 +40,21 @@ $cart = $this->getCart();
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="billing-first_name"
+                                                        <input type="text"
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="billing-first_name"
                                                             value="<?php echo ($billingAddress) ? $billingAddress->getFirstName() : "" ?>"
                                                             name="billing[first_name]" placeholder="First Name">
-                                                        <span class="text-danger" id="billing-firstname-error"></span>
                                                         <label for="billing-first_name">First Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="billing-last_name"
+                                                        <input type="text"
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="billing-last_name"
                                                             value="<?php echo ($billingAddress) ? $billingAddress->getLastName() : "" ?>"
                                                             name="billing[last_name]" placeholder="Last Name">
-                                                        <span class="text-danger" id="billing-lastname-error"></span>
 
                                                         <label for="billing-last_name">Last Name</label>
                                                     </div>
@@ -59,19 +62,20 @@ $cart = $this->getCart();
                                             </div>
 
                                             <div class="form-floating mb-3">
-                                                <input type="tel" class="form-control" id="billing-phone_number"
+                                                <input type="tel"
+                                                    class="form-control validate-phoneNumber validate-required"
+                                                    id="billing-phone_number"
                                                     value="<?php echo ($billingAddress) ? $billingAddress->getPhoneNumber() : "" ?>"
                                                     name="billing[phone_number]" placeholder="Phone Number">
-                                                <span class="text-danger" id="billing-phone-error"></span>
-
                                                 <label for="billing-phone_number">Phone Number</label>
                                             </div>
 
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" id="billing-street_address"
+                                                <input type="text"
+                                                    class="form-control validate-address validate-required"
+                                                    id="billing-street_address"
                                                     value="<?php echo ($billingAddress) ? $billingAddress->getStreetAddress() : "" ?>"
                                                     name="billing[street_address]" placeholder="Address">
-                                                <span class="text-danger" id="billing-street-error"></span>
 
                                                 <label for="billing-street_address">Street Address</label>
                                             </div>
@@ -79,20 +83,22 @@ $cart = $this->getCart();
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="billing-city"
+                                                        <input type="text"
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="billing-city"
                                                             value="<?php echo ($billingAddress) ? $billingAddress->getCity() : "" ?>"
                                                             name="billing[city]" placeholder="City">
-                                                        <span class="text-danger" id="billing-city-error"></span>
 
                                                         <label for="billing-city">City</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="billing-state"
+                                                        <input type="text"
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="billing-state"
                                                             value="<?php echo ($billingAddress) ? $billingAddress->getRegion() : "" ?>"
                                                             name="billing[region]" placeholder="Region">
-                                                        <span class="text-danger" id="billing-region-error"></span>
 
                                                         <label for="billing-state">Region/State</label>
                                                     </div>
@@ -102,18 +108,19 @@ $cart = $this->getCart();
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="billing-zip"
+                                                        <input type="text"
+                                                            class="form-control validate-ZipCode validate-required"
+                                                            id="billing-zip"
                                                             value="<?php echo ($billingAddress) ? $billingAddress->getZipCode() : "" ?>"
                                                             name="billing[zip_code]" placeholder="Zip Code">
-                                                        <span class="text-danger" id="billing-zipcode-error"></span>
 
                                                         <label for="billing-zip">Zip/Postal Code</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <select class="form-select" id="billing-country"
-                                                            name="billing[country]">
+                                                        <select class="form-select validate-required"
+                                                            id="billing-country" name="billing[country]">
                                                             <option value="">Select Country</option>
                                                             <option value="India"
                                                                 <?php echo ($billingAddress && $billingAddress->getCountry() == "India") ? "selected" : "" ?>>
@@ -128,7 +135,6 @@ $cart = $this->getCart();
                                                                 <?php echo ($billingAddress && $billingAddress->getCountry() == "United Kingdom") ? "selected" : "" ?>>
                                                                 United Kingdom</option>
                                                         </select>
-                                                        <span class="text-danger" id="billing-country-error"></span>
 
                                                         <label for="billing-country">Country</label>
                                                     </div>
@@ -161,19 +167,20 @@ $cart = $this->getCart();
                                                     <div class="form-floating mb-3">
                                                         <input type="text"
                                                             value="<?php echo ($shippingAddress) ? $shippingAddress->getFirstName() : "" ?>"
-                                                            class="form-control" id="shipping-first_name"
-                                                            name="shipping[first_name]" placeholder="First Name">
-                                                        <span class="text-danger" id="shipping-firstname-error"></span>
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="shipping-first_name" name="shipping[first_name]"
+                                                            placeholder="First Name">
 
                                                         <label for="shipping-first_name">First Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="shipping-last_name"
+                                                        <input type="text"
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="shipping-last_name"
                                                             value="<?php echo ($shippingAddress) ? $shippingAddress->getLastName() : "" ?>"
                                                             name="shipping[last_name]" placeholder="Last Name">
-                                                        <span class="text-danger" id="shipping-lastname-error"></span>
 
                                                         <label for="shipping-last_name">Last Name</label>
                                                     </div>
@@ -183,9 +190,9 @@ $cart = $this->getCart();
                                             <div class="form-floating mb-3">
                                                 <input type="tel"
                                                     value="<?php echo ($shippingAddress) ? $shippingAddress->getPhoneNumber() : "" ?>"
-                                                    class="form-control" id="shipping-phone_number"
-                                                    name="shipping[phone_number]" placeholder="Phone">
-                                                <span class="text-danger" id="shipping-phone-error"></span>
+                                                    class="form-control validate-phoneNumber validate-required"
+                                                    id="shipping-phone_number" name="shipping[phone_number]"
+                                                    placeholder="Phone">
 
                                                 <label for="shipping-phone_number">Phone Number</label>
                                             </div>
@@ -193,9 +200,9 @@ $cart = $this->getCart();
                                             <div class="form-floating mb-3">
                                                 <input type="text"
                                                     value="<?php echo ($shippingAddress) ? $shippingAddress->getStreetAddress() : "" ?>"
-                                                    class="form-control" id="shipping-street_address"
-                                                    name="shipping[street_address]" placeholder="Address">
-                                                <span class="text-danger" id="shipping-street-error"></span>
+                                                    class="form-control validate-address validate-required"
+                                                    id="shipping-street_address" name="shipping[street_address]"
+                                                    placeholder="Address">
 
                                                 <label for="shipping-street_address">Street Address</label>
                                             </div>
@@ -205,9 +212,8 @@ $cart = $this->getCart();
                                                     <div class="form-floating mb-3">
                                                         <input type="text"
                                                             value="<?php echo ($shippingAddress) ? $shippingAddress->getCity() : "" ?>"
-                                                            class="form-control" id="shipping-city"
-                                                            name="shipping[city]" placeholder="City">
-                                                        <span class="text-danger" id="shipping-city-error"></span>
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="shipping-city" name="shipping[city]" placeholder="City">
 
                                                         <label for="shipping-city">City</label>
                                                     </div>
@@ -216,9 +222,9 @@ $cart = $this->getCart();
                                                     <div class="form-floating mb-3">
                                                         <input type="text"
                                                             value="<?php echo ($shippingAddress) ? $shippingAddress->getRegion() : "" ?>"
-                                                            class="form-control" id="shipping-state"
-                                                            name="shipping[region]" placeholder="Region">
-                                                        <span class="text-danger" id="shipping-region-error"></span>
+                                                            class="form-control validate-alphabet validate-required"
+                                                            id="shipping-state" name="shipping[region]"
+                                                            placeholder="Region">
 
                                                         <label for="shipping-state">Region/State</label>
                                                     </div>
@@ -230,17 +236,17 @@ $cart = $this->getCart();
                                                     <div class="form-floating mb-3">
                                                         <input type="text"
                                                             value="<?php echo ($shippingAddress) ? $shippingAddress->getZipCode() : "" ?>"
-                                                            class="form-control" id="shipping-zip"
-                                                            name="shipping[zip_code]" placeholder="Zip Code">
-                                                        <span class="text-danger" id="shipping-zipcode-error"></span>
+                                                            class="form-control validate-ZipCode validate-required"
+                                                            id="shipping-zip" name="shipping[zip_code]"
+                                                            placeholder="Zip Code">
 
                                                         <label for="shipping-zip">Zip/Postal Code</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <select class="form-select" id="shipping-country"
-                                                            name="shipping[country]">
+                                                        <select class="form-select validate-required"
+                                                            id="shipping-country" name="shipping[country]">
                                                             <option value="">Select Country</option>
                                                             <option value="India"
                                                                 <?php echo ($shippingAddress && $shippingAddress->getCountry() == "India") ? "selected" : "" ?>>
@@ -255,8 +261,6 @@ $cart = $this->getCart();
                                                                 <?php echo ($shippingAddress && $shippingAddress->getCountry() == "United Kingdom") ? "selected" : "" ?>>
                                                                 United Kingdom</option>
                                                         </select>
-                                                        <span class="text-danger" id="shipping-country-error"></span>
-
                                                         <label for="shipping-country">Country</label>
                                                     </div>
                                                 </div>
@@ -279,84 +283,3 @@ $cart = $this->getCart();
         </div>
     </div>
 </section>
-<script>
-    function validate() {
-        let isValid = true;
-
-        function showError(inputId, message) {
-            $('#' + inputId + "-error").text(message);
-            isValid = false;
-        }
-
-        function clearError(inputId) {
-            $('#' + inputId + "-error").text("");
-        }
-        let email = $('#billing-email').val().trim();
-        clearError('email');
-        if (!email) {
-            showError("email", "Email Id is required");
-        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-            showError("email", "Invalid Email Id formate");
-        }
-
-        function validateAddress(addressType) {
-            let firstName = $('#' + addressType + "-first_name").val().trim();
-            let lastName = $('#' + addressType + "-last_name").val().trim();
-            let phone = $('#' + addressType + "-phone_number").val().trim();
-            let street = $('#' + addressType + "-street_address").val().trim();
-            let city = $('#' + addressType + "-city").val().trim();
-            let region = $('#' + addressType + "-state").val().trim();
-            let zip = $('#' + addressType + "-zip").val().trim();
-            let country = $('#' + addressType + "-country").val().trim();
-            clearError(addressType + '-firstname');
-            if (!firstName) {
-                showError(addressType + "-firstname", "First Name is required");
-            } else if (!/^[A-Za-z]+$/.test(firstName)) {
-                showError(addressType + "-firstname", "Invalid First Name formate");
-            }
-            clearError(addressType + '-lastname');
-            if (!lastName) {
-                showError(addressType + "-lastname", "Last Name is required");
-            } else if (!/^[A-Za-z]+$/.test(lastName)) {
-                showError(addressType + "-lastname", "Invalid Last Name formate");
-            }
-            clearError(addressType + '-phone');
-            if (!phone) {
-                showError(addressType + "-phone", "Phone Number is required");
-            } else if (!/^[6-9][0-9]{9}$/.test(phone)) {
-                showError(addressType + "-phone", "Invalid Phone Number formate");
-            }
-            clearError(addressType + '-street');
-            if (!street) {
-                showError(addressType + "-street", "Street Address is required");
-            } else if (!/^[A-Za-z0-9_\s]+$/.test(street)) {
-                showError(addressType + "-street", "Invalid Street Address formate");
-            }
-            clearError(addressType + '-city');
-            if (!city) {
-                showError(addressType + "-city", "City is required");
-            } else if (!/^[A-Za-z]+$/.test(city)) {
-                showError(addressType + "-city", "Invalid city formate");
-            }
-            clearError(addressType + '-region');
-            if (!region) {
-                showError(addressType + "-region", "Region is required");
-            } else if (!/^[A-Za-z]+$/.test(region)) {
-                showError(addressType + "-region", "Invalid Region formate");
-            }
-            clearError(addressType + '-zipcode');
-            if (!zip) {
-                showError(addressType + "-zipcode", "Zip Code is required");
-            } else if (!/^[0-9]{5,10}$/.test(zip)) {
-                showError(addressType + "-zipcode", "Invalid Region formate");
-            }
-            clearError(addressType + '-country');
-            if (!country) {
-                showError(addressType + "-country", "Country is required");
-            }
-        }
-        validateAddress("billing");
-        validateAddress("shipping");
-        return isValid;
-    }
-</script>

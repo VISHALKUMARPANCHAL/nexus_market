@@ -1,6 +1,7 @@
 <?php
 $orderData = $this->getOrder();
-// Mage::log($orderData);
+Mage::log($orderData);
+
 ?>
 
 <div class="container mt-4 mb-5">
@@ -15,7 +16,6 @@ $orderData = $this->getOrder();
             </a>
         </div>
     </div>
-
     <!-- Order Summary Card -->
     <div class="card mb-4">
         <?php $this->getChildHtml('orderinfo') ?>

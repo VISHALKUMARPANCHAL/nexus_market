@@ -6,6 +6,7 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
         $layout = Mage::getBlock('core/layout');
         $new = $layout->createBlock('admin/sales_order_index');
         $layout->getChild('content')->addChild('new', $new);
+        $layout->getChild('head')->addCss("page/admin/sales/order/index.css");
         $layout->toHtml();
     }
     public function viewAction()
@@ -20,16 +21,16 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
             ->setOrder($order);
 
         $orderinfo = $layout
-            ->createBlock('admin/sales_order_view_orderinfo')
-            ->setOrderBlock($view);
+            ->createBlock('admin/sales_order_view_orderinfo');
+        // ->setOrderBlock($view);
 
         $iteminfo = $layout
-            ->createBlock('admin/sales_order_view_iteminfo')
-            ->setOrderBlock($view);
+            ->createBlock('admin/sales_order_view_iteminfo');
+        // ->setOrderBlock($view);
 
         $addressinfo = $layout
-            ->createBlock('admin/sales_order_view_addressinfo')
-            ->setOrderBlock($view);
+            ->createBlock('admin/sales_order_view_addressinfo');
+        // ->setOrderBlock($view);
 
 
         $layout->getChild("content")

@@ -1,0 +1,50 @@
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.order-status {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-pending {
+    background-color: #ffc107;
+}
+
+.status-processing {
+    background-color: #0dcaf0;
+}
+
+.status-shipped {
+    background-color: #6c757d;
+}
+
+.status-delivered {
+    background-color: #198754;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+}
+
+.btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.2rem;
+}
+
+.search-area {
+    background-color: #f8f9fa;
+}
+
+.badge-light {
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+.filters-row {
+    border-bottom: 1px solid #dee2e6;
+}

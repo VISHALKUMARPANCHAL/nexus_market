@@ -1,6 +1,7 @@
 <?php
-$items = $this->getData();
-// Mage::log($items);
+$items = $this->getItems();
+// $product = $this->getProductData();
+// Mage::log($items[0]->getProduct());
 ?>
 
 <div class="card-header bg-light">
@@ -11,8 +12,10 @@ $items = $this->getData();
         <table class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
+                    <th></th>
                     <th>Item ID</th>
                     <th>Product ID</th>
+                    <th>Product Name</th>
                     <th>Quantity</th>
                     <th class="text-end">Price</th>
                     <th class="text-end">Subtotal</th>
@@ -21,8 +24,12 @@ $items = $this->getData();
             <tbody>
                 <?php foreach ($items as $item): ?>
                 <tr>
+                    <td><img src="<?php echo  Mage::getBaseUrl() . $item->getProduct()->getFilePath()[array_search(1, $item->getProduct()->getMainImage())] ?>"
+                            alt="" width="90px" height="60px">
+                    </td>
                     <td><?php echo $item->getItemId() ?></td>
                     <td><?php echo $item->getProductId() ?></td>
+                    <td><?php echo $item->getProduct()->getName() ?></td>
                     <td><?php echo $item->getProductQuantity() ?></td>
                     <td class="text-end">₹<?php echo $item->getPrice() ?></td>
                     <td class="text-end">₹<?php echo $item->getSubTotal() ?></td>

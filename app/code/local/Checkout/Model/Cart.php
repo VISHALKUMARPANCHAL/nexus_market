@@ -42,8 +42,11 @@ class Checkout_Model_Cart extends Core_Model_Abstract
         foreach ($cart_items as $cart_item) {
             $total += $cart_item->getSubTotal();
         }
-        $discount = Mage::getModel('checkout/coupon')->calculateDiscount($this->getCouponCode(), $total);
+        $discount = Mage::getModel('checkout/coupon')
+            ->calculateDiscount($this->getCouponCode(), $total);
         $this->setCouponDiscount($discount);
+        // Mage::log($this);
+        // die;
         if (!empty($this->getCouponDiscount())) {
             $total -= $this->getCouponDiscount();
         }
