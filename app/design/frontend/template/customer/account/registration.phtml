@@ -92,7 +92,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Address Section -->
                         <h4 class="mt-4 mb-3">Address Information</h4>
 
@@ -115,8 +114,8 @@
 
                             <!-- State -->
                             <div class="col-md-6 mb-3">
-                                <label for="state" class="form-label">State</label>
-                                <input type="text" class="form-control" id="state" name="customer_account[state]"
+                                <label for="state" class="form-label">Region</label>
+                                <input type="text" class="form-control" id="region" name="customer_account[region]"
                                     required>
 
                             </div>
@@ -134,17 +133,20 @@
                             <!-- Country -->
                             <div class="col-md-4 mb-3">
                                 <label for="country" class="form-label">Country</label>
-                                <input type="text" class="form-control" id="country" name="customer_account[country]"
-                                    required>
+                                <select class="form-select" id="country" name="customer_account[country]">
+                                    <option value="">Select Country</option>
+                                    <option value="India">
+                                        India</option>
+                                    <option value="United States">
+                                        United States</option>
+                                    <option value="Canada">
+                                        Canada</option>
+                                    <option value="United Kingdom">
+                                        United Kingdom</option>
+                                </select>
 
                             </div>
 
-                            <!-- Region (Optional) -->
-                            <div class="col-md-4 mb-3">
-                                <label for="region" class="form-label">Region</label>
-                                <input type="text" class="form-control" id="region" name="customer_account[region]"
-                                    required>
-                            </div>
                         </div>
 
                         <!-- Terms and Conditions -->
@@ -167,7 +169,8 @@
 
                         <!-- Login Link -->
                         <div class="mt-3 text-center">
-                            <p>Already have an account? <a href="#" class="text-decoration-none">Login here</a></p>
+                            <p>Already have an account? <a href="<?php echo $this->getUrl('*/*/login'); ?>"
+                                    class="text-decoration-none">Login here</a></p>
                         </div>
                     </form>
                 </div>

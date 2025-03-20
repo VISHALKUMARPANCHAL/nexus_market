@@ -1,5 +1,5 @@
 <?php
-class Checkout_Controller_Cart_Shipping extends Core_Controller_Front_Action
+class Checkout_Controller_Cart_Shipping extends Core_Controller_Customer_Action
 {
     public function indexAction()
     {

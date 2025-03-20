@@ -4,7 +4,7 @@ class Admin_Controller_Category_Index extends Core_Controller_Admin_Action
 {
     public function newAction()
     {
-        $layout = Mage::getBlock('core/layout');
+        $layout = $this->getLayout();
         $new = $layout->createBlock('admin/category_index_new')
             ->setTemplate('admin/category/index/new.phtml');
         $layout->getChild('content')->addChild('new', $new);
@@ -12,7 +12,7 @@ class Admin_Controller_Category_Index extends Core_Controller_Admin_Action
     }
     public function listAction()
     {
-        $layout = Mage::getBlock('core/layout');
+        $layout = $this->getLayout();
         $list = $layout->createBlock('admin/category_index_list')
             ->setTemplate('admin/category/index/list.phtml');
         $layout->getChild('content')->addChild('list', $list);

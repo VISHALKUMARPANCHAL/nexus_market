@@ -3,7 +3,7 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
 {
     public function indexAction()
     {
-        $layout = Mage::getBlock('core/layout');
+        $layout = $this->getLayout();
         $new = $layout->createBlock('admin/sales_order_index');
         $layout->getChild('content')->addChild('new', $new);
         $layout->getChild('head')->addCss("page/admin/sales/order/index.css");
@@ -14,7 +14,7 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
         $orderId = $this->getRequest()->getQuery('id');
         $order = Mage::getModel('sales/order')
             ->load($orderId);
-        $layout = Mage::getBlock('core/layout');
+        $layout = $this->getLayout();
 
         $view = $layout
             ->createBlock('admin/sales_order_view')

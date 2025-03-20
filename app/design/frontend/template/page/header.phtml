@@ -1,12 +1,5 @@
 <?php
 $masterCategories = $this->getMasterCategories();
-$module = Mage::getModel('core/request')->getModulename();
-if ($module === 'admin') {
-    $session = Mage::getSingleton('core/session');
-    $issession = $session->get('login');
-} else {
-    $issession = 0;
-}
 $baseurl = Mage::getBaseUrl();
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
@@ -51,17 +44,16 @@ $baseurl = Mage::getBaseUrl();
         </a>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <?php if (!($module === 'admin')): ?>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php $count = 0;
-                    $more = [];
-                    ?>
+                $more = [];
+                ?>
                 <?php foreach ($masterCategories as $data): ?>
                 <?php if ($data->getParentId() == 1): ?>
                 <?php if ($count === 6) {
-                                $more[] = $data;
-                                continue;
-                            } ?>
+                            $more[] = $data;
+                            continue;
+                        } ?>
                 <li class="nav-item dropdown position-relative">
                     <a class="nav-link dropdown-toggle fw-semibold px-3"
                         href="<?php echo "{$baseurl}catalog/product/list/?id={$data->getCategoryId()}"; ?>"
@@ -105,37 +97,40 @@ $baseurl = Mage::getBaseUrl();
                 <?php endif; ?>
 
             </ul>
-            <?php endif; ?>
             <ul class="navbar-nav ms-auto">
-                <?php if (!($module === 'admin')): ?>
-
                 <div class="navbar-actions">
                     <a href="<?php echo $this->getUrl('checkout/cart/index') ?>"
                         class="nav-link d-flex align-items-center text-primary position-relative">
                         <i class="fas fa-shopping-cart fs-5 me-1"></i> Cart
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             <?php
-                                echo $this->countCartItems()
-                                ?>
+                            echo $this->countCartItems()
+                            ?>
 
                         </span>
                     </a>
                 </div>
-                <?php endif; ?>
-                <li class="nav-item ms-2">
-                    <?php if ($issession): ?>
-                    <a class="nav-link d-flex align-items-center text-danger"
-                        href="<?php echo $baseurl ?>admin/account/logout">
-                        <i class="bi bi-person fs-5 me-1 "></i> Logout
+                <li class="nav-item dropdown ms-2">
+                    <?php if ($this->issession()): ?>
+                    <a class="nav-link dropdown-toggle d-flex align-items-center text-danger" href="#" id="userDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle fs-5"></i>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item"
+                                href="<?php echo Mage::getBaseUrl() . 'customer/account/dashboard'; ?>">Dashboard</a>
+                        </li>
+                        <li><a class="dropdown-item text-danger"
+                                href="<?php echo Mage::getBaseUrl() . 'customer/account/logout'; ?>">Logout</a></li>
+                    </ul>
                     <?php else: ?>
                     <a class="nav-link d-flex align-items-center text-primary"
-                        href="<?php echo $baseurl ?>admin/account/login">
+                        href="<?php echo Mage::getBaseUrl() . 'customer/account/login'; ?>">
                         <i class="bi bi-person fs-5 me-1"></i> Login
                     </a>
                     <?php endif; ?>
-
                 </li>
+
             </ul>
         </div>
     </div>

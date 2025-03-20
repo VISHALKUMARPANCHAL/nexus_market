@@ -20,4 +20,9 @@ class Page_Block_Header extends Core_Block_Template
             ->getData();
         return count($cartItems);
     }
+    public function isSession()
+    {
+        return Mage::getSingleton('core/session')
+            ->get('customer_id');
+    }
 }

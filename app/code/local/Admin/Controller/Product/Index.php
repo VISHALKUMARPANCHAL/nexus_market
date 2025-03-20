@@ -3,7 +3,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
 {
     public function newAction()
     {
-        $layout = Mage::getBlock('core/layout');
+        $layout = $this->getLayout();
         $new = $layout->createBlock('admin/product_index_new')
             ->setTemplate('admin/product/index/new.phtml');
         $layout->getChild('content')->addChild('new', $new);
@@ -12,7 +12,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
     }
     public function listAction()
     {
-        $layout = Mage::getBlock('core/layout');
+        $layout = $this->getLayout();
         $list = $layout->createBlock('admin/product_index_list')
             ->setTemplate('admin/product/index/list.phtml');
         $layout->getChild('content')->addChild('list', $list);
@@ -42,7 +42,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         if (file_exists($image)) {
             unlink($image);
         }
-        $product->setData($productId);
+        $product->setProductId($productId);
         $product->delete();
         $this->redirect('admin/product_index/list');
     }
