@@ -7,21 +7,19 @@ function oncolorupdate(val) {
     document.getElementById('colorspan').textContent = val;
 }
 document.addEventListener("DOMContentLoaded", function() {
-    const backToTopButton = document.getElementById("scrollToTop");
-
-    window.addEventListener("scroll", function() {
+    const backToTopButton2 = document.getElementById("scrollToTop");
+    window.addEventListener("scroll", function () {
         if (window.scrollY > 300) {
-            backToTopButton.style.display = "block";
+            backToTopButton2.style.display = "flex"; 
+            backToTopButton2.style.opacity = "1";
         } else {
-            backToTopButton.style.display = "none";
+            backToTopButton2.style.opacity = "0";
+            backToTopButton2.style.display = "none";
         }
     });
 
-    backToTopButton.addEventListener("click", function() {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+    backToTopButton2.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 });
 

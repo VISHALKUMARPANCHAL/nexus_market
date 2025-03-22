@@ -34,7 +34,7 @@ var heroSwiper = new Swiper(".hero-swiper", {
 });
 
 var collectionSwiper = new Swiper(".collection-swiper", {
-    slidesPerView: 3,
+    slidesPerView: 5,
     spaceBetween: 20,
     autoplay: {
         delay: 3000,

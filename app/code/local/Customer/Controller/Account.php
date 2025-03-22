@@ -18,7 +18,9 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
         "registration",
         "save",
         "forgetpassword",
-        "sendotp"
+        "verifyEmail",
+        "verifyOtp",
+        "resetPassword"
     ];
     public function dashboardAction()
     {
@@ -37,15 +39,19 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
     public function changepasPostAction()
     {
         $data = $this->getRequest()->getParams();
-        Mage::log($data);
         $customer_id =  $this->getSession()->get('customer_id');
         $customer = Mage::getModel('customer/account')->load($customer_id);
         $isPasMatch = password_verify($data['oldpassword'], $customer->getPasswordHash());
         if (!$isPasMatch) {
-            echo json_encode(["success" => false, "message" => "wrong password"]);
-        } else if ($data['newpassword'] === $data['confirmpassword']) {
+            echo json_encode(["success" => false, "message" => "you entered wrong password"]);
+        } else if (!($data['newpassword'] === $data['confirmpassword'])) {
             echo json_encode(["success" => false, "message" => "new password and confirm password not match"]);
         } else {
+            Mage::getModel('customer/account')
+                ->setCustomerId($customer_id)
+                ->setPasswordHash(password_hash($data['newpassword'], PASSWORD_DEFAULT))
+                ->save();
+            echo json_encode(["success" => true, "message" => "Password Changed Successfully!"]);
         }
     }
     public function registrationAction()
@@ -71,23 +77,67 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
         $layout->getChild('content')->addChild('login', $login);
         $layout->toHtml();
     }
-    public function sendotpAction()
+    public function resetPasswordAction()
+    {
+        $data = $this->getRequest()->getParams();
+        $customer_id = $this->getSession()->get('customer_id');
+        if (!empty($customer_id)) {
+            if (!($data['newpassword'] === $data['confirmpassword'])) {
+                echo json_encode(["success" => false, "message" => "new password and confirm password not match"]);
+            } else {
+                Mage::getModel('customer/account')
+                    ->setCustomerId($customer_id)
+                    ->setPasswordHash(password_hash($data['newpassword'], PASSWORD_DEFAULT))
+                    ->save();
+                echo json_encode(["success" => true, "message" => "Password Reset Successfully!"]);
+                $this->getSession()->remove('customer_id');
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Please verify email again!"]);
+        }
+    }
+    public function verifyOtpAction()
+    {
+        // Mage::log($_SESSION);
+        $otpinput = $this->getRequest()->getParams()['otpinput'];
+        $otp = $this->getSession()->get('otp');
+        // echo $otp;
+        // echo $otpinput;
+        if (!empty($otp)) {
+            if ($otpinput == $otp) {
+                echo json_encode(["success" => true, "message" => "otp verifyied"]);
+                $this->getSession()->remove('otp');
+            } else {
+                echo json_encode(["success" => false, "message" => "invalid otp! please enter valid otp"]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "error! send otp again"]);
+        }
+    }
+    public function verifyEmailAction()
     {
         $email = $this->getRequest()->getParams()['email'];
         $mail = new PHPMailer(true);
         $otp = rand(1000, 9999);
+        $customer_id = Mage::getModel('customer/account')
+            ->load($email, "email")
+            ->getCustomerId();
+        if (empty($customer_id)) {
+            echo json_encode(["success" => false, "message" => "user not found"]);
+            $this->getSession()->remove('otp');
+            $this->getSession()->remove('customer_id');
+            return;
+        }
         try {
-            // SMTP Configuration
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // SMTP Server (Gmail, Outlook, etc.)
             $mail->SMTPAuth = true;
-            $mail->Username = 'vishalvishal00339@gamil.com'; // Replace with your email
-            $mail->Password = 'nhqo vmqu bvlp iyme'; // Replace with your App Password
+            $mail->Username = 'panchalraghu112@gmail.com'; // Replace with your email
+            $mail->Password = 'cfzl kmxk apeg khzr'; // Replace with your App Password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
-
             // Email Details
-            $mail->setFrom('vishalvishal00339@gamil.com', 'Vishal Panchal');
+            $mail->setFrom('panchalraghu112@gmail.com', 'Vishal Panchal');
             $mail->addAddress($email);
             // echo $otp;
             $mail->Subject = "Your One-Time Password (OTP)";
@@ -96,12 +146,18 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
             if ($mail->send()) {
                 // echo "success";
                 echo json_encode(["success" => true, "message" => "OTP sent to $email"]);
+                $this->getSession()->set('otp', $otp);
+                $this->getSession()->set('customer_id', $customer_id);
             } else {
                 // echo "error";
                 echo json_encode(["success" => false, "message" => "Failed to send OTP."]);
+                $this->getSession()->remove('otp');
+                $this->getSession()->remove('customer_id');
             }
         } catch (Exception $e) {
             echo json_encode(["success" => false, "message" => "Mailer Error: " . $mail->ErrorInfo]);
+            $this->getSession()->remove('otp');
+            $this->getSession()->remove('customer_id');
         }
     }
     public function logoutAction()

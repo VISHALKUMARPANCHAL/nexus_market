@@ -25,4 +25,9 @@ class Page_Block_Header extends Core_Block_Template
         return Mage::getSingleton('core/session')
             ->get('customer_id');
     }
+    public function isAdminSession()
+    {
+        return Mage::getSingleton('core/session')
+            ->get('login');
+    }
 }
