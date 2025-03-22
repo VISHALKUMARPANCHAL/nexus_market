@@ -16,6 +16,22 @@ class Customer_Controller_Account_Address extends Core_Controller_Front_Action
             ->delete();
         $this->redirect('customer/account/dashboard');
     }
+    public function setDefaultAction()
+    {
+        $id = $this->getRequest()->getQuery('id');
+        $session = Mage::getSingleton('core/session');
+        $address = Mage::getModel('customer/account_address');
+        $address->getCollection()
+            ->addFieldToFilter('customer_id', $session->get('customer_id'))
+            ->addFieldToFilter('is_default', 1)
+            ->getFirstItem()
+            ->setIsDefault(0)
+            ->save();
+        $address->load($id)
+            ->setIsDefault(1)
+            ->save();
+        $this->redirect('customer/account/dashboard');
+    }
     public function saveAction()
     {
         $customerData = $this->getRequest()->getParam('customer_account_address');

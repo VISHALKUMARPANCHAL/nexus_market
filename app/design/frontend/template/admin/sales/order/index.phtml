@@ -130,26 +130,52 @@ $orders = $this->getOrderData();
                                     <span class="fw-bold">₹<?php echo $order->getTotalAmount() ?></span>
                                 </td>
                                 <td>
-                                    <span class="order-status status-pending"></span>
-                                    <span>Pending</span>
+                                    <?php
+                                        $class = "";
+                                        if ($order->getOrderStatus() === "Pending") {
+                                            $class = "warning";
+                                        } else if ($order->getOrderStatus() === "Processing") {
+                                            $class = "primary";
+                                        } else if ($order->getOrderStatus() === "Shipped") {
+                                            $class = "info";
+                                        } else if ($order->getOrderStatus() === "Delivered") {
+                                            $class = "success";
+                                        } else if ($order->getOrderStatus() === "Cancelled") {
+                                            $class = "danger";
+                                        }
+                                        ?>
+                                    <span class="order-status status-pending bg-<?php echo $class ?>"></span>
+                                    <span><?php echo $order->getOrderStatus() ?></span>
+                                    <button type="button"
+                                        class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <form action="<?php echo $this->getUrl('*/*/updatestatus') ?>" method="post"
+                                        class="dropdown-menu dropdown-menu-end">
+                                        <input type="hidden" value="<?php echo $order->getOrderId() ?>" name="order_id">
+
+                                        <li><button type="submit" name="order_status" value="Pending"
+                                                class="dropdown-item text-warning">Pending</button></li>
+                                        <li><button type="submit" name="order_status" value="Processing"
+                                                class="dropdown-item text-primary">Processing</button></li>
+                                        <li><button type="submit" name="order_status" value="Shipped"
+                                                class="dropdown-item text-info">Shipped</button></li>
+                                        <li><button type="submit" name="order_status" value="Delivered"
+                                                class="dropdown-item text-success">Delivered</button></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><button type="submit" name="order_status" value="Cancelled"
+                                                class="dropdown-item text-danger">Cancelled</button>
+                                        </li>
+                                    </form>
                                 </td>
+
                                 <td class="text-end">
                                     <div class="btn-group">
                                         <a href="<?php echo Mage::getBaseUrl() . "admin/order/" . "view/?id={$order->getOrderId()}" ?>"
                                             class="btn btn-xs btn-outline-primary">View</a>
-                                        <button type="button"
-                                            class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="visually-hidden">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Print Invoice</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item text-danger" href="#">Cancel</a></li>
-                                        </ul>
                                     </div>
                                 </td>
                             </tr>

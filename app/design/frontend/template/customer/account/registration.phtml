@@ -1,19 +1,28 @@
+<?php
+$customer = $this->getCustomer();
+// Mage::log($customer);
+$hasCustomer = !empty($customer->getData());
+// var_dump($hasCustomer);
+?>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Customer Registration</h3>
+                    <h3 class="mb-0"><?php echo ($hasCustomer) ? "Update Information" : "Customer Registration" ?></h3>
                 </div>
                 <div class="card-body">
                     <form id="registrationForm" method="post" action="<?php echo $this->getUrl('*/*/save'); ?>"
                         class="needs-validation">
                         <h4 class="mb-3">Personal Information</h4>
+                        <input type="hidden" name="customer_account[customer_id]" id=""
+                            value="<?php echo ($hasCustomer) ? $customer->getCustomerId() : "" ?>">
                         <div class="row">
                             <!-- First Name -->
                             <div class="col-md-6 mb-3">
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="first_name"
+                                    value="<?php echo ($hasCustomer) ? $customer->getFirstName() : "" ?>"
                                     name="customer_account[first_name]" required>
                             </div>
 
@@ -21,6 +30,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="last_name"
+                                    value="<?php echo ($hasCustomer) ? $customer->getLastName() : "" ?>"
                                     name="customer_account[last_name]" required>
 
                             </div>
@@ -31,7 +41,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="customer_account[email]"
-                                    required>
+                                    value="<?php echo ($hasCustomer) ? $customer->getEmail() : "" ?>" required>
 
                             </div>
 
@@ -39,34 +49,20 @@
                             <div class="col-md-6 mb-3">
                                 <label for="phone_number" class="form-label">Phone Number</label>
                                 <input type="tel" class="form-control" id="phone_number"
+                                    value="<?php echo ($hasCustomer) ? $customer->getPhoneNumber() : "" ?>"
                                     name="customer_account[phone_number]" required>
 
                             </div>
                         </div>
 
-                        <div class="row">
-                            <!-- Password -->
-                            <div class="col-md-6 mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password"
-                                    name="customer_account[password]" required>
 
-                            </div>
-
-                            <!-- Confirm Password -->
-                            <div class="col-md-6 mb-3">
-                                <label for="confirm_password" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirm_password"
-                                    name="customer_account[confirm_password]" required>
-
-                            </div>
-                        </div>
 
                         <div class="row">
                             <!-- Date of Birth -->
                             <div class="col-md-6 mb-3">
                                 <label for="date_of_birth" class="form-label">Date of Birth</label>
                                 <input type="date" class="form-control" id="date_of_birth"
+                                    value="<?php echo ($hasCustomer) ? $customer->getDateOfBirth() : "" ?>"
                                     name="customer_account[date_of_birth]" required>
                             </div>
 
@@ -76,22 +72,45 @@
                                 <div class="d-flex">
                                     <div class="form-check me-3">
                                         <input class="form-check-input" type="radio" name="customer_account[gender]"
+                                            <?php echo ($hasCustomer && $customer->getGender() === "Male") ? "checked" : "" ?>
                                             id="male" value="Male" required>
                                         <label class="form-check-label" for="male">Male</label>
                                     </div>
                                     <div class="form-check me-3">
                                         <input class="form-check-input" type="radio" name="customer_account[gender]"
+                                            <?php echo ($hasCustomer && $customer->getGender() === "Female") ? "checked" : "" ?>
                                             id="female" value="Female">
                                         <label class="form-check-label" for="female">Female</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="customer_account[gender]"
+                                            <?php echo ($hasCustomer && $customer->getGender() === "Other") ? "checked" : "" ?>
                                             id="other" value="Other">
                                         <label class="form-check-label" for="other">Other</label>
                                     </div>
                                 </div>
                             </div>
+                            <?php if (!$hasCustomer): ?>
+                            <div class="row">
+                                <!-- Password -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password"
+                                        name="customer_account[password]" required>
+
+                                </div>
+
+                                <!-- Confirm Password -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirm_password"
+                                        name="customer_account[confirm_password]" required>
+
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
+                        <?php if (!$hasCustomer): ?>
                         <!-- Address Section -->
                         <h4 class="mt-4 mb-3">Address Information</h4>
 
@@ -161,10 +180,12 @@
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <!-- Submit Button -->
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit"
+                                class="btn btn-primary"><?php echo ($hasCustomer) ? "Update" : "Register" ?></button>
                         </div>
 
                         <!-- Login Link -->

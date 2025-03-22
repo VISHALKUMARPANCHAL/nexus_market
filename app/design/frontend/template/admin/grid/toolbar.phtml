@@ -1,0 +1,15 @@
+<?php
+$count = $this->getTotalRecords();
+Mage::log($count);
+?>
+<h1>toolbar</h1>
+<form action="http://localhost/ecommerceweb/admin/product_index/list/" method="get">
+    <select name="limit" id="">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input type="text" name="page" id="" placeholder="page">
+    <!-- <input type="text"> -->
+</form>

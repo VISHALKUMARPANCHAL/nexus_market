@@ -15,10 +15,10 @@ $request = Mage::getModel('core/request');
 
                 <div class="d-flex gap-2 mt-3 overflow-auto pb-2">
                     <?php foreach ($productdata->getFilePath() as $index => $image): ?>
-                        <img src="<?php echo Mage::getBaseUrl() . $image ?>" alt="Thumbnail <?php echo $index + 1 ?>"
-                            class="rounded-3 border border-2 <?php echo $index === 0 ? 'border-primary' : 'border-light'; ?>"
-                            style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; opacity: <?php echo $index === 0 ? '1' : '0.7'; ?>;"
-                            onclick="changeImage(event, this.src, this)">
+                    <img src="<?php echo Mage::getBaseUrl() . $image ?>" alt="Thumbnail <?php echo $index + 1 ?>"
+                        class="rounded-3 border border-2 <?php echo $index === 0 ? 'border-primary' : 'border-light'; ?>"
+                        style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; opacity: <?php echo $index === 0 ? '1' : '0.7'; ?>;"
+                        onclick="changeImage(event, this.src, this)">
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -43,7 +43,7 @@ $request = Mage::getModel('core/request');
                     <?php echo $productdata->getDescription() ?>
                 </div>
 
-                <form action="<?php echo $this->getUrl('checkout/cart/add') ?>" method="post">
+                <form>
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
                         <button type="button" class="btn btn-outline-secondary" id="decrease">-</button>
@@ -84,25 +84,28 @@ $request = Mage::getModel('core/request');
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        // $("form").on('submit', function(event) {
-        //     event.preventDefault();
-        //     $.ajax({
-        //         url: "http://localhost/ecommerceweb/checkout/cart/add",
-        //         type: "POST",
-        //         data: {
-        //             product_id: $('#product_id').val(),
-        //             quantity: $('#quantity').val()
-        //         },
-        //         dataType: "json",
-        //         success: function() {
-        //             alert("add to cart successfully");
-        //         },
-        //         error: function() {
-        //             alert("error");
-        //         }
-        //     });
+$(document).ready(function() {
+    $("form").on('submit', function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: "http://localhost/ecommerceweb/checkout/cart/add",
+            type: "POST",
+            data: {
+                product_id: $('#product_id').val(),
+                quantity: $('#quantity').val()
+            },
+            // dataType: "json",
+            success: function(res) {
+                console.log(res);
+                alert("add to cart successfully");
+            },
+            error: function() {
+                // console.log("Error:", res);
+                console.log("error while add to cart");
 
-        // });
+            }
+        });
+
     });
+});
 </script>

@@ -59,6 +59,10 @@ class Core_Block_Template
     {
         include_once(Mage::getBaseDir() . 'app/design/frontend/template/' . $this->_template);
     }
+    public function getRequest()
+    {
+        return Mage::getModel('core/request');
+    }
     public function getUrl($url)
     {
         $request = Mage::getModel('core/request');

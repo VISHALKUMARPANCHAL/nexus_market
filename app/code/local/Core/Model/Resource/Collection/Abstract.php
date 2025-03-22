@@ -346,11 +346,11 @@ class Core_Model_Resource_Collection_Abstract
         ];
         return $this;
     }
-    public function limit($limit, $offset = "")
+    public function limit($limit, $offset = 0)
     {
         $this->_select["LIMIT"] = [
             'limit' => $limit,
-            'offset' => $offset
+            'offset' => ($offset) ? (($offset - 1) * $limit) : $offset
         ];
         return $this;
     }

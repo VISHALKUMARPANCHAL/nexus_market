@@ -7,11 +7,10 @@ class Admin_Controller_Account extends Core_Controller_Admin_Action
     ];
     public function loginAction()
     {
-        $layout = $this->getLayout();
-        $login = $layout->createBlock('admin/account_login')
+        $login = $this->getLayout()->createBlock('admin/account_login')
             ->setTemplate('admin/account/login.phtml');
-        $layout->getChild('content')->addChild('login', $login);
-        $layout->toHtml();
+        $this->getLayout()->getChild('content')->addChild('login', $login);
+        $this->getLayout()->toHtml();
     }
     public function loginPostAction()
     {
@@ -20,7 +19,7 @@ class Admin_Controller_Account extends Core_Controller_Admin_Action
         $admin = Mage::getSingleton('admin/user')->load($params['username'], 'username');
         if ($admin->getUsername() == $params['username'] && $admin->getPasswordHash() == $params['password']) {
             $session->set('login', 1);
-            $this->redirect('admin');
+            $this->redirect('admin/dashboard/index');
         } else {
             $session->remove('login');
             $this->redirect('admin/account/login');

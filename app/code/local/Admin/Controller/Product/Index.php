@@ -3,20 +3,18 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
 {
     public function newAction()
     {
-        $layout = $this->getLayout();
-        $new = $layout->createBlock('admin/product_index_new')
+        $new = $this->getLayout()->createBlock('admin/product_index_new')
             ->setTemplate('admin/product/index/new.phtml');
-        $layout->getChild('content')->addChild('new', $new);
-        $layout->getChild('head')->addJs('page/admin/product/new.js', $new);
-        $layout->toHtml();
+        $this->getLayout()->getChild('content')->addChild('new', $new);
+        $this->getLayout()->getChild('head')->addJs('page/admin/product/new.js', $new);
+        $this->getLayout()->toHtml();
     }
     public function listAction()
     {
-        $layout = $this->getLayout();
-        $list = $layout->createBlock('admin/product_index_list')
+        $list = $this->getLayout()->createBlock('admin/product_index_list')
             ->setTemplate('admin/product/index/list.phtml');
-        $layout->getChild('content')->addChild('list', $list);
-        $layout->toHtml();
+        $this->getLayout()->getChild('content')->addChild('list', $list);
+        $this->getLayout()->toHtml();
     }
     public function saveAction()
     {

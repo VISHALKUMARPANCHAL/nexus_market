@@ -78,7 +78,7 @@ class Core_Model_Resource_Abstract
                 }
             }
             $sql = sprintf(
-                "UPDATE %s SET %s WHERE %s = %d",
+                "UPDATE `%s` SET %s WHERE %s = %d",
                 $this->_tableName,
                 implode(',', $columns),
                 $primarykey,
