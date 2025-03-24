@@ -1,12 +1,12 @@
 <?php
-class Admin_Block_Grid_Toolbar extends Core_Block_Template
+class Customer_Block_Grid_Toolbar extends Core_Block_Template
 {
     protected $_limit = 10;
     protected $_page = 1;
     protected $_collection;
     public function __construct()
     {
-        $this->_template = "admin/grid/toolbar.phtml";
+        $this->_template = "customer/grid/toolbar.phtml";
     }
     public function prepareToolbar()
     {

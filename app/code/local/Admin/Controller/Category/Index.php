@@ -4,8 +4,7 @@ class Admin_Controller_Category_Index extends Core_Controller_Admin_Action
 {
     public function newAction()
     {
-        $new = $this->getLayout()->createBlock('admin/category_index_new')
-            ->setTemplate('admin/category/index/new.phtml');
+        $new = $this->getLayout()->createBlock('admin/category_index_new');
         $this->getLayout()->getChild('content')->addChild('new', $new);
         $this->getLayout()->toHtml();
     }

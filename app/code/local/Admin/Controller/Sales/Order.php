@@ -1,5 +1,5 @@
 <?php
-class Admin_Controller_Order extends Core_Controller_Admin_Action
+class Admin_Controller_Sales_Order extends Core_Controller_Admin_Action
 {
     public function indexAction()
     {
@@ -18,6 +18,12 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
             ->createBlock('admin/sales_order_view')
             ->setOrder($order);
 
+        $this->getLayout()->getChild('head')
+            ->addCss("page/admin/sales/order/view.css");
+
+        $this->getLayout()->getChild("content")
+            ->addChild("view", $view);
+
         $orderinfo = $this->getLayout()
             ->createBlock('admin/sales_order_view_orderinfo');
         $view->addChild("orderinfo", $orderinfo);
@@ -28,7 +34,8 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
 
         $addressinfo = $this->getLayout()
             ->createBlock('admin/sales_order_view_addressinfo');
-        $view->addChild("addressinfo", $addressinfo);
+        // $view->addChild("addressinfo", $addressinfo);
+        // Mage::log($this->getLayout());
 
         $this->getLayout()->getChild('head')
             ->addCss("page/admin/sales/order/view.css");
@@ -42,6 +49,6 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
     {
         $data = $this->getRequest()->getParams();
         Mage::getModel('sales/order')->setData($data)->save();
-        $this->redirect('admin/order/index');
+        $this->redirect('admin/sales_order/index');
     }
 }

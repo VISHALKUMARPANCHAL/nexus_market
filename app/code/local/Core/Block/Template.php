@@ -27,6 +27,10 @@ class Core_Block_Template
     {
         return Mage::getBlockSingleton('core/layout');
     }
+    public function getAdminLayout()
+    {
+        return Mage::getBlockSingleton('core/layout_admin');
+    }
     public function removeChild($key)
     {
         if (isset($this->_child[$key])) {

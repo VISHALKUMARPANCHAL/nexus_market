@@ -156,25 +156,27 @@ $orders = $this->getOrderData();
                                         <input type="hidden" value="<?php echo $order->getOrderId() ?>" name="order_id">
 
                                         <li><button type="submit" name="order_status" value="Pending"
-                                                class="dropdown-item text-warning">Pending</button></li>
+                                                class="dropdown-item text-warning m-0 shadow-none">Pending</button></li>
                                         <li><button type="submit" name="order_status" value="Processing"
-                                                class="dropdown-item text-primary">Processing</button></li>
+                                                class="dropdown-item text-primary m-0 shadow-none">Processing</button>
+                                        </li>
                                         <li><button type="submit" name="order_status" value="Shipped"
-                                                class="dropdown-item text-info">Shipped</button></li>
+                                                class="dropdown-item text-info m-0 shadow-none">Shipped</button></li>
                                         <li><button type="submit" name="order_status" value="Delivered"
-                                                class="dropdown-item text-success">Delivered</button></li>
+                                                class="dropdown-item text-success m-0 shadow-none">Delivered</button>
+                                        </li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li><button type="submit" name="order_status" value="Cancelled"
-                                                class="dropdown-item text-danger">Cancelled</button>
+                                                class="dropdown-item text-danger m-0 shadow-none">Cancelled</button>
                                         </li>
                                     </form>
                                 </td>
 
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a href="<?php echo Mage::getBaseUrl() . "admin/order/" . "view/?id={$order->getOrderId()}" ?>"
+                                        <a href="<?php echo Mage::getBaseUrl() . "admin/sales_order/" . "view/?id={$order->getOrderId()}" ?>"
                                             class="btn btn-xs btn-outline-primary">View</a>
                                     </div>
                                 </td>
@@ -184,26 +186,8 @@ $orders = $this->getOrderData();
                     </table>
                 </div>
             </div>
-            <!-- <div class="card-footer bg-white">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <span class="text-muted">Showing 1-2 of 2 orders</span>
-                    </div>
-                    <div class="col-md-6">
-                        <nav aria-label="Page navigation example" class="float-md-end">
-                            <ul class="pagination pagination-sm mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div> -->
+            <?php $this->getChildHtml('toolbar') ?>
+
         </div>
     </div>
 </div>
