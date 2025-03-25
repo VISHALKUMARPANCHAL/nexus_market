@@ -15,6 +15,7 @@ class Customer_Model_Account extends Core_Model_Abstract
         if (empty($customer_address)) {
             Mage::getModel('customer/account_address')
                 ->setData($this->getData())
+                ->setIsDefault(1)
                 ->save();
         }
     }

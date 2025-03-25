@@ -27,11 +27,12 @@
                         <a href="<?php echo Mage::getBaseUrl(); ?>catalog/product/view/?id=<?php echo $product->getProductId() ?>"
                             class="btn btn-primary">View
                             Product</a>
-                        <button class="btn btn-outline-secondary">Add to Cart</button>
+                        <!-- <button class="btn btn-outline-secondary">Add to Cart</button> -->
                     </div>
                 </div>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
+    <?php $this->getChildHtml('toolbar'); ?>
 </div>

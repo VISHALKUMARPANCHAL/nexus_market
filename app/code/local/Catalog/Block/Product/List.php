@@ -9,11 +9,7 @@ class Catalog_Block_Product_List extends Core_Block_Template
         $this->addChild("filter", $filter);
         $this->addChild("products", $products);
     }
-    public function getProducts()
-    {
-        $products = Mage::getModel('catalog/filter')->getProductCollection()->getData();
-        return $products;
-    }
+
     public function getImagePath($pid)
     {
         $product = Mage::getModel('catalog/product')->load($pid);

@@ -48,4 +48,38 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $filter = Mage::getSingleton('catalog/filter');
         $filter->getCollection();
     }
+    public function importAction()
+    {
+        if (isset($_POST["Import"])) {
+            $filename = $_FILES["file"]["tmp_name"];
+            if (pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION) != "csv") {
+                echo "Please upload a CSV file.";
+            } else {
+                $file = fopen($filename, "r");
+                $columns = fgetcsv($file, 1000, ",");
+                foreach ($columns as $key => $column) {
+                    $parts = explode('_', $column);
+                    foreach ($parts as $key2 => $part) {
+                        if ($key2 > 0) {
+                            $parts[$key2] = ucfirst($part);
+                        }
+                    }
+                    $columns[$key] = implode('', $parts);
+                }
+                Mage::log($columns);
+                $product = Mage::getModel('catalog/product');
+                while (($csvData = fgetcsv($file, 1000, ",")) !== false) {
+                    Mage::log($csvData);
+                    foreach ($columns as $key => $column) {
+                        $set = "set{$column}";
+                        $product->$set($csvData[$key]);
+                    }
+                    break;
+                }
+                Mage::log($product);
+
+                // echo "yes";
+            }
+        }
+    }
 }

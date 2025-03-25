@@ -29,12 +29,11 @@ if ($currentPage % 5 == 0 && $currentPage > 0) {
 
 $queryParams = $_GET;
 unset($queryParams['page'], $queryParams['limit']);
-
-// Convert remaining parameters into a query string
 $baseQuery = http_build_query($queryParams);
 $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
 // Mage::log($baseUrl);
-
+// echo $baseUrl;
+// die;
 ?>
 <style>
 .pagination-info {
@@ -75,7 +74,7 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
                     </div>
 
                     <div class="input-group w-auto">
-                        <label class="input-group-text" for="items-per-page">Items per page</label>
+                        <label class="input-group-text" for="items-per-page">Items</label>
                         <select class="form-select m-0" id="items-per-page" name="limit">
                             <?php
                             $options = [10, 25, 50, 100];

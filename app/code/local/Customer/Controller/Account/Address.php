@@ -35,6 +35,8 @@ class Customer_Controller_Account_Address extends Core_Controller_Front_Action
     public function saveAction()
     {
         $customerData = $this->getRequest()->getParam('customer_account_address');
+        // Mage::log($customerData);
+        // die;
         $customerData['customer_id'] = Mage::getSingleton('core/session')->get('customer_id');
         Mage::getModel('customer/account_address')
             ->setData($customerData)

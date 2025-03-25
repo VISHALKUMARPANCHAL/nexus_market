@@ -79,6 +79,7 @@ const FilterApp = {
             let jsonString = JSON.stringify(filters);
             // console.log(jsonString);
             let encodedData = btoa(jsonString); // Base64 encode
+            // let encodedData = (jsonString); // Base64 encode
             // console.log(encodedData);
 
             // Update the URL with encoded data
@@ -97,6 +98,7 @@ const FilterApp = {
             try {
                 // Decode Base64 back to JSON
                 let decodedData = atob(encodedData);
+                // let decodedData = (encodedData);
                 let filters = JSON.parse(decodedData);
                 // console.log(filters);
                 if (filters) {

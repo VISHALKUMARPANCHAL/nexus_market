@@ -29,8 +29,6 @@ if ($currentPage % 5 == 0 && $currentPage > 0) {
 
 $queryParams = $_GET;
 unset($queryParams['page'], $queryParams['limit']);
-
-// Convert remaining parameters into a query string
 $baseQuery = http_build_query($queryParams);
 $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
 // Mage::log($baseUrl);

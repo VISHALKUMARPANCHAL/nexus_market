@@ -8,14 +8,17 @@ class Admin_Block_Category_Index_List extends Core_Block_Template
     {
         $this->setTemplate('admin/category/index/new.phtml');
         $toolbar = $this->getLayout()->createBlock('admin/grid_toolbar');
+        $csv = $this->getLayout()->createBlock('admin/export_csv');
         $this->addChild('toolbar', $toolbar);
+        $this->addChild('csv', $csv);
         $this->init();
     }
     public function init()
     {
         $this->_collection = Mage::getModel('catalog/category')
-            ->getcollection();
+            ->getCollection();
         $this->getChild('toolbar')->prepareToolbar();
+        $this->getChild('csv')->prepareCsv();
     }
     public function getCollection()
     {

@@ -14,7 +14,8 @@ class Checkout_Controller_Cart extends Core_Controller_Customer_Action
         Mage::getSingleton('checkout/session')->getCart()
             ->addProduct($data['product_id'], $data['quantity'])
             ->save();
-        $this->redirect('checkout/cart/index');
+        // echo "1";
+        // $this->redirect('checkout/cart/index');
     }
 
     public function removeAction()
