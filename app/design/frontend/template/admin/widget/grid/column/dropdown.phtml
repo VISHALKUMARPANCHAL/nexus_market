@@ -1,0 +1,10 @@
+<?php
+$data = $this->getData();
+$row = $this->getRow();
+?>
+<select name="" id="">
+    <?php foreach ($data['options'] as $option): ?>
+        <option value="<?php echo $option ?>" <?php echo ($option == $row->{$data['data_index']}) ? "selected" : "" ?>>
+            <?php echo $option ?></option>
+    <?php endforeach; ?>
+</select>

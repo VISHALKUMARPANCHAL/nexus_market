@@ -179,9 +179,11 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
         ) {
             $session->set('customer_id', $customer->getCustomerId());
             $this->redirect('customer/account/dashboard');
+            $this->getRequest()->getMessageModel()->addMessage('success', "successfully login");
         } else {
             $session->remove('customer_id');
             $this->redirect('customer/account/login');
+            $this->getRequest()->getMessageModel()->addMessage('warning', "Wrong credentials!");
         }
     }
     public function saveAction()
@@ -192,8 +194,6 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
             unset($customerData['password']);
             unset($customerData['customer_id']);
         }
-        // Mage::log($customerData);
-        // die;
         $customerId = Mage::getModel('customer/account')
             ->setData($customerData)
             ->save()
@@ -201,7 +201,7 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
         $session = Mage::getSingleton('core/session');
         if ($customerId) {
             $session->set('customer_id', $customerId);
-            $this->redirect('customer/account/dashboard ');
+            $this->redirect('customer/account/dashboard');
         } else {
             $this->redirect('customer/account/registration');
         }

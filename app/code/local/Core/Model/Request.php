@@ -21,6 +21,10 @@ class Core_Model_Request
         $stringUrl = str_replace('/ecommerceweb/', '', $stringUrl);
         return $stringUrl;
     }
+    public function getMessageModel()
+    {
+        return Mage::getSingleton('core/message');
+    }
     public function getModuleName()
     {
         return $this->_moduleName;

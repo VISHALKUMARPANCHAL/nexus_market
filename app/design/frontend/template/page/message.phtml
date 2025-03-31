@@ -1,0 +1,22 @@
+<?php
+$messages = $this->getMessage();
+?>
+<?php foreach ($messages as $type => $message): ?>
+<?php
+    $class = ($type == "error") ? "danger" : $type;
+    $getFunc = sprintf("get%s", ucfirst($type));
+    ?>
+<?php foreach ($this->$getFunc() as $_message): ?>
+<div class="alert alert-<?php echo $class; ?>" role="alert">
+    <?php echo $_message; ?>
+</div>
+<?php endforeach; ?>
+<?php endforeach; ?>
+
+<script>
+$(document).ready(function() {
+    setTimeout(function() {
+        $(".alert").fadeOut("slow");
+    }, 3000);
+});
+</script>

@@ -51,6 +51,10 @@ select {
     font-size: 16px;
     transition: box-shadow 0.3s ease;
 }
+.w-custom{
+    width: calc(100% - -20px);
+    padding: 12px 0px;
+}
 
 form input :focus,
 textarea:focus,

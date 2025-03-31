@@ -3,13 +3,16 @@ class Core_Block_Template
 {
     protected $_child = [];
     protected $_parent = null;
-
     protected $_template;
     public function addChild($key, $block)
     {
         $block->setParent($this);
         $this->_child[$key] = $block;
         return $this;
+    }
+    public function toHtml()
+    {
+        include(Mage::getBaseDir() . 'app/design/frontend/template/' . $this->_template);
     }
     public function setParent($a)
     {
@@ -21,7 +24,6 @@ class Core_Block_Template
     {
         return $this->_parent;
     }
-
 
     public function getLayout()
     {
@@ -59,10 +61,7 @@ class Core_Block_Template
         return $this;
     }
 
-    public function toHtml()
-    {
-        include_once(Mage::getBaseDir() . 'app/design/frontend/template/' . $this->_template);
-    }
+
     public function getRequest()
     {
         return Mage::getModel('core/request');

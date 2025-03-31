@@ -1,0 +1,116 @@
+<?php
+// echo '123';
+// die;
+$count = $this->getTotalRecords();
+$currentPage = $this->getPage();
+$limit = $this->getLimit();
+$totalPages = round($count / $limit);
+$totalPages = (($count / $limit) > $totalPages) ? $totalPages + 1 : $totalPages;
+$pages = [];
+if ($currentPage % 5 == 0 && $currentPage > 0) {
+    for ($i = $currentPage; $i <= $currentPage + 5; $i++) {
+        array_push($pages, $i);
+        if ($i == $totalPages) {
+            break;
+        }
+    }
+} else {
+    $start = $currentPage + (1 - $currentPage % 5);
+    $end = $currentPage + (5 - $currentPage % 5);
+    for ($i = $start - 1; $i <= $end; $i++) {
+        if ($i == 0) {
+            continue;
+        }
+        array_push($pages, $i);
+        if ($i == $totalPages) {
+            break;
+        }
+    }
+}
+
+
+$queryParams = $_GET;
+unset($queryParams['page'], $queryParams['limit']);
+$baseQuery = http_build_query($queryParams);
+$baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
+// Mage::log($baseUrl);
+
+?>
+<style>
+.pagination-info {
+    color: #6c757d;
+}
+</style>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="d-flex flex-row align-items-center justify-content-center">
+                <!-- Pagination Controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+                        <li class="page-item <?php echo ($currentPage <= 1) ? 'disabled' : ''; ?>">
+                            <a class="page-link"
+                                href="<?php echo $baseUrl; ?> limit=<?php echo $limit; ?>&page=<?php echo $currentPage - 1; ?>">Previous</a>
+                        </li>
+                        <?php foreach ($pages as $page): ?>
+                        <li class="page-item <?php echo ($page == $currentPage) ? "active" : "" ?>">
+                            <a class="page-link"
+                                href="<?php echo $baseUrl; ?>limit=<?php echo $limit; ?>&page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                        </li>
+                        <?php endforeach; ?>
+
+                        <li class="page-item <?php echo ($currentPage >= $totalPages) ? 'disabled' : ''; ?>">
+                            <a class="page-link"
+                                href="<?php echo $baseUrl; ?>limit=<?php echo $limit; ?>&page=<?php echo $currentPage + 1; ?>">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <form class="d-flex m-0 w-100 m-0 p-0 bg-transparent border-0 shadow-none" id="form" method="get">
+                    <div class="input-group me-2 w-auto">
+                        <span class="input-group-text h-100">Jump to</span>
+                        <input type="number" class="form-control m-0 w-25 h-100" name="page" min="1" id="page"
+                            max="<?php echo $totalPages; ?>" value="<?php echo $currentPage; ?>">
+                        <button class="btn btn-outline-secondary m-0 h-100" type="submit">Go</button>
+                    </div>
+
+                    <div class="input-group w-auto h-25">
+                        <label class="input-group-text" for="items-per-page">Items per page</label>
+                        <select class="form-select m-0" id="items-per-page" name="limit">
+                            <?php
+                            $options = [10, 25, 50, 100];
+                            foreach ($options as $option): ?>
+                            <option value="<?php echo $option; ?>" <?php echo ($limit == $option) ? "selected" : "" ?>>
+                                <?php echo $option; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pagination-info text-center mt-2">
+    Page <?php echo $currentPage; ?> of <?php echo $totalPages; ?>
+</div>
+</div>
+<script>
+$(document).ready(function() {
+    let urlParams = new URLSearchParams(window.location.search);
+    let form = $("#form");
+
+    // Remove 'page' and 'limit' to prevent duplicate values
+    urlParams.delete("page");
+    urlParams.delete("limit");
+
+    // Append existing URL parameters as hidden input fields
+    urlParams.forEach(function(value, key) {
+        form.append(`<input type="hidden" name="${key}" value="${value}">`);
+    });
+    $('#items-per-page').on("change", function() {
+        $("#form").submit();
+    });
+
+});
+</script>

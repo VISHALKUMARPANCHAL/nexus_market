@@ -1,0 +1,9 @@
+<?php
+$queryParams = $_GET;
+unset($queryParams['export']);
+$baseQuery = http_build_query($queryParams);
+$baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
+?>
+<a href="<?php echo $baseUrl; ?>export=true" class="btn btn-sm btn-outline-secondary">
+    <i class="fa-solid fa-file-export"></i> Export
+</a>

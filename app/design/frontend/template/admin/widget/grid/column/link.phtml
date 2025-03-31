@@ -1,0 +1,10 @@
+<?php
+$data = $this->getData();
+$row = $this->getRow()->getData();
+$query = [];
+foreach ($data['params'] as $key => $value) {
+    $query[] = "{$key}={$row[$value]}";
+}
+$params = implode("&", $query);
+?>
+<a href="<?php echo $this->getUrl($data['url']); ?>?<?php echo $params ?>"><?php echo $data['lable']; ?></a>

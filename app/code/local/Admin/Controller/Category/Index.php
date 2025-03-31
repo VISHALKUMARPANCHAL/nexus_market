@@ -10,8 +10,8 @@ class Admin_Controller_Category_Index extends Core_Controller_Admin_Action
     }
     public function listAction()
     {
-        $list = $this->getLayout()->createBlock('admin/category_index_list')
-            ->setTemplate('admin/category/index/list.phtml');
+        $list = $this->getLayout()->createBlock('admin/category_index_list');
+        // ->setTemplate('admin/category/index/list.phtml');
         $this->getLayout()->getChild('content')->addChild('list', $list);
         $this->getLayout()->toHtml();
     }
@@ -26,7 +26,7 @@ class Admin_Controller_Category_Index extends Core_Controller_Admin_Action
     {
         $product = Mage::getModel('catalog/category');
         $productId = $this->getRequest()->getQuery('id');
-        $product->setData($productId);
+        $product->setCategoryId($productId);
         $product->delete();
         $this->redirect('admin/category_index/list');
     }

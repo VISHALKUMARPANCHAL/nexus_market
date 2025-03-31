@@ -25,9 +25,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $product = Mage::getModel('catalog/product')
             ->load($pdata['product_id'])
             ->setData($pdata);
-        // Mage::log($product);
         $product->save();
-        // die;
         $this->redirect('admin/product_index/list');
     }
     public function deleteAction()
@@ -57,26 +55,22 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
             } else {
                 $file = fopen($filename, "r");
                 $columns = fgetcsv($file, 1000, ",");
-                foreach ($columns as $key => $column) {
-                    $parts = explode('_', $column);
-                    foreach ($parts as $key2 => $part) {
-                        if ($key2 > 0) {
-                            $parts[$key2] = ucfirst($part);
-                        }
-                    }
-                    $columns[$key] = implode('', $parts);
-                }
+                // foreach ($columns as $key => $column) {
+                //     $parts = explode('_', $column);
+                //     foreach ($parts as $key2 => $part) {
+                //         if ($key2 > 0) {
+                //             $parts[$key2] = ucfirst($part);
+                //         }
+                //     }
+                //     $columns[$key] = implode('', $parts);
+                // }
                 Mage::log($columns);
-                $product = Mage::getModel('catalog/product');
                 while (($csvData = fgetcsv($file, 1000, ",")) !== false) {
-                    Mage::log($csvData);
-                    foreach ($columns as $key => $column) {
-                        $set = "set{$column}";
-                        $product->$set($csvData[$key]);
-                    }
-                    break;
+                    $data = array_combine($columns, $csvData);
+                    $product = Mage::getModel('catalog/product');
+                    $product->setData($data)->save();
+                    Mage::log($product);
                 }
-                Mage::log($product);
 
                 // echo "yes";
             }

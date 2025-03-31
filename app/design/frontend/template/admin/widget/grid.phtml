@@ -1,0 +1,38 @@
+<?php
+$category = $this->getCollection()->getData();
+$columns = $this->getColumns();
+?>
+
+<?php $this->getChildHtml('toolbar'); ?>
+<?php $this->getChildHtml('export'); ?>
+<table>
+    <thead>
+        <tr>
+            <?php foreach ($columns as $column): ?>
+            <th><?php echo $column->getData()['lable'] ?></th>
+            <?php endforeach; ?>
+        </tr>
+        <tr>
+            <?php foreach ($columns as $column):
+            ?>
+            <th><?php
+                    echo $column->getFilter()->render();
+
+                    ?></th>
+            <?php endforeach;
+            ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($category as $row): ?>
+        <tr>
+            <?php foreach ($columns as $column): ?>
+            <td><?php
+                        $column->setRow($row);
+                        echo $column->render();
+                        ?></td>
+            <?php endforeach; ?>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
