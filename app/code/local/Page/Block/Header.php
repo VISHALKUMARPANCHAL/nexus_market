@@ -28,6 +28,6 @@ class Page_Block_Header extends Core_Block_Template
     public function isAdminSession()
     {
         return Mage::getSingleton('core/session')
-            ->get('login');
+            ->get('admin_id');
     }
 }

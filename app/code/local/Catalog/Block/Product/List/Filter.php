@@ -5,4 +5,5 @@ class Catalog_Block_Product_List_Filter extends Catalog_Block_Product_List
     {
         $this->setTemplate('catalog/product/list/filter.phtml');
     }
+    public function getFilterUrl($filter, $value) {}
 }

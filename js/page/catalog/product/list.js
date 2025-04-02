@@ -20,23 +20,10 @@ const FilterApp = {
             url: 'http://localhost/ecommerceweb/catalog/product/list/',
             type: 'GET',
             data: formData,
-            // success: function(response) {
-
-            //     // let $response = $(response);
-            //     let $productsGrid = $(response).find('#products-container');
-            //     // console.log($productsGrid);
-
-            //     $('#products-container').html($productsGrid);
-            // },
             success: function(response) {
-                // console.log(queryParams);
-                // console.log(response); // Debugging - Log the received JSON data
                 let productContainer = $("#products-container");
                 let extractedContent = $(response).find("#products-container").html();
-                // Clear existing product list and append new ones dynamically
                 productContainer.empty();
-
-                // productContainer.html(response);
                 productContainer.html(extractedContent);
 
             },
@@ -77,11 +64,8 @@ const FilterApp = {
         try {
             // Convert object to JSON and encode with Base64
             let jsonString = JSON.stringify(filters);
-            // console.log(jsonString);
             let encodedData = btoa(jsonString); // Base64 encode
             // let encodedData = (jsonString); // Base64 encode
-            // console.log(encodedData);
-
             // Update the URL with encoded data
             window.history.pushState({}, '', `?data=${encodedData}`);
         } catch (error) {
@@ -92,8 +76,6 @@ const FilterApp = {
     fetchProductsFromEncodedURL: function() {
         let urlParams = new URLSearchParams(window.location.search);
         let encodedData = urlParams.get('data');
-        // console.log(encodedData);
-
         if (encodedData) {
             try {
                 // Decode Base64 back to JSON

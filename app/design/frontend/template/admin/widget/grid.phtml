@@ -9,15 +9,14 @@ $columns = $this->getColumns();
     <thead>
         <tr>
             <?php foreach ($columns as $column): ?>
-            <th><?php echo $column->getData()['lable'] ?></th>
+                <th><?php echo $column->getData()['lable'] ?></th>
             <?php endforeach; ?>
         </tr>
         <tr>
             <?php foreach ($columns as $column):
             ?>
-            <th><?php
+                <th><?php
                     echo $column->getFilter()->render();
-
                     ?></th>
             <?php endforeach;
             ?>
@@ -25,14 +24,21 @@ $columns = $this->getColumns();
     </thead>
     <tbody>
         <?php foreach ($category as $row): ?>
-        <tr>
-            <?php foreach ($columns as $column): ?>
-            <td><?php
+            <tr>
+                <?php foreach ($columns as $column): ?>
+                    <td><?php
                         $column->setRow($row);
                         echo $column->render();
                         ?></td>
-            <?php endforeach; ?>
-        </tr>
+                <?php endforeach; ?>
+            </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+
+<script>
+    console.log("123");
+    $('select').on('change', function() {
+        $('form').submit();
+    });
+</script>

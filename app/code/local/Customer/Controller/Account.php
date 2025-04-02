@@ -167,6 +167,7 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
             $session->remove('customer_id');
         }
         $this->redirect('customer/account/login');
+        $this->getRequest()->getMessageModel()->addMessage('success', "successfully logout!");
     }
     public function validateAction()
     {

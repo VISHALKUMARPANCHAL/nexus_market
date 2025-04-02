@@ -29,3 +29,17 @@ function changeImage(event, src) {
     document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
     event.target.classList.add('active');
 }
+function togglePassword() {
+    const passwordInput = $('#floatingPassword');
+    const toggleIcon = $('#toggleIcon');
+
+    if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text');
+        toggleIcon.removeClass('fa-eye');
+        toggleIcon.addClass('fa-eye-slash');
+    } else {
+        passwordInput.attr('type', 'password');
+        toggleIcon.removeClass('fa-eye-slash');
+        toggleIcon.addClass('fa-eye');
+    }
+}

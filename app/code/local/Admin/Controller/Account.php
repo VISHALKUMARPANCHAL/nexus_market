@@ -17,8 +17,10 @@ class Admin_Controller_Account extends Core_Controller_Admin_Action
         $session = Mage::getSingleton('core/session');
         $params = $this->getRequest()->getParams();
         $admin = Mage::getSingleton('admin/user')->load($params['username'], 'username');
+        Mage::log($admin);
+
         if ($admin->getUsername() == $params['username'] && $admin->getPasswordHash() == $params['password']) {
-            $session->set('login', 1);
+            $session->set('admin_id', $admin->getAdminId());
             $this->redirect('admin/dashboard/index');
         } else {
             $session->remove('login');
@@ -28,8 +30,8 @@ class Admin_Controller_Account extends Core_Controller_Admin_Action
     public function logoutAction()
     {
         $session = Mage::getSingleton('core/session');
-        if ($session->get('login')) {
-            $session->remove('login');
+        if ($session->get('admin_id')) {
+            $session->remove('admin_id');
         }
         $this->redirect('admin/account/login');
     }

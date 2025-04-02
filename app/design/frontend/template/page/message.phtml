@@ -1,22 +1,85 @@
 <?php
 $messages = $this->getMessage();
 ?>
-<?php foreach ($messages as $type => $message): ?>
-<?php
-    $class = ($type == "error") ? "danger" : $type;
-    $getFunc = sprintf("get%s", ucfirst($type));
-    ?>
-<?php foreach ($this->$getFunc() as $_message): ?>
-<div class="alert alert-<?php echo $class; ?>" role="alert">
-    <?php echo $_message; ?>
+
+<!-- Enhanced notification container -->
+<div class="notification-container position-fixed top-0 end-0 p-3">
+    <?php foreach ($messages as $type => $message): ?>
+        <?php
+        $class = ($type == "error") ? "danger" : $type;
+        $icon = ($class == "success") ? "check-circle" : (($class == "danger") ? "exclamation-triangle" : (($class == "warning") ? "exclamation-circle" : "info-circle"));
+        $getFunc = sprintf("get%s", ucfirst($type));
+        ?>
+        <?php foreach ($this->$getFunc() as $_message): ?>
+            <div class="toast show mb-3 notification-toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-<?php echo $class; ?> text-white">
+                    <i class="bi bi-<?php echo $icon; ?> me-2"></i>
+                    <strong class="me-auto"><?php echo ucfirst($type); ?> Notification</strong>
+                    <small>Just now</small>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body border border-<?php echo $class; ?> border-top-0 shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="toast-message"><?php echo $_message; ?></div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
 </div>
-<?php endforeach; ?>
-<?php endforeach; ?>
 
 <script>
-$(document).ready(function() {
-    setTimeout(function() {
-        $(".alert").fadeOut("slow");
-    }, 3000);
-});
+    $(document).ready(function() {
+        // Add animation for entry
+        $(".notification-toast").each(function(index) {
+            $(this).css("animation-delay", (index * 0.15) + "s");
+        });
+
+        // Auto-dismiss functionality
+        setTimeout(function() {
+            $(".notification-toast").each(function(index) {
+                const $toast = $(this);
+                setTimeout(function() {
+                    $toast.fadeOut("slow", function() {
+                        $(this).remove();
+                    });
+                }, index * 150 + 3000);
+            });
+        }, 1000);
+
+        // Manual close button functionality
+        $(".btn-close").on("click", function() {
+            $(this).closest(".notification-toast").fadeOut("slow", function() {
+                $(this).remove();
+            });
+        });
+    });
 </script>
+
+<style>
+    .notification-container {
+        z-index: 1050;
+        max-width: 350px;
+    }
+
+    .notification-toast {
+        opacity: 0;
+        transform: translateX(100%);
+        animation: slideIn 0.5s forwards;
+    }
+
+    @keyframes slideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .toast-message {
+        word-break: break-word;
+    }
+
+    .toast-body {
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+</style>

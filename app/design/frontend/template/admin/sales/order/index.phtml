@@ -108,29 +108,29 @@ $orders = $this->getOrderData();
                         <tbody>
                             <!-- Order 56 from your data -->
                             <?php foreach ($orders as $order): ?>
-                            <tr>
-                                <td><a href="#"
-                                        class="fw-bold text-decoration-none"><?php echo $order->getOrderId() ?></a></td>
-                                <td><?php echo $order->getUpdatedAt() ?></td>
-                                <td>
-                                    <span class="badge badge-light"><?php echo $order->getCustomerId() ?></span>
-                                    <!-- <small class="d-block text-muted">-</small> -->
-                                </td>
-                                <td>
-                                    <span class="badge bg-secondary"><?php echo $order->getPaymentMethod() ?></span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-secondary"><?php echo $order->getShippingMethod() ?></span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-info text-dark"><?php echo $order->getCouponCode() ?></span>
-                                    <small class="d-block">-₹<?php echo $order->getCouponDiscount() ?></small>
-                                </td>
-                                <td>
-                                    <span class="fw-bold">₹<?php echo $order->getTotalAmount() ?></span>
-                                </td>
-                                <td>
-                                    <?php
+                                <tr>
+                                    <td><a href="#"
+                                            class="fw-bold text-decoration-none"><?php echo $order->getOrderId() ?></a></td>
+                                    <td><?php echo $order->getUpdatedAt() ?></td>
+                                    <td>
+                                        <span class="badge badge-light"><?php echo $order->getCustomerId() ?></span>
+                                        <!-- <small class="d-block text-muted">-</small> -->
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary"><?php echo $order->getPaymentMethod() ?></span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary"><?php echo $order->getShippingMethod() ?></span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info text-dark"><?php echo $order->getCouponCode() ?></span>
+                                        <small class="d-block">-₹<?php echo $order->getCouponDiscount() ?></small>
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold">₹<?php echo $order->getTotalAmount() ?></span>
+                                    </td>
+                                    <td>
+                                        <?php
                                         $class = "";
                                         if ($order->getOrderStatus() === "Pending") {
                                             $class = "warning";
@@ -144,50 +144,49 @@ $orders = $this->getOrderData();
                                             $class = "danger";
                                         }
                                         ?>
-                                    <span class="order-status status-pending bg-<?php echo $class ?>"></span>
-                                    <span><?php echo $order->getOrderStatus() ?></span>
-                                    <button type="button"
-                                        class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="visually-hidden">Toggle Dropdown</span>
-                                    </button>
-                                    <form action="<?php echo $this->getUrl('*/*/updatestatus') ?>" method="post"
-                                        class="dropdown-menu dropdown-menu-end">
-                                        <input type="hidden" value="<?php echo $order->getOrderId() ?>" name="order_id">
+                                        <span class="order-status status-pending bg-<?php echo $class ?>"></span>
+                                        <span><?php echo $order->getOrderStatus() ?></span>
+                                        <button type="button"
+                                            class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                        </button>
+                                        <form action="<?php echo $this->getUrl('*/*/updatestatus') ?>" method="post"
+                                            class="dropdown-menu dropdown-menu-end">
+                                            <input type="hidden" value="<?php echo $order->getOrderId() ?>" name="order_id">
 
-                                        <li><button type="submit" name="order_status" value="Pending"
-                                                class="dropdown-item text-warning m-0 shadow-none">Pending</button></li>
-                                        <li><button type="submit" name="order_status" value="Processing"
-                                                class="dropdown-item text-primary m-0 shadow-none">Processing</button>
-                                        </li>
-                                        <li><button type="submit" name="order_status" value="Shipped"
-                                                class="dropdown-item text-info m-0 shadow-none">Shipped</button></li>
-                                        <li><button type="submit" name="order_status" value="Delivered"
-                                                class="dropdown-item text-success m-0 shadow-none">Delivered</button>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><button type="submit" name="order_status" value="Cancelled"
-                                                class="dropdown-item text-danger m-0 shadow-none">Cancelled</button>
-                                        </li>
-                                    </form>
-                                </td>
+                                            <li><button type="submit" name="order_status" value="Pending"
+                                                    class="dropdown-item text-warning m-0 shadow-none">Pending</button></li>
+                                            <li><button type="submit" name="order_status" value="Processing"
+                                                    class="dropdown-item text-primary m-0 shadow-none">Processing</button>
+                                            </li>
+                                            <li><button type="submit" name="order_status" value="Shipped"
+                                                    class="dropdown-item text-info m-0 shadow-none">Shipped</button></li>
+                                            <li><button type="submit" name="order_status" value="Delivered"
+                                                    class="dropdown-item text-success m-0 shadow-none">Delivered</button>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><button type="submit" name="order_status" value="Cancelled"
+                                                    class="dropdown-item text-danger m-0 shadow-none">Cancelled</button>
+                                            </li>
+                                        </form>
+                                    </td>
 
-                                <td class="text-end">
-                                    <div class="btn-group">
-                                        <a href="<?php echo Mage::getBaseUrl() . "admin/sales_order/" . "view/?id={$order->getOrderId()}" ?>"
-                                            class="btn btn-xs btn-outline-primary">View</a>
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td class="text-end">
+                                        <div class="btn-group">
+                                            <a href="<?php echo Mage::getBaseUrl() . "admin/sales_order/" . "view/?id={$order->getOrderId()}" ?>"
+                                                class="btn btn-xs btn-outline-primary">View</a>
+                                        </div>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
             <?php $this->getChildHtml('toolbar') ?>
-
         </div>
     </div>
 </div>
