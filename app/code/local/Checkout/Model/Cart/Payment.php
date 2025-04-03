@@ -5,6 +5,7 @@ class Checkout_Model_Cart_Payment extends Core_Model_Abstract
     {
         $payment = [
             "Pay on Delivery",
+            "PayPal",
             "UPI",
             "Net Banking"
         ];

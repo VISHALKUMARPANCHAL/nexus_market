@@ -64,8 +64,8 @@ const FilterApp = {
         try {
             // Convert object to JSON and encode with Base64
             let jsonString = JSON.stringify(filters);
-            let encodedData = btoa(jsonString); // Base64 encode
-            // let encodedData = (jsonString); // Base64 encode
+            // let encodedData = btoa(jsonString); // Base64 encode
+            let encodedData = (jsonString); // Base64 encode
             // Update the URL with encoded data
             window.history.pushState({}, '', `?data=${encodedData}`);
         } catch (error) {

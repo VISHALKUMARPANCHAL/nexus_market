@@ -11,5 +11,11 @@ class Varien_Object
 
 spl_autoload_register(function ($className) {
     $classPath = str_replace("_", "/", $className);
-    require $classPath . '.php';
+    @include $classPath . '.php';
 });
+
+spl_autoload_register(function ($className) {
+    $classPath = str_replace("_", "/", $className);
+    @include getcwd() . '/lib/' . $classPath . '.php';
+});
+@include getcwd() . '/lib/PayPal/autoloader.php';

@@ -30,6 +30,7 @@ if ($currentPage % 5 == 0 && $currentPage > 0) {
 
 
 $queryParams = $_GET;
+Mage::log($_GET);
 unset($queryParams['page'], $queryParams['limit']);
 $baseQuery = http_build_query($queryParams);
 $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
@@ -37,9 +38,9 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
 
 ?>
 <style>
-.pagination-info {
-    color: #6c757d;
-}
+    .pagination-info {
+        color: #6c757d;
+    }
 </style>
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -53,10 +54,10 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
                                 href="<?php echo $baseUrl; ?> limit=<?php echo $limit; ?>&page=<?php echo $currentPage - 1; ?>">Previous</a>
                         </li>
                         <?php foreach ($pages as $page): ?>
-                        <li class="page-item <?php echo ($page == $currentPage) ? "active" : "" ?>">
-                            <a class="page-link"
-                                href="<?php echo $baseUrl; ?>limit=<?php echo $limit; ?>&page=<?php echo $page; ?>"><?php echo $page; ?></a>
-                        </li>
+                            <li class="page-item <?php echo ($page == $currentPage) ? "active" : "" ?>">
+                                <a class="page-link"
+                                    href="<?php echo $baseUrl; ?>limit=<?php echo $limit; ?>&page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                            </li>
                         <?php endforeach; ?>
 
                         <li class="page-item <?php echo ($currentPage >= $totalPages) ? 'disabled' : ''; ?>">
@@ -80,8 +81,8 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
                             <?php
                             $options = [10, 25, 50, 100];
                             foreach ($options as $option): ?>
-                            <option value="<?php echo $option; ?>" <?php echo ($limit == $option) ? "selected" : "" ?>>
-                                <?php echo $option; ?></option>
+                                <option value="<?php echo $option; ?>" <?php echo ($limit == $option) ? "selected" : "" ?>>
+                                    <?php echo $option; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -96,21 +97,21 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
 </div>
 </div>
 <script>
-$(document).ready(function() {
-    let urlParams = new URLSearchParams(window.location.search);
-    let form = $("#form");
+    $(document).ready(function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let form = $("#form");
 
-    // Remove 'page' and 'limit' to prevent duplicate values
-    urlParams.delete("page");
-    urlParams.delete("limit");
+        // Remove 'page' and 'limit' to prevent duplicate values
+        urlParams.delete("page");
+        urlParams.delete("limit");
 
-    // Append existing URL parameters as hidden input fields
-    urlParams.forEach(function(value, key) {
-        form.append(`<input type="hidden" name="${key}" value="${value}">`);
+        // Append existing URL parameters as hidden input fields
+        urlParams.forEach(function(value, key) {
+            form.append(`<input type="hidden" name="${key}" value="${value}">`);
+        });
+        $('#items-per-page').on("change", function() {
+            $("#form").submit();
+        });
+
     });
-    $('#items-per-page').on("change", function() {
-        $("#form").submit();
-    });
-
-});
 </script>
