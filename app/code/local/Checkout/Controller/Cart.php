@@ -6,6 +6,8 @@ class Checkout_Controller_Cart extends Core_Controller_Customer_Action
         $layout = Mage::getBlock('core/layout');
         $index = $layout->createBlock('checkout/cart_index');
         $layout->getChild('content')->addChild('index', $index);
+        $layout->getChild('head')->addJs("page/checkout/cart.js");
+
         $layout->toHtml();
     }
     public function addAction()
@@ -41,6 +43,8 @@ class Checkout_Controller_Cart extends Core_Controller_Customer_Action
     public function applyCouponAction()
     {
         $data = $this->getRequest()->getParams();
+        // Mage::log($data);
+        // die;
         $cart = Mage::getSingleton('checkout/session')
             ->getCart();
         $discount = Mage::getModel('checkout/coupon')

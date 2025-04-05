@@ -1,5 +1,5 @@
 <?php
-class Checkout_Model_Cart_Convert_Order
+class Checkout_Model_Convert_Order
 {
     public function convert($cart)
     {
@@ -8,9 +8,9 @@ class Checkout_Model_Cart_Convert_Order
         unset($cartData['created_at']);
         unset($cartData['updated_at']);
         $order = Mage::getModel('sales/order')
-            ->setData($cartData);
-        $orderId = $order->save()->getOrderId();
-
+            ->setData($cartData)
+            ->save();
+        $orderId = $order->getOrderId();
         $orderItem = Mage::getModel('sales/order_item');
         $cartItems = $cart
             ->getItemCollection()
@@ -45,5 +45,6 @@ class Checkout_Model_Cart_Convert_Order
         unset($shippingAddress['updated_at']);
         $orderAddress2->setData($shippingAddress);
         $orderAddress2->setOrderId($orderId)->save();
+        return $order;
     }
 }

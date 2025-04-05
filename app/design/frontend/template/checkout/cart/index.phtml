@@ -123,36 +123,40 @@ $isEmpty = empty($cartItems);
                 </div>
 
                 <!-- Discount Code with floating label -->
-                <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden">
+                <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden" id="couponCodediv">
                     <div class="card-header bg-white py-4 px-4 border-bottom">
                         <h5 class="fw-bold mb-0 text-primary">
                             <i class="fas fa-tag me-2"></i> Discount Code
                         </h5>
                     </div>
                     <div class="card-body p-4">
-                        <form action="<?php echo $this->getUrl('*/*/applyCoupon') ?>" method="post">
-                            <div class="input-group input-group-lg shadow-sm">
-                                <span class="input-group-text bg-transparent border-0 rounded-start-pill">
-                                    <i class="fas fa-ticket-alt text-primary"></i>
-                                </span>
-                                <input type="text" class="form-control py-3 border-0 h-64" name="coupon_code"
-                                    value="<?php echo $this->getCart()->getCouponCode() ?>"
-                                    placeholder="Enter coupon code" aria-label="Coupon Code"
-                                    <?php echo ($this->getCart()->getCouponCode()) ? "readonly" : "" ?>>
-                                <input type="hidden" value="<?php echo $this->getTotalAmount() ?>" name="sub_total">
-                                <button
-                                    class="btn <?php echo ($this->getCart()->getCouponCode()) ? "btn-danger" : "btn-primary" ?> px-4 py-3 rounded-end-pill"
-                                    type="submit" name="type"
-                                    value="<?php echo ($this->getCart()->getCouponCode()) ? "Remove" : "Apply" ?>">
-                                    <?php echo ($this->getCart()->getCouponCode()) ? "<i class='fas fa-times me-2'></i> Remove" : "<i class='fas fa-check me-2'></i> Apply" ?>
-                                </button>
-                            </div>
-                        </form>
+                        <!-- <form action="<?php //echo $this->getUrl('*/*/applyCoupon') 
+                                                ?>" method="post"> -->
+                        <!-- <form> -->
+                        <div class="input-group input-group-lg shadow-sm">
+                            <span class="input-group-text bg-transparent border-0 rounded-start-pill">
+                                <i class="fas fa-ticket-alt text-primary"></i>
+                            </span>
+                            <input type="text" class="form-control py-3 border-0 h-64" name="coupon_code"
+                                id="coupon_code" value="<?php echo $this->getCart()->getCouponCode() ?>"
+                                placeholder="Enter coupon code" aria-label="Coupon Code"
+                                <?php echo ($this->getCart()->getCouponCode()) ? "readonly" : "" ?>>
+                            <input type="hidden" value="<?php echo $this->getTotalAmount() ?>" id="sub_total"
+                                name="sub_total">
+                            <button
+                                class="btn <?php echo ($this->getCart()->getCouponCode()) ? "btn-danger" : "btn-primary" ?> px-4 py-3 rounded-end-pill"
+                                type="submit" name="type" id="type"
+                                value="<?php echo ($this->getCart()->getCouponCode()) ? "Remove" : "Apply" ?>">
+                                <?php echo ($this->getCart()->getCouponCode()) ? "<i class='fas fa-times me-2'></i> Remove" : "<i class='fas fa-check me-2'></i> Apply" ?>
+                            </button>
+                        </div>
+                        <!-- </form> -->
+                        <!-- </form> -->
                     </div>
                 </div>
 
                 <!-- Order Summary with improved layouts -->
-                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden" id="orderSummarydiv">
                     <div class="card-header bg-white py-4 px-4 border-bottom">
                         <h5 class="fw-bold mb-0 text-primary">
                             <i class="fas fa-file-invoice-dollar me-2"></i> Order Summary

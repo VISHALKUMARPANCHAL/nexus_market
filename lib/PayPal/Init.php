@@ -4,7 +4,7 @@ class PayPal_Init
     // protected $_includeFile;
     public function __construct()
     {
-        echo "123";
+        // echo "123";
         // $this->autoload();
     }
 

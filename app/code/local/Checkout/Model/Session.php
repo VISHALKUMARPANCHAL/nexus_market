@@ -8,6 +8,10 @@ class Checkout_Model_Session extends Core_Model_Session
         $cart_id = (is_null($cart_id)) ? 0 : $cart_id;
         $customer_id = (is_null($customer_id)) ? 0 : $customer_id;
         $cart = Mage::getModel('checkout/cart')->load($cart_id);
+        if (($this->get('customer_id')) && $cart->getCustomerId() == 0) {
+            $cart->setCustomerId($customer_id)
+                ->save();
+        }
         if (!$cart->getCartId()) {
             $cart->setcustomer_id($customer_id)
                 ->setTotalAmount(0)
