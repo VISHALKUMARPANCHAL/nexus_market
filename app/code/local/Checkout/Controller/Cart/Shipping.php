@@ -13,6 +13,8 @@ class Checkout_Controller_Cart_Shipping extends Core_Controller_Customer_Action
     public function saveShippingAction()
     {
         $data = $this->getRequest()->getParams();
+        // Mage::log($data);
+        // die; 
         Mage::getModel('checkout/session')
             ->getCart()
             ->setShippingMethod($data['method_shipping'])

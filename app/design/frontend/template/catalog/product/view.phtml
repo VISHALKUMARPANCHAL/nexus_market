@@ -1,7 +1,7 @@
 <?php
 $productdata = $this->getProductdata();
 $request = Mage::getModel('core/request');
-
+// Mage::log($_SESSION);
 ?><div class="container py-5">
     <div class="card border-0 shadow-lg rounded-4 p-3 p-md-4 mb-5">
         <div class="row g-4">
@@ -96,8 +96,9 @@ $request = Mage::getModel('core/request');
                 },
                 // dataType: "json",
                 success: function(res) {
-                    console.log(res);
-                    alert("add to cart successfully");
+                    // $('.container').html($(res).find(".notification-container").html());
+                    let replaceitem = $(res).find("#cartCount").html();
+                    $('#cartCount').empty().html(replaceitem);
                 },
                 error: function() {
                     // console.log("Error:", res);

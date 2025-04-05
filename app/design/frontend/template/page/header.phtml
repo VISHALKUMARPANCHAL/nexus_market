@@ -48,51 +48,51 @@ $baseurl = Mage::getBaseUrl();
                 $more = [];
                 ?>
                 <?php foreach ($masterCategories as $data): ?>
-                <?php if ($data->getParentId() == 1): ?>
-                <?php if ($count === 6) {
+                    <?php if ($data->getParentId() == 1): ?>
+                        <?php if ($count === 6) {
                             $more[] = $data;
                             continue;
                         } ?>
-                <li class="nav-item dropdown position-relative">
-                    <a class="nav-link dropdown-toggle fw-semibold px-3"
-                        href="<?php echo "{$baseurl}catalog/product/list/?id={$data->getCategoryId()}"; ?>"
-                        id="category<?php echo $data->getCategoryId(); ?>" role="button"><?php echo $data->getName(); ?>
-                    </a>
-                    <ul class="dropdown-menu border-0 position-absolute">
-                        <?php foreach ($masterCategories as $data2): ?>
-                        <?php if ($data->getCategoryId() == $data2->getParentId()): ?>
-                        <li>
-                            <a class="dropdown-item py-2"
-                                href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $data2->getCategoryId(); ?>">
-                                <?php echo $data2->getName(); ?>
+                        <li class="nav-item dropdown position-relative">
+                            <a class="nav-link dropdown-toggle fw-semibold px-3"
+                                href="<?php echo "{$baseurl}catalog/product/list/?id={$data->getCategoryId()}"; ?>"
+                                id="category<?php echo $data->getCategoryId(); ?>" role="button"><?php echo $data->getName(); ?>
                             </a>
+                            <ul class="dropdown-menu border-0 position-absolute">
+                                <?php foreach ($masterCategories as $data2): ?>
+                                    <?php if ($data->getCategoryId() == $data2->getParentId()): ?>
+                                        <li>
+                                            <a class="dropdown-item py-2"
+                                                href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $data2->getCategoryId(); ?>">
+                                                <?php echo $data2->getName(); ?>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
                         </li>
-                        <?php endif; ?>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
-                <?php endif; ?>
-                <?php $count++; ?>
+                    <?php endif; ?>
+                    <?php $count++; ?>
                 <?php endforeach; ?>
                 <?php if (!empty($more)): ?>
-                <li class="nav-item dropdown position-relative">
-                    <a class="nav-link dropdown-toggle fw-semibold px-3"
-                        id="category<?php echo $data->getCategoryId(); ?>" role="button">more
-                    </a>
-                    <ul class="dropdown-menu border-0 position-absolute">
-                        <?php foreach ($more as $_more): ?>
+                    <li class="nav-item dropdown position-relative">
+                        <a class="nav-link dropdown-toggle fw-semibold px-3"
+                            id="category<?php echo $data->getCategoryId(); ?>" role="button">more
+                        </a>
+                        <ul class="dropdown-menu border-0 position-absolute">
+                            <?php foreach ($more as $_more): ?>
 
-                        <li>
-                            <a class="dropdown-item py-2"
-                                href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $_more->getCategoryId(); ?>">
-                                <?php echo $_more->getName(); ?>
-                            </a>
-                        </li>
+                                <li>
+                                    <a class="dropdown-item py-2"
+                                        href="<?php echo $baseurl ?>catalog/product/list/?id=<?php echo $_more->getCategoryId(); ?>">
+                                        <?php echo $_more->getName(); ?>
+                                    </a>
+                                </li>
 
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
 
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
                 <?php endif; ?>
 
             </ul>
@@ -101,7 +101,8 @@ $baseurl = Mage::getBaseUrl();
                     <a href="<?php echo $this->getUrl('checkout/cart/index') ?>"
                         class="nav-link d-flex align-items-center text-primary position-relative">
                         <i class="fas fa-shopping-cart fs-5 me-1"></i> Cart
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <span id="cartCount"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             <?php
                             echo $this->countCartItems()
                             ?>
@@ -111,22 +112,22 @@ $baseurl = Mage::getBaseUrl();
                 </div>
                 <li class="nav-item dropdown ms-2">
                     <?php if ($this->issession()): ?>
-                    <a class="nav-link dropdown-toggle d-flex align-items-center text-danger" href="#" id="userDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle fs-5"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item"
-                                href="<?php echo Mage::getBaseUrl() . 'customer/account/dashboard'; ?>">Dashboard</a>
-                        </li>
-                        <li><a class="dropdown-item text-danger"
-                                href="<?php echo Mage::getBaseUrl() . 'customer/account/logout'; ?>">Logout</a></li>
-                    </ul>
+                        <a class="nav-link dropdown-toggle d-flex align-items-center text-danger" href="#" id="userDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item"
+                                    href="<?php echo Mage::getBaseUrl() . 'customer/account/dashboard'; ?>">Dashboard</a>
+                            </li>
+                            <li><a class="dropdown-item text-danger"
+                                    href="<?php echo Mage::getBaseUrl() . 'customer/account/logout'; ?>">Logout</a></li>
+                        </ul>
                     <?php else: ?>
-                    <a class="nav-link d-flex align-items-center text-primary"
-                        href="<?php echo Mage::getBaseUrl() . 'customer/account/login'; ?>">
-                        <i class="bi bi-person fs-5 me-1"></i> Login
-                    </a>
+                        <a class="nav-link d-flex align-items-center text-primary"
+                            href="<?php echo Mage::getBaseUrl() . 'customer/account/login'; ?>">
+                            <i class="bi bi-person fs-5 me-1"></i> Login
+                        </a>
                     <?php endif; ?>
                 </li>
 

@@ -64,12 +64,12 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
                 //     }
                 //     $columns[$key] = implode('', $parts);
                 // }
-                Mage::log($columns);
+                // Mage::log($columns);
                 while (($csvData = fgetcsv($file, 1000, ",")) !== false) {
                     $data = array_combine($columns, $csvData);
                     $product = Mage::getModel('catalog/product');
                     $product->setData($data)->save();
-                    Mage::log($product);
+                    // Mage::log($product);
                 }
 
                 // echo "yes";

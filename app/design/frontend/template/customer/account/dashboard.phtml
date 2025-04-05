@@ -64,7 +64,7 @@ $orders = $this->getOrders();
                 </div>
 
                 <!-- Address -->
-                <div class="col-md-6 mb-4">
+                <div class="col-md-6 mb-4" id="addressDiv">
                     <div class="card rounded-3 shadow-sm h-100 border-0 hover-shadow">
                         <div
                             class="card-header bg-gradient bg-white d-flex justify-content-between align-items-center py-3 border-bottom">
@@ -97,8 +97,12 @@ $orders = $this->getOrders();
                                         <i class="fas fa-edit me-1"></i> Edit
                                     </a>
                                     <?php if (!$address->getIsDefault()): ?>
-                                    <a href="<?php echo $this->getUrl('*/account_address/setDefault') . "/?id={$address->getAddressId()}"; ?>"
-                                        class="btn btn-sm btn-outline-success">
+                                    <!-- <a href="<?php //echo $this->getUrl('*/account_address/setDefault') . "/?id={$address->getAddressId()}";
+                                                            ?>" class="btn btn-sm btn-outline-success">
+                                        <i class="fas fa-home me-1"></i> Set Default
+                                    </a> -->
+                                    <a class="btn btn-sm btn-outline-success setDefaultbtn"
+                                        onclick="setValue(<?php echo $address->getAddressId() ?>)">
                                         <i class="fas fa-home me-1"></i> Set Default
                                     </a>
                                     <?php endif; ?>
@@ -110,6 +114,7 @@ $orders = $this->getOrders();
                                 </div>
                             </div>
                             <?php endforeach; ?>
+                            <input type="hidden" id="addressId">
                         </div>
                     </div>
                 </div>
@@ -138,8 +143,10 @@ $orders = $this->getOrders();
                             <tbody>
                                 <?php foreach ($orders as $order): ?>
                                 <tr>
-                                    <td><strong class="text-primary">#<?php echo $order->getOrderId() ?></strong></td>
-                                    <td><i class="far fa-calendar-alt me-1"></i> <?php echo $order->getCreatedAt() ?>
+                                    <td><strong class="text-primary">#<?php echo $order->getOrderId() ?></strong>
+                                    </td>
+                                    <td><i class="far fa-calendar-alt me-1"></i>
+                                        <?php echo $order->getCreatedAt() ?>
                                     </td>
                                     <td><span class="text-success">$<?php echo $order->getCouponDiscount() ?></span>
                                     </td>
@@ -188,3 +195,27 @@ $orders = $this->getOrders();
         </div>
     </div>
 </div>
+<script>
+function setValue(val) {
+    console.log(val);
+    $('#addressId').val(val);
+}
+$(function() {
+    $(document).on('click', ".setDefaultbtn", function(event) {
+        $.ajax({
+            url: "http://localhost/ecommerceweb/customer/account_address/setdefault",
+            type: 'get',
+            data: {
+                id: $('#addressId').val()
+            },
+            success: function(res) {
+                // console.log(res);
+                $('#addressDiv').empty().html($(res).find('#addressDiv').html());
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+</script>

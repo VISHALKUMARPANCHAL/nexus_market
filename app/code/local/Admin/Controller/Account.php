@@ -17,7 +17,7 @@ class Admin_Controller_Account extends Core_Controller_Admin_Action
         $session = Mage::getSingleton('core/session');
         $params = $this->getRequest()->getParams();
         $admin = Mage::getSingleton('admin/user')->load($params['username'], 'username');
-        Mage::log($admin);
+        // Mage::log($admin);
 
         if ($admin->getUsername() == $params['username'] && $admin->getPasswordHash() == $params['password']) {
             $session->set('admin_id', $admin->getAdminId());

@@ -18,7 +18,10 @@ class Customer_Controller_Account_Address extends Core_Controller_Front_Action
     }
     public function setDefaultAction()
     {
+        // echo '123';
         $id = $this->getRequest()->getQuery('id');
+        // echo $id;
+        // die;
         $session = Mage::getSingleton('core/session');
         $address = Mage::getModel('customer/account_address');
         $address->getCollection()

@@ -23,39 +23,40 @@ $paymentMethods = $this->getPaymentMethods();
                         </h5>
                     </div>
                     <div class="card-body p-4">
-                        <form action="<?php echo $this->getUrl('*/cart_shipping/saveShipping'); ?>" method="post"
-                            id="shippingForm">
-                            <?php foreach ($shippingMethods as $key => $value): ?>
-                            <div class="form-check custom-radio mb-3">
-                                <input type="radio" name="method_shipping" class="form-check-input mt-4"
-                                    id="<?php echo $key; ?>" value="<?php echo $key; ?>"
-                                    onchange="submitForm(<?php echo $value; ?>)"
-                                    <?php echo ($this->getCart()->getShippingMethod() === $key) ? "checked" : "" ?>>
-                                <label
-                                    class="form-check-label d-flex justify-content-between align-items-center w-100 py-3 px-3 border rounded-3 transition-all"
-                                    style="transition: all 0.3s ease;" for="<?php echo $key; ?>">
-                                    <div>
-                                        <span class="fw-bold"><?php echo $key ?></span>
-                                        <p class="text-muted mb-0 small">
-                                            <?php if ($key == "Standard Shipping"): ?>
-                                            <i class="far fa-calendar-alt me-1"></i> Delivery within 5-7 business days
-                                            <?php elseif ($key == "Express Shipping"): ?>
-                                            <i class="fas fa-shipping-fast me-1"></i> Delivery within 2-3 business days
-                                            <?php elseif ($key == "Priority Shipping"): ?>
-                                            <i class="fas fa-bolt me-1"></i> Delivery within 24 hours
-                                            <?php endif; ?>
-                                        </p>
-                                    </div>
-                                    <span
-                                        class="badge <?php echo ($value == 0) ? "bg-success" : "bg-primary" ?> rounded-pill px-3 py-2 shadow-sm">
-                                        <?php echo ($value == 0) ? "FREE" : "$$value" ?>
-                                    </span>
-                                </label>
-                            </div>
-                            <?php endforeach; ?>
-                            <span class="text-danger" id="shipping-method-error"></span>
-                            <input type="hidden" name="price_shipping" id="shipping_price">
-                        </form>
+                        <!-- <form action="<?php ///echo $this->getUrl('*/cart_shipping/saveShipping'); 
+                                            ?>" method="post"
+                            id="shippingForm"> -->
+                        <?php foreach ($shippingMethods as $key => $value): ?>
+                        <div class="form-check custom-radio mb-3">
+                            <input type="radio" name="method_shipping" class="form-check-input mt-4"
+                                id="<?php echo $key; ?>" value="<?php echo $key; ?>"
+                                onchange="fillValue(<?php echo $value; ?>)"
+                                <?php echo ($this->getCart()->getShippingMethod() === $key) ? "checked" : "" ?>>
+                            <label
+                                class="form-check-label d-flex justify-content-between align-items-center w-100 py-3 px-3 border rounded-3 transition-all"
+                                style="transition: all 0.3s ease;" for="<?php echo $key; ?>">
+                                <div>
+                                    <span class="fw-bold"><?php echo $key ?></span>
+                                    <p class="text-muted mb-0 small">
+                                        <?php if ($key == "Standard Shipping"): ?>
+                                        <i class="far fa-calendar-alt me-1"></i> Delivery within 5-7 business days
+                                        <?php elseif ($key == "Express Shipping"): ?>
+                                        <i class="fas fa-shipping-fast me-1"></i> Delivery within 2-3 business days
+                                        <?php elseif ($key == "Priority Shipping"): ?>
+                                        <i class="fas fa-bolt me-1"></i> Delivery within 24 hours
+                                        <?php endif; ?>
+                                    </p>
+                                </div>
+                                <span
+                                    class="badge <?php echo ($value == 0) ? "bg-success" : "bg-primary" ?> rounded-pill px-3 py-2 shadow-sm">
+                                    <?php echo ($value == 0) ? "FREE" : "$$value" ?>
+                                </span>
+                            </label>
+                        </div>
+                        <?php endforeach; ?>
+                        <span class="text-danger" id="shipping-method-error"></span>
+                        <input type="hidden" name="price_shipping" id="shipping_price">
+                        <!-- </form> -->
                     </div>
                 </div>
 
@@ -69,32 +70,31 @@ $paymentMethods = $this->getPaymentMethods();
                     <div class="card-body p-4">
                         <div class="row">
                             <div class="col-md-7">
-                                <form action="<?php echo $this->getUrl('*/cart_shipping/savePayment') ?>" method="post"
-                                    id="paymentForm">
-                                    <?php foreach ($paymentMethods as $value): ?>
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input mt-3" type="radio" name="payment_method"
-                                            <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
-                                            id="<?php echo $value; ?>" value="<?php echo $value; ?>"
-                                            onchange="submitPaymentForm()">
+                                <!-- <form action="<?php //echo $this->getUrl('*/cart_shipping/savePayment') 
+                                                    ?>" method="post" id="paymentForm">-->
+                                <?php foreach ($paymentMethods as $value): ?>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input mt-3" type="radio" name="payment_method"
+                                        <?php echo ($this->getCart()->getPaymentMethod() === $value) ? "checked" : "" ?>
+                                        id="<?php echo $value; ?>" value="<?php echo $value; ?>">
+                                    <!-- onchange="submitPaymentForm()"> -->
+                                    <label
+                                        class="form-check-label d-flex align-items-center py-3 px-3 border rounded-3 transition-all"
+                                        style="transition: all 0.3s ease;" for="<?php echo $value; ?>">
+                                        <?php if ($value == "Credit Card"): ?>
+                                        <i class="far fa-credit-card me-2 text-primary"></i>
+                                        <?php elseif ($value == "PayPal"): ?>
+                                        <i class="fab fa-paypal me-2 text-primary"></i>
+                                        <?php elseif ($value == "Cash on Delivery"): ?>
+                                        <i class="fas fa-money-bill-wave me-2 text-primary"></i>
+                                        <?php endif; ?>
+                                        <?php echo $value; ?>
+                                    </label>
+                                </div>
+                                <?php endforeach; ?>
+                                <span class="text-danger" id="payment-method-error"></span>
 
-                                        <label
-                                            class="form-check-label d-flex align-items-center py-3 px-3 border rounded-3 transition-all"
-                                            style="transition: all 0.3s ease;" for="<?php echo $value; ?>">
-                                            <?php if ($value == "Credit Card"): ?>
-                                            <i class="far fa-credit-card me-2 text-primary"></i>
-                                            <?php elseif ($value == "PayPal"): ?>
-                                            <i class="fab fa-paypal me-2 text-primary"></i>
-                                            <?php elseif ($value == "Cash on Delivery"): ?>
-                                            <i class="fas fa-money-bill-wave me-2 text-primary"></i>
-                                            <?php endif; ?>
-                                            <?php echo $value; ?>
-                                        </label>
-                                    </div>
-                                    <?php endforeach; ?>
-                                    <span class="text-danger" id="payment-method-error"></span>
-
-                                </form>
+                                <!-- </form> -->
                             </div>
 
                             <div class="col-md-5">
@@ -126,7 +126,7 @@ $paymentMethods = $this->getPaymentMethods();
                 </div>
 
                 <!-- Order Summary Card -->
-                <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeIn">
+                <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeIn" id="orderSummarydiv">
                     <div class="card-header bg-white py-4 px-4 border-bottom">
                         <h5 class="fw-bold mb-0 text-primary">
                             <i class="fas fa-file-invoice-dollar me-2"></i> Order Summary
@@ -201,9 +201,46 @@ $paymentMethods = $this->getPaymentMethods();
     </div>
 </section>
 <script>
-function submitForm(price) {
+$(function() {
+    $(document).on('change', 'input[type="radio"][name="payment_method"]', function(event) {
+        $.ajax({
+            url: "http://localhost/ecommerceweb/checkout/cart_shipping/savePayment",
+            type: 'post',
+            data: {
+                payment_method: $(this).val()
+            },
+            success: function(res) {},
+            error: function(err) {
+                console.log(err);
+            },
+        });
+    });
+});
+$(function() {
+    $(document).on('change', 'input[type="radio"][name="method_shipping"]', function(event) {
+        $.ajax({
+            url: "http://localhost/ecommerceweb/checkout/cart_shipping/saveShipping",
+            type: 'post',
+            data: {
+                method_shipping: $(this).val(),
+                price_shipping: $("#shipping_price").val()
+            },
+            success: function(res) {
+                let extractedContent2 = $(res).find("#orderSummarydiv").html();
+                $("#orderSummarydiv").empty().html(extractedContent2);
+            },
+            error: function(err) {
+                console.log(err);
+            },
+        });
+    });
+});
+
+
+
+function fillValue(price) {
     document.getElementById("shipping_price").value = price;
-    document.getElementById("shippingForm").submit();
+    // document.getElementById("shippingForm").submit();
 }
 
 function submitPaymentForm() {
