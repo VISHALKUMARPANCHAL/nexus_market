@@ -19,4 +19,14 @@ class Customer_Model_Account extends Core_Model_Abstract
                 ->save();
         }
     }
+    public function RegisterStatus()
+    {
+        $eventid = Mage::getModel('core/request')->getQuery('id');
+        return Mage::getModel('ems/registrations')
+            ->getCollection()
+            ->addFieldToFilter('user_id', $this->getCustomerId())
+            ->addFieldToFilter('event_id', $eventid)
+            ->getFirstItem()
+            ->getStatus();
+    }
 }

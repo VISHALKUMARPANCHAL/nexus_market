@@ -1,2 +1,2 @@
 <?php
-class Admin_Block_Widget_Grid_Filter_Multiselect {}
+class Admin_Block_Widget_Grid_Filter_Multiselect extends Admin_Block_Widget_Grid_Filter_Abstract {}

@@ -2,8 +2,10 @@
 
 // use PayPal\Rest\ApiContext;
 
-class Catalog_Controller_Product
+class Catalog_Controller_Product extends Core_Controller_Customer_Action
 {
+
+    protected $_allowedActions = ['view', 'list', 'test'];
     public function viewAction()
     {
         $layout = Mage::getBlock('core/layout');
@@ -11,6 +13,15 @@ class Catalog_Controller_Product
         $layout->getChild('content')->addChild('view', $view);
         $layout->getChild('head')->addJs('page/catalog/product/view.js');
         $layout->toHtml();
+    }
+    public function addReviewAction()
+    {
+        $review = $this->getRequest()->getParam('catalog_product_review');
+        $review['customer_id'] = $this->getSession()->get('customer_id');
+        Mage::getModel('catalog/product_review')
+            ->setData($review)
+            ->save();
+        $this->redirect("catalog/product/view?id={$review['product_id']}");
     }
     public function listAction()
     {

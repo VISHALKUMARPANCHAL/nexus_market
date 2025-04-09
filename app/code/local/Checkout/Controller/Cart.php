@@ -26,6 +26,8 @@ class Checkout_Controller_Cart extends Core_Controller_Customer_Action
     public function removeAction()
     {
         $id = $this->getRequest()->getQuery('id');
+        // Mage::log($id);
+        // die;
         Mage::getSingleton('checkout/session')
             ->getCart()
             ->removeItem($id)
@@ -35,6 +37,8 @@ class Checkout_Controller_Cart extends Core_Controller_Customer_Action
     public function updateAction()
     {
         $productData = $this->getRequest()->getParams();
+        // Mage::log($productData);
+        // die;
         Mage::getSingleton('checkout/session')
             ->getCart()
             ->updateItem($productData['item_id'], $productData['quantity'])

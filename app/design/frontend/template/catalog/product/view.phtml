@@ -1,8 +1,85 @@
 <?php
 $productdata = $this->getProductdata();
 $request = Mage::getModel('core/request');
-// Mage::log($_SESSION);
-?><div class="container py-5">
+$reviews = $this->getReviews();
+// Mage::log($reviews);
+?>
+
+<style>
+    .single-product-add-review {
+        padding-top: 30px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .single-product-review-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    #review-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    #review-form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    #review-form input[type="text"],
+    #review-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 14px;
+    }
+
+    .single-product-rating-select {
+        margin-bottom: 20px;
+    }
+
+    .star-rating {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        font-size: 24px;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        cursor: pointer;
+        color: #ddd;
+        margin: 0 2px;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover~label,
+    .star-rating input:checked~label {
+        color: #f9a825;
+    }
+
+    .submit-review-btn {
+        background-color: #3a7bd5;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .submit-review-btn:hover {
+        background-color: #2a69c2;
+    }
+</style>
+<div class="container py-5">
     <div class="card border-0 shadow-lg rounded-4 p-3 p-md-4 mb-5">
         <div class="row g-4">
             <!-- Product Images -->
@@ -43,7 +120,7 @@ $request = Mage::getModel('core/request');
                     <?php echo $productdata->getDescription() ?>
                 </div>
 
-                <form>
+                <form id="addtocartform">
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
                         <button type="button" class="btn btn-outline-secondary" id="decrease">-</button>
@@ -79,13 +156,71 @@ $request = Mage::getModel('core/request');
                         </li>
                     </ul>
                 </div>
+
+            </div>
+            <div id="reviews" class="tab-content">
+                <div class="single-product-add-review">
+                    <h3 class="single-product-review-title">Write a Review</h3>
+                    <form id="review-form" method="post" action="<?php echo $this->getUrl('*/*/addReview'); ?>">
+                        <input type="hidden" name="catalog_product_review[product_id]"
+                            value="<?php echo $productdata->getProductId(); ?>">
+
+                        <div class="single-product-rating-select">
+                            <label for="rating">Your Rating:</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="catalog_product_review[rating]" value="5" required>
+                                <label for="star5">★</label>
+                                <input type="radio" id="star4" name="catalog_product_review[rating]" value="4">
+                                <label for="star4">★</label>
+                                <input type="radio" id="star3" name="catalog_product_review[rating]" value="3">
+                                <label for="star3">★</label>
+                                <input type="radio" id="star2" name="catalog_product_review[rating]" value="2">
+                                <label for="star2">★</label>
+                                <input type="radio" id="star1" name="catalog_product_review[rating]" value="1">
+                                <label for="star1">★</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="review_content">Your Review:</label>
+                            <textarea id="review_content" name="catalog_product_review[review]" rows="5"
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-review-btn">Submit Review</button>
+                    </form>
+                </div>
+                <?php foreach ($reviews as $review): ?>
+                    <div style="margin-bottom: 30px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <div
+                                style="width: 50px; height: 50px; border-radius: 50%; background-color: #3a7bd5; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; margin-right: 15px;">
+                                <?php echo strtoupper(($review->getFn()[0]) . ($review->getLn()[0]))  ?>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;"><?php echo $review->getFn() . ' ' . $review->getLn() ?></div>
+                                <div style="color: #f9a825; margin: 5px 0;">
+                                    <?php
+                                    echo str_repeat("★", $review->getRating()) . str_repeat("☆", 5 - $review->getRating());
+                                    ?>
+                                </div>
+                                <?php
+                                $date = new DateTime($review->getCreatedAt());
+                                $formatted = $date->format('F d, Y');
+                                ?>
+                                <div style="font-size: 0.8em; color: #777;">Verified Purchase | <?php echo $formatted ?>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-bottom: 10px;"><?php echo $review->getReview(); ?></p>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function() {
-        $("form").on('submit', function(event) {
+        $("#addtocartform").on('submit', function(event) {
             event.preventDefault();
             $.ajax({
                 url: "http://localhost/ecommerceweb/checkout/cart/add",

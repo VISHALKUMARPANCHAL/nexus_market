@@ -69,7 +69,6 @@ class Core_Model_Request
     {
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
-
     public function isGet()
     {
         return $_SERVER['REQUEST_METHOD'] === 'POST';

@@ -40,6 +40,8 @@ class Customer_Block_Account_Dashboard extends Core_Block_Template
         return Mage::getModel('sales/order')
             ->getCollection()
             ->addFieldToFilter('customer_id', $this->getCustomerId())
+            ->orderBy(["created_at DESC"])
+            ->limit(5)
             ->getData();
     }
 }

@@ -1,0 +1,180 @@
+<?php
+$data = $this->getData();
+?>
+<div id="form">
+    <label for="name">name</label>
+    <input type="text" name="name" placeholder="name" id="name">
+    <br>
+    <input type="radio" name="gender" placeholder="gender" value="male" id="male">
+    <label for="male">male</label>
+    <input type="radio" name="gender" placeholder="gender" value="female" id="female">
+    <label for="female">female</label>
+    <input type="radio" name="gender" placeholder="gender" value="other" id="other">
+    <label for="other">other</label>
+    <br><br>
+    <label for="country">country</label>
+    <select name="country" id="country">
+        <option value="india">india</option>
+        <option value="USA">USA</option>
+        <option value="china">china</option>
+        <option value="japan">japan</option>
+    </select>
+    <label>like to play</label>
+    <input type="checkbox" name="play" id="cricket" value="cricket">
+    <label for="cricket">cricket</label>
+    <input type="checkbox" name="play" id="vollybol" value="vollybol">
+    <label for="vollybol">vollybol</label>
+    <input type="checkbox" name="play" id="kho-kho" value="kho-kho">
+    <label for="kho-kho">kho-kho</label>
+    <input type="checkbox" name="play" id="kabaddi" value="kabaddi">
+    <label for="kabaddi">kabaddi</label>
+    <input type="submit" value="save">
+</div>
+<table id="table">
+    <thead>
+        <tr>
+            <td>cid</td>
+            <td>name</td>
+            <td>gender</td>
+            <td>country</td>
+            <td>play</td>
+            <td>update</td>
+            <td>delete</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($data as $_data): ?>
+        <tr class="data" id="data<?php echo $_data->getCid() ?>">
+            <td><?php echo $_data->getCid() ?></td>
+            <td><?php echo $_data->getName() ?></td>
+            <td><?php echo $_data->getGender() ?></td>
+            <td><?php echo $_data->getCountry() ?></td>
+            <td><?php echo $_data->getPlay() ?></td>
+            <input type="hidden" value="<?php echo $_data->getCid()
+                                            ?>" name="cid">
+            <td id="update"><button id="updatebtn">update</button></td>
+            <td class="d-none" id="save"><button id="savebtn">save</button></td>
+            <td><button id="delete">delete</button></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script>
+$(function() {
+    $(document).on('click', '#updatebtn', function() {
+
+        const cid = $(this).closest('.data').find('td').eq(0).html().trim();
+        const name = $(this).closest('.data').find('td').eq(1).html().trim();
+        const gender = $(this).closest('.data').find('td').eq(2).html().trim();
+        const country = $(this).closest('.data').find('td').eq(3).html().trim();
+        const play = $(this).closest('.data').find('td').eq(4).html().trim();
+        const nameInput = `<input type="text" name="name" value="${name}" />`;
+
+        const genderInput = `<input type="radio" name="gender${cid}" value="male" id="male${cid}" ${(gender=="male")?"checked":""}>
+    <label for="male${cid}">male</label>
+    <input type="radio" name="gender${cid}" value="female" id="female${cid}" ${(gender=="female")?"checked":""}>
+    <label for="female${cid}">female</label>
+    <input type="radio" name="gender${cid}" value="other" id="other${cid}" ${(gender=="other")?"checked":""}>
+    <label for="other${cid}">other</label>`;
+        const countryInput = `<select name="country" id="country${cid}" >
+        <option value="india">india</option>
+        <option value="USA">USA</option>
+        <option value="china">china</option>
+        <option value="japan">japan</option>
+    </select>`;
+        const decoded = $('<textarea>').html(play).text();
+        const playarr = decoded.split(' & ');
+
+        const playInput = `<input type="checkbox" name="play${cid}" id="cricket${cid}" value="cricket" ${(playarr.includes("cricket"))?"checked":""}>
+    <label for="cricket${cid}">cricket</label>
+    <input type="checkbox" name="play${cid}" id="vollybol${cid}" value="vollybol"  ${(playarr.includes("vollybol"))?"checked":""}>
+    <label for="vollybol${cid}">vollybol</label>
+    <input type="checkbox" name="play${cid}" id="kho-kho${cid}" value="kho-kho" ${(playarr.includes("kho-kho"))?"checked":""}>
+    <label for="kho-kho${cid}">kho-kho</label>
+    <input type="checkbox" name="play${cid}" id="kabaddi${cid}" value="kabaddi" ${(playarr.includes("kabaddi"))?"checked":""}>
+    <label for="kabaddi${cid}">kabaddi</label>`;
+        $(this).closest('.data').find('td').eq(1).html(nameInput);
+        $(this).closest('.data').find('td').eq(2).html(genderInput);
+        $(this).closest('.data').find('td').eq(3).html(countryInput);
+        $(this).closest('.data').find('td').eq(4).html(playInput);
+        $(this).closest('.data').find('#update').addClass('d-none');
+        $(this).closest('.data').find('#save').removeClass('d-none');
+
+    });
+    $(document).on('click', '#savebtn', function() {
+        // let row = $(this).closest('.data');
+        let cid = $(this).closest('.data').find('input[name="cid"]').val();
+        let name = $(this).closest('.data').find('input[name="name"]').val();
+        let gender = $(this).closest('.data').find(`input[name="gender${cid}"]:checked`).val();
+        let country = $(this).closest('.data').find('select[name="country"]').val();
+        let plays = [];
+        $(`input[name="play${cid}"]:checked`).each(function() {
+            plays.push($(this).val());
+        });
+        $.ajax({
+            url: 'http://localhost/ecommerceweb/practice/crud/save',
+            type: 'post',
+            data: {
+                crud: {
+                    cid: cid,
+                    name: name,
+                    gender: gender,
+                    country: country,
+                    play: plays
+                }
+            },
+            success: function(res) {
+                // console.log(res);
+                $(`#data${cid}`).empty().html($(res).find(`#data${cid}`).html());
+
+            },
+            error: function(res) {
+                console.log(res);
+            }
+        });
+    });
+    $(document).on('click', '#delete', function() {
+        let cid = $(this).closest('.data').find('input[name="cid"]').val();
+        $.ajax({
+            url: 'http://localhost/ecommerceweb/practice/crud/delete',
+            type: 'get',
+            data: {
+                cid: cid
+            },
+            success: function(res) {
+                // console.log(res);
+                $('#table').empty().html($(res).find('#table').html());
+            },
+            error: function(res) {
+                console.log(res);
+            }
+        });
+    });
+    $(document).on('click', 'input[type="submit"]', function() {
+        let plays = [];
+        $('input[name="play"]:checked').each(function() {
+            plays.push($(this).val());
+        });
+        $.ajax({
+            url: 'http://localhost/ecommerceweb/practice/crud/save',
+            type: 'post',
+            data: {
+                crud: {
+                    name: $('input[name="name"]').val(),
+                    gender: $('input[name="gender"]:checked').val(),
+                    country: $('select[name="country"]').val(),
+                    play: plays
+                }
+            },
+            success: function(res) {
+                // console.log(res);
+                $('#form').empty().html($(res).find('#form').html());
+                $('#table').empty().html($(res).find('#table').html());
+            },
+            error: function(res) {
+                console.log(res);
+            }
+        });
+    });
+});
+</script>

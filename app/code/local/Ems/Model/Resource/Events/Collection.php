@@ -1,0 +1,2 @@
+<?php
+class Ems_Model_Resource_Events_Collection extends Core_Model_Resource_Collection_Abstract {}

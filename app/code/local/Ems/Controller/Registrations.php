@@ -1,0 +1,2 @@
+<?php
+class Customer__Controller_Ems_Registrations extends Core_Controller_Customer_Action {}

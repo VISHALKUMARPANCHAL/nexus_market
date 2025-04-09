@@ -56,9 +56,24 @@ class Admin_Block_Category_Index_List extends Admin_Block_Widget_Grid
                 "lable" => "Update"
             ]
         );
-
+        $get = $this->getRequest()->getQuery();
         $category = Mage::getModel('catalog/category')
             ->getCollection();
+        if (!empty($get['category_id-to']) && $get['category_id-from']) {
+            $category->addFieldToFilter('category_id', ['BETWEEN' => [$get['category_id-from'], $get['category_id-to']]]);
+        }
+        if (!empty($get['category_id-to'])) {
+            $category->addFieldToFilter('category_id', ['BETWEEN' => [$get['category_id-from'], $get['category_id-to']]]);
+        }
+        if (!empty($get['name'])) {
+            $category->addFieldToFilter('name', ['LIKE' => "%{$get['name']}%"]);
+        }
+        if (!empty($get['description'])) {
+            $category->addFieldToFilter('description', ['LIKE' => "%{$get['description']}%"]);
+        }
+        if (!empty($get['parent_id'])) {
+            $category->addFieldToFilter('parent_id', ['LIKE' => "%{$get['parent_id']}%"]);
+        }
         $this->setCollection($category);
         Parent::__construct();
     }

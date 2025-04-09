@@ -1,0 +1,22 @@
+<?php
+$id = $this->getRequest()->getQuery('id');
+$events = $this->getEvents();
+
+// Mage::log($id);
+// Mage::log($events);
+// die;
+?>
+<h1>Add an event</h1>
+<form action="<?php echo $this->getUrl('*/*/addPost') ?>" method="post">
+    <input type="hidden" name="events[event_id]" id="" value="<?php echo ($id) ? $events->getEventId() : "" ?>">
+    <input type="text" placeholder="title" name="events[title]"
+        value="<?php echo ($id) ? $events->getTitle() : "" ?>"><br>
+    <textarea name="events[description]" placeholder="description"
+        value="<?php echo ($id) ? $events->getDescription() : "" ?>"><?php echo ($id) ? $events->getDescription() : "" ?></textarea><br>
+    <input type="date" name="events[date]" placeholder="date" value="<?php echo ($id) ? $events->getDate() : "" ?>"><br>
+    <input type="text" name="events[location]" placeholder="location"
+        value="<?php echo ($id) ? $events->getLocation() : "" ?>">
+    <input type="number" name="events[capacity]" placeholder="capacity"
+        value="<?php echo ($id) ? $events->getCapacity() : "" ?>">
+    <input type="submit" value="add">
+</form>

@@ -1,0 +1,2 @@
+<?php
+class Practice_Model_Resource_Crud_Collection extends Core_Model_Resource_Collection_Abstract {}

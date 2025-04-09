@@ -195,12 +195,14 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
             unset($customerData['password']);
             unset($customerData['customer_id']);
         }
+        // Mage::log($customerData);
+        // die;
         $customerId = Mage::getModel('customer/account')
             ->setData($customerData)
             ->save()
             ->getCustomerId();
-        $session = Mage::getSingleton('core/session');
         if ($customerId) {
+            $session = Mage::getSingleton('core/session');
             $session->set('customer_id', $customerId);
             $this->redirect('customer/account/dashboard');
         } else {

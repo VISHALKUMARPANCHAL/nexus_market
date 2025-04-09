@@ -42,7 +42,8 @@ class Admin_Block_Widget_Grid_Column_Abstract
     public function getFilter()
     {
         if (isset($this->getData()['filter'])) {
-            return Mage::getBlock("Admin/widget_grid_filter_{$this->getData()['filter']}");
+            return Mage::getBlock("Admin/widget_grid_filter_{$this->getData()['filter']}")
+                ->setData($this->getData());
         } else {
             return Mage::getBlock("Admin/widget_grid_filter_Abstract");
         }

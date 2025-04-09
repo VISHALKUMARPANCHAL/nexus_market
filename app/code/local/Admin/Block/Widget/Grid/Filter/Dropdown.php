@@ -1,5 +1,5 @@
 <?php
-class Admin_Block_Widget_Grid_Filter_Dropdown extends Core_Block_Template
+class Admin_Block_Widget_Grid_Filter_Dropdown extends Admin_Block_Widget_Grid_Filter_Abstract
 {
     public function render()
     {

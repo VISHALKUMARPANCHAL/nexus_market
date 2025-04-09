@@ -76,7 +76,7 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
                         <label class="input-group-text" for="items-per-page">Items per page</label>
                         <select class="form-select m-0" id="items-per-page" name="limit">
                             <?php
-                            $options = [10, 25, 50, 100];
+                            $options = [2, 5, 10, 50, 100];
                             foreach ($options as $option): ?>
                             <option value="<?php echo $option; ?>" <?php echo ($limit == $option) ? "selected" : "" ?>>
                                 <?php echo $option; ?></option>

@@ -1,0 +1,97 @@
+<?php
+$users = $this->getRegisteredUser();
+$summary = $this->getSummary();
+// Mage::log($users);
+// die;
+?>
+
+<br>
+<span id="eid" class="d-none"><?php echo $this->getRequest()->getQuery('id') ?></span>
+<div class="container mw-100">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow rounded-3 mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="m-0 text-white">Sumary Bar</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0" id="producttable1">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>total users</th>
+                                    <th>pending</th>
+                                    <th>approved</th>
+                                    <th>rejected</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summarybody">
+                                <tr>
+                                    <td><?php echo $summary['total'] ?></td>
+                                    <td><?php echo $summary['pending'] ?></td>
+                                    <td><?php echo $summary['approved'] ?></td>
+                                    <td><?php echo $summary['rejected'] ?></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow rounded-3 mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="m-0 text-white"><?php echo $this->getEventName() ?></h2>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0" id="producttable1">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Firstname</th>
+                                    <th>lastname</th>
+                                    <th>email</th>
+                                    <th>pno</th>
+                                    <th>dob</th>
+                                    <th>gender</th>
+                                    <th>action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablebody">
+                                <span id="uid" class="d-none"></span>
+                                <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?php echo $user->getFirstName() ?></td>
+                                    <td><?php echo $user->getLastName() ?></td>
+                                    <td><?php echo $user->getEmail() ?></td>
+                                    <td><?php echo $user->getPhoneNumber() ?></td>
+                                    <td><?php echo $user->getDateOfBirth() ?></td>
+                                    <td><?php echo $user->getGender() ?></td>
+                                    <td class=".row">
+                                        <?php $status = $user->RegisterStatus();
+                                            ?>
+                                        <?php if ($status == 'Pending'):
+                                            ?>
+
+
+                                        <a class="approve" onclick="filluid(<?php echo $user->getCustomerId() ?>)">
+                                            <i class="bi bi-check"></i>
+                                        </a>
+                                        <a class="reject" onclick="filluid(<?php echo $user->getCustomerId() ?>)">
+                                            <i class="bi bi-x"></i>
+                                        </a>
+                                        <?php else: ?>
+                                        <span><?php echo $status ?></span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

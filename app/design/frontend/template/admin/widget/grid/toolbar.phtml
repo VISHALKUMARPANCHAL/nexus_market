@@ -38,11 +38,11 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
 
 ?>
 <style>
-    .pagination-info {
-        color: #6c757d;
-    }
+.pagination-info {
+    color: #6c757d;
+}
 </style>
-<div class="container mt-5">
+<div class="container mt-5" id="pagination">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="d-flex flex-row align-items-center justify-content-center">
@@ -50,43 +50,41 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
                 <nav aria-label="Page navigation">
                     <ul class="pagination mb-0">
                         <li class="page-item <?php echo ($currentPage <= 1) ? 'disabled' : ''; ?>">
-                            <a class="page-link"
-                                href="<?php echo $baseUrl; ?> limit=<?php echo $limit; ?>&page=<?php echo $currentPage - 1; ?>">Previous</a>
+                            <a class="page-link" id="previous">Previous</a>
                         </li>
                         <?php foreach ($pages as $page): ?>
-                            <li class="page-item <?php echo ($page == $currentPage) ? "active" : "" ?>">
-                                <a class="page-link"
-                                    href="<?php echo $baseUrl; ?>limit=<?php echo $limit; ?>&page=<?php echo $page; ?>"><?php echo $page; ?></a>
-                            </li>
-                        <?php endforeach; ?>
+                        <li class="page-item <?php echo ($page == $currentPage) ? "active" : "" ?>">
+                            <a class="page-link" id="pageno"><?php echo $page; ?>
+                            </a>
+                        </li>
 
+                        <?php endforeach; ?>
                         <li class="page-item <?php echo ($currentPage >= $totalPages) ? 'disabled' : ''; ?>">
-                            <a class="page-link"
-                                href="<?php echo $baseUrl; ?>limit=<?php echo $limit; ?>&page=<?php echo $currentPage + 1; ?>">Next</a>
+                            <a class="page-link" id="next">Next</a>
                         </li>
                     </ul>
                 </nav>
 
-                <form class="d-flex m-0 w-100 m-0 p-0 bg-transparent border-0 shadow-none" id="form" method="get">
-                    <div class="input-group me-2 w-auto">
-                        <span class="input-group-text h-100">Jump to</span>
-                        <input type="number" class="form-control m-0 w-25 h-100" name="page" min="1" id="page"
-                            max="<?php echo $totalPages; ?>" value="<?php echo $currentPage; ?>">
-                        <button class="btn btn-outline-secondary m-0 h-100" type="submit">Go</button>
-                    </div>
+                <!-- <form class="d-flex m-0 w-100 m-0 p-0 bg-transparent border-0 shadow-none" id="form" method="get"> -->
+                <div class="input-group me-2 w-auto">
+                    <span class="input-group-text h-100">Jump to</span>
+                    <input type="number" class="form-control m-0 w-25 h-100" name="page" min="1" id="page"
+                        max="<?php echo $totalPages; ?>" value="<?php echo $currentPage; ?>">
+                    <button class="btn btn-outline-secondary m-0 h-100" id="jumpbtn">Go</button>
+                </div>
 
-                    <div class="input-group w-auto h-25">
-                        <label class="input-group-text" for="items-per-page">Items per page</label>
-                        <select class="form-select m-0" id="items-per-page" name="limit">
-                            <?php
-                            $options = [10, 25, 50, 100];
-                            foreach ($options as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($limit == $option) ? "selected" : "" ?>>
-                                    <?php echo $option; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </form>
+                <div class="input-group w-auto h-25">
+                    <label class="input-group-text" for="items-per-page">Items per page</label>
+                    <select class="form-select m-0" id="items-per-page" name="limit">
+                        <?php
+                        $options = [2, 5, 10, 25, 50, 100];
+                        foreach ($options as $option): ?>
+                        <option value="<?php echo $option; ?>" <?php echo ($limit == $option) ? "selected" : "" ?>>
+                            <?php echo $option; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <!-- </form> -->
             </div>
         </div>
     </div>
@@ -97,21 +95,67 @@ $baseUrl = !empty($baseQuery) ? "?" . $baseQuery . "&" : "?";
 </div>
 </div>
 <script>
-    $(document).ready(function() {
-        let urlParams = new URLSearchParams(window.location.search);
-        let form = $("#form");
-
-        // Remove 'page' and 'limit' to prevent duplicate values
-        urlParams.delete("page");
-        urlParams.delete("limit");
-
-        // Append existing URL parameters as hidden input fields
-        urlParams.forEach(function(value, key) {
-            form.append(`<input type="hidden" name="${key}" value="${value}">`);
-        });
-        $('#items-per-page').on("change", function() {
-            $("#form").submit();
-        });
-
+$(function() {
+    $(document).on('click', '#pageno', function(event) {
+        let page = $(this).html().trim();
+        let limit = $("#items-per-page").val();
+        callAjax(page, limit);
     });
+    $(document).on('click', '#previous', function(event) {
+        let page = parseInt($('.active').find('.page-link').html().trim()) - 1;
+        let limit = $("#items-per-page").val();
+        callAjax(page, limit);
+    });
+    $(document).on('click', '#next', function(event) {
+        let page = parseInt($('.active').find('.page-link').html().trim()) + 1;
+        let limit = $("#items-per-page").val();
+        callAjax(page, limit);
+    });
+    $(document).on('change', 'select[name="limit"]', function(event) {
+        // console.log(1);
+
+        let page = 1;
+        let limit = $("#items-per-page").val();
+        callAjax(page, limit);
+    });
+    $(document).on('click', '#jumpbtn', function(event) {
+        console.log(2);
+        let page = $('input[id="page"]').val();
+        let limit = $("#items-per-page").val();
+        callAjax(page, limit);
+    });
+});
+
+function callAjax(page, limit) {
+    let urlParams = new URLSearchParams(window.location.search);
+
+    // Update or set new values
+    urlParams.set('page', page);
+    urlParams.set('limit', limit);
+
+    // Build new query string
+    let newQueryString = '?' + urlParams.toString();
+
+    // Replace URL in browser (no reload)
+    window.history.pushState({}, '', window.location.pathname + newQueryString);
+    let temp = urlParams.toString().split('&');
+    let passobj = {};
+    temp.forEach(i => {
+        let kv = i.split('=');
+        passobj[kv[0]] = kv[1];
+    });
+    $.ajax({
+        url: `http://localhost${window.location.pathname}`,
+        type: 'get',
+        data: passobj,
+        success: function(res) {
+            // console.log(res);
+            $("#grid_data").empty().html($(res).find("#grid_data").html());
+            $("#pagination ").empty().html($(res).find("#pagination ").html());
+        },
+        error: function(err) {
+            console.log(err);
+        },
+    });
+}
 </script>

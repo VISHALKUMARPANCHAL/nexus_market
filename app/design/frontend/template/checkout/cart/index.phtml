@@ -15,232 +15,306 @@ $isEmpty = empty($cartItems);
                             class="position-absolute bottom-0 start-0 w-50 border-bottom border-3 border-primary animate__animated animate__fadeIn"></span>
                     </h2>
                     <?php if (!$isEmpty): ?>
-                    <span class="badge bg-primary rounded-pill fs-6 px-3 py-2 shadow-sm">
-                        <?php echo count($cartItems); ?> items
-                    </span>
+                        <span class="badge bg-primary rounded-pill fs-6 px-3 py-2 shadow-sm">
+                            <?php echo count($cartItems); ?> items
+                        </span>
                     <?php endif; ?>
                 </div>
 
                 <?php if ($isEmpty): ?>
-                <!-- Empty Cart State with subtle animation -->
-                <div class="card shadow-lg border-0 rounded-4 mb-4 animate__animated animate__fadeIn">
-                    <div class="card-body p-5 text-center">
-                        <div class="mb-4 position-relative">
-                            <div class="bg-light rounded-circle p-4 d-inline-flex align-items-center justify-content-center"
-                                style="width: 120px; height: 120px;">
-                                <i class="fas fa-shopping-cart text-primary opacity-75" style="font-size: 3.5rem;"></i>
+                    <!-- Empty Cart State with subtle animation -->
+                    <div class="card shadow-lg border-0 rounded-4 mb-4 animate__animated animate__fadeIn">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-4 position-relative">
+                                <div class="bg-light rounded-circle p-4 d-inline-flex align-items-center justify-content-center"
+                                    style="width: 120px; height: 120px;">
+                                    <i class="fas fa-shopping-cart text-primary opacity-75" style="font-size: 3.5rem;"></i>
+                                </div>
                             </div>
+                            <h3 class="fw-bold mb-3">Your cart is empty</h3>
+                            <p class="text-muted mb-4 fs-5 col-lg-8 mx-auto">Looks like you haven't added any products to
+                                your cart yet. Discover our amazing products!</p>
+                            <a href="<?php echo $this->getUrl('catalog/product/list') ?>"
+                                class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm">
+                                <i class="fas fa-store me-2"></i> Browse Products
+                            </a>
                         </div>
-                        <h3 class="fw-bold mb-3">Your cart is empty</h3>
-                        <p class="text-muted mb-4 fs-5 col-lg-8 mx-auto">Looks like you haven't added any products to
-                            your cart yet. Discover our amazing products!</p>
-                        <a href="<?php echo $this->getUrl('catalog/product/list') ?>"
-                            class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm">
-                            <i class="fas fa-store me-2"></i> Browse Products
-                        </a>
                     </div>
-                </div>
                 <?php else: ?>
-                <!-- Cart Items with hover effects -->
-                <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden">
-                    <div class="card-header bg-white py-4 px-4 border-bottom">
-                        <h5 class="fw-bold mb-0 text-primary">
-                            <i class="fas fa-shopping-basket me-2"></i> Your Items
-                        </h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <?php foreach ($cartItems as $cartItem): ?>
-                        <div class="row g-0 p-4 border-bottom position-relative transition-all"
-                            style="transition: all 0.3s ease;">
-                            <!-- Product Image with hover zoom effect -->
-                            <div class="col-md-2">
-                                <div
-                                    class="rounded-4 overflow-hidden bg-light text-center h-100 d-flex align-items-center justify-content-center">
-                                    <img src="<?php echo Mage::getBaseUrl() . $cartItem->getProduct()->getFilePath()[array_search(1, $cartItem->getProduct()->getMainImage())] ?>"
-                                        class="img-fluid p-2 transition-all" style="transition: transform 0.3s ease;"
-                                        onmouseover="this.style.transform='scale(1.05)'"
-                                        onmouseout="this.style.transform='scale(1)'"
-                                        alt="<?php echo $cartItem->getProduct()->getName() ?>">
-                                </div>
-                            </div>
+                    <!-- Cart Items with hover effects -->
+                    <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden" id="cartItemsDiv">
+                        <div class="card-header bg-white py-4 px-4 border-bottom">
+                            <h5 class="fw-bold mb-0 text-primary">
+                                <i class="fas fa-shopping-basket me-2"></i> Your Items
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <?php foreach ($cartItems as $cartItem): ?>
+                                <div class="row g-0 p-4 border-bottom position-relative transition-all"
+                                    style="transition: all 0.3s ease;">
+                                    <!-- Product Image with hover zoom effect -->
+                                    <div class="col-md-2">
+                                        <div
+                                            class="rounded-4 overflow-hidden bg-light text-center h-100 d-flex align-items-center justify-content-center">
+                                            <img src="<?php echo Mage::getBaseUrl() . $cartItem->getProduct()->getFilePath()[array_search(1, $cartItem->getProduct()->getMainImage())] ?>"
+                                                class="img-fluid p-2 transition-all" style="transition: transform 0.3s ease;"
+                                                onmouseover="this.style.transform='scale(1.05)'"
+                                                onmouseout="this.style.transform='scale(1)'"
+                                                alt="<?php echo $cartItem->getProduct()->getName() ?>">
+                                        </div>
+                                    </div>
 
-                            <!-- Product Details with better typography -->
-                            <div class="col-md-5 ps-md-4 py-3">
-                                <h5 class="fw-bold text-dark mb-2"><?php echo $cartItem->getProduct()->getName() ?></h5>
-                                <p class="text-muted mb-2 line-clamp-2">
-                                    <?php echo $cartItem->getProduct()->getDescription() ?></p>
-                                <div class="d-flex align-items-center mt-2">
-                                    <span class="badge bg-light text-primary me-2 px-3 py-2">Unit Price:</span>
-                                    <h6 class="fw-bold mb-0 text-primary">$<?php echo $cartItem->getPrice() ?></h6>
-                                </div>
-                            </div>
+                                    <!-- Product Details with better typography -->
+                                    <div class="col-md-5 ps-md-4 py-3">
+                                        <h5 class="fw-bold text-dark mb-2"><?php echo $cartItem->getProduct()->getName() ?></h5>
+                                        <p class="text-muted mb-2 line-clamp-2">
+                                            <?php echo $cartItem->getProduct()->getDescription() ?></p>
+                                        <div class="d-flex align-items-center mt-2">
+                                            <span class="badge bg-light text-primary me-2 px-3 py-2">Unit Price:</span>
+                                            <h6 class="fw-bold mb-0 text-primary">$<?php echo $cartItem->getPrice() ?></h6>
+                                        </div>
+                                    </div>
 
-                            <!-- Quantity Controls with custom styling -->
-                            <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post"
-                                class="col-md-2 d-flex align-items-center justify-content-center">
-                                <div class="text-center">
-                                    <label class="form-label small text-muted mb-2">Quantity</label>
-                                    <div class="input-group input-group-sm border rounded-pill shadow-sm">
-                                        <button class="btn btn-light border-0 rounded-start-pill" type="button"
-                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown(); this.form.submit();">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <input type="hidden" name="item_id"
-                                            value="<?php echo $cartItem->getItemId() ?>">
-                                        <input id="form1" min="1" name="quantity"
-                                            value="<?php echo $cartItem->getProductQuantity() ?>" type="number"
-                                            class="form-control fw-bold text-center border-0 bg-transparent" />
-                                        <button class="btn btn-light border-0 rounded-end-pill" type="button"
-                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp(); this.form.submit();">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
+                                    <!-- Quantity Controls with custom styling -->
+                                    <!-- <form action="<?php //echo $this->getUrl('*/*/update') 
+                                                        ?>" method="post"
+                                    class="col-md-2 d-flex align-items-center justify-content-center"> -->
+                                    <div class="text-center">
+                                        <label class="form-label small text-muted mb-2">Quantity</label>
+                                        <div class="input-group input-group-sm border rounded-pill shadow-sm">
+                                            <button class="btn btn-light border-0 rounded-start-pill" type="button"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown();">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input type="hidden" name="item_id" value="<?php echo $cartItem->getItemId() ?>">
+                                            <input id="form1" min="1" name="quantity"
+                                                value="<?php echo $cartItem->getProductQuantity() ?>" type="number"
+                                                class="form-control fw-bold text-center border-0 bg-transparent" />
+                                            <button class="btn btn-light border-0 rounded-end-pill" type="button"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp();">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- </form> -->
+
+                                    <!-- Subtotal with better styling -->
+                                    <div class="col-md-2 text-end d-flex align-items-center justify-content-end">
+                                        <div>
+                                            <span class="text-muted small d-block mb-1">Subtotal</span>
+                                            <h5 class="fw-bold mb-0 text-primary">$<?php echo $cartItem->getSubTotal() ?></h5>
+                                        </div>
+                                    </div>
+
+                                    <!-- Styled Remove Button -->
+                                    <div class="col-md-1 text-end d-flex align-items-center justify-content-end">
+                                        <!-- <a href="<?php //echo $this->getUrl('*/*/remove') 
+                                                        ?>/?id=<?php //echo $cartItem->getItemId() 
+                                                                ?>" -->
+
+                                        <a class="btn btn-sm btn-outline-danger rounded-circle p-2 shadow-sm removeProduct"
+                                            title="Remove item"
+                                            onmouseover="this.classList.add('btn-danger', 'text-white'); this.classList.remove('btn-outline-danger')"
+                                            onmouseout="this.classList.remove('btn-danger', 'text-white'); this.classList.add('btn-outline-danger')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
                                     </div>
                                 </div>
-                            </form>
-
-                            <!-- Subtotal with better styling -->
-                            <div class="col-md-2 text-end d-flex align-items-center justify-content-end">
-                                <div>
-                                    <span class="text-muted small d-block mb-1">Subtotal</span>
-                                    <h5 class="fw-bold mb-0 text-primary">$<?php echo $cartItem->getSubTotal() ?></h5>
-                                </div>
-                            </div>
-
-                            <!-- Styled Remove Button -->
-                            <div class="col-md-1 text-end d-flex align-items-center justify-content-end">
-                                <a href="<?php echo $this->getUrl('*/*/remove') ?>/?id=<?php echo $cartItem->getItemId() ?>"
-                                    class="btn btn-sm btn-outline-danger rounded-circle p-2 shadow-sm"
-                                    title="Remove item"
-                                    onmouseover="this.classList.add('btn-danger', 'text-white'); this.classList.remove('btn-outline-danger')"
-                                    onmouseout="this.classList.remove('btn-danger', 'text-white'); this.classList.add('btn-outline-danger')">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
-                        <?php endforeach; ?>
+                        <?php $this->getChildHtml('toolbar') ?>
                     </div>
-                    <?php $this->getChildHtml('toolbar') ?>
-                </div>
 
-                <!-- Discount Code with floating label -->
-                <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden" id="couponCodediv">
-                    <div class="card-header bg-white py-4 px-4 border-bottom">
-                        <h5 class="fw-bold mb-0 text-primary">
-                            <i class="fas fa-tag me-2"></i> Discount Code
-                        </h5>
-                    </div>
-                    <div class="card-body p-4 d-flex justify-content-center align-items-center">
-                        <!-- <form action="<?php //echo $this->getUrl('*/*/applyCoupon') 
+                    <!-- Discount Code with floating label -->
+                    <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden" id="couponCodediv">
+                        <div class="card-header bg-white py-4 px-4 border-bottom">
+                            <h5 class="fw-bold mb-0 text-primary">
+                                <i class="fas fa-tag me-2"></i> Discount Code
+                            </h5>
+                        </div>
+                        <div class="card-body p-4 d-flex justify-content-center align-items-center">
+                            <!-- <form action="<?php //echo $this->getUrl('*/*/applyCoupon') 
                                                 ?>" method="post"> -->
-                        <!-- <form> -->
-                        <div class="input-group input-group-lg shadow-sm w-50 align-items-center">
-                            <span class="input-group-text bg-transparent border-0 rounded-start-pill">
-                                <i class="fas fa-ticket-alt text-primary"></i>
-                            </span>
-                            <input type="text" class="form-control py-3 border-0 h-64" name="coupon_code"
-                                id="coupon_code" value="<?php echo $this->getCart()->getCouponCode() ?>"
-                                placeholder="Enter coupon code" aria-label="Coupon Code"
-                                <?php echo ($this->getCart()->getCouponCode()) ? "readonly" : "" ?>>
-                            <input type="hidden" value="<?php echo $this->getTotalAmount() ?>" id="sub_total"
-                                name="sub_total">
-                            <button
-                                class="btn <?php echo ($this->getCart()->getCouponCode()) ? "btn-danger" : "btn-primary" ?> px-4 py-3 rounded-end-pill"
-                                type="submit" name="type" id="type"
-                                value="<?php echo ($this->getCart()->getCouponCode()) ? "Remove" : "Apply" ?>">
-                                <?php echo ($this->getCart()->getCouponCode()) ? "<i class='fas fa-times me-2'></i> Remove" : "<i class='fas fa-check me-2'></i> Apply" ?>
-                            </button>
+                            <!-- <form> -->
+                            <div class="input-group input-group-lg shadow-sm w-50 align-items-center">
+                                <span class="input-group-text bg-transparent border-0 rounded-start-pill">
+                                    <i class="fas fa-ticket-alt text-primary"></i>
+                                </span>
+                                <input type="text" class="form-control py-3 border-0 h-64" name="coupon_code"
+                                    id="coupon_code" value="<?php echo $this->getCart()->getCouponCode() ?>"
+                                    placeholder="Enter coupon code" aria-label="Coupon Code"
+                                    <?php echo ($this->getCart()->getCouponCode()) ? "readonly" : "" ?>>
+                                <input type="hidden" value="<?php echo $this->getTotalAmount() ?>" id="sub_total"
+                                    name="sub_total">
+                                <button
+                                    class="btn <?php echo ($this->getCart()->getCouponCode()) ? "btn-danger" : "btn-primary" ?> px-4 py-3 rounded-end-pill"
+                                    type="submit" name="type" id="type"
+                                    value="<?php echo ($this->getCart()->getCouponCode()) ? "Remove" : "Apply" ?>">
+                                    <?php echo ($this->getCart()->getCouponCode()) ? "<i class='fas fa-times me-2'></i> Remove" : "<i class='fas fa-check me-2'></i> Apply" ?>
+                                </button>
+                            </div>
+                            <!-- </form> -->
+                            <!-- </form> -->
                         </div>
-                        <!-- </form> -->
-                        <!-- </form> -->
                     </div>
-                </div>
 
-                <!-- Order Summary with improved layouts -->
-                <div class="card shadow-lg border-0 rounded-4 overflow-hidden" id="orderSummarydiv">
-                    <div class="card-header bg-white py-4 px-4 border-bottom">
-                        <h5 class="fw-bold mb-0 text-primary">
-                            <i class="fas fa-file-invoice-dollar me-2"></i> Order Summary
-                        </h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <div class="bg-light rounded-4 p-4">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <span class="fs-6 text-muted">Subtotal</span>
-                                        <span class="fs-6 fw-bold">$<?php
+                    <!-- Order Summary with improved layouts -->
+                    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" id="orderSummarydiv">
+                        <div class="card-header bg-white py-4 px-4 border-bottom">
+                            <h5 class="fw-bold mb-0 text-primary">
+                                <i class="fas fa-file-invoice-dollar me-2"></i> Order Summary
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="bg-light rounded-4 p-4">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span class="fs-6 text-muted">Subtotal</span>
+                                            <span class="fs-6 fw-bold">$<?php
                                                                         $subtotal = $this->getTotalAmount();
                                                                         echo $subtotal;
                                                                         ?></span>
-                                    </div>
-                                    <?php if ($this->getCart()->getShippingMethod()): ?>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <span class="fs-6 text-muted">Shipping</span>
-                                        <span class="text-success fs-6 fw-bold">
-                                            <?php
+                                        </div>
+                                        <?php if ($this->getCart()->getShippingMethod()): ?>
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <span class="fs-6 text-muted">Shipping</span>
+                                                <span class="text-success fs-6 fw-bold">
+                                                    <?php
                                                     echo ($this->getCart()->getShippingPrice() == 0) ? "Free" :
                                                         '+$' . $this->getCart()->getShippingPrice(); ?>
-                                        </span>
-                                    </div>
-                                    <?php endif; ?>
-                                    <?php if ($this->getCart()->getCouponCode()): ?>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <span class="fs-6 text-muted">Discount
-                                            <span
-                                                class="badge bg-success text-white ms-2"><?php echo $this->getCart()->getCouponCode() ?></span>
-                                        </span>
-                                        <span
-                                            class="text-success fs-6 fw-bold">-$<?php echo $this->getCart()->getCouponDiscount() ?></span>
-                                    </div>
-                                    <?php endif; ?>
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($this->getCart()->getCouponCode()): ?>
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <span class="fs-6 text-muted">Discount
+                                                    <span
+                                                        class="badge bg-success text-white ms-2"><?php echo $this->getCart()->getCouponCode() ?></span>
+                                                </span>
+                                                <span
+                                                    class="text-success fs-6 fw-bold">-$<?php echo $this->getCart()->getCouponDiscount() ?></span>
+                                            </div>
+                                        <?php endif; ?>
 
-                                    <hr class="my-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold fs-5">Total</span>
-                                        <span
-                                            class="fw-bold fs-4 text-primary">$<?php echo $this->getCart()->getTotalAmount(); ?></span>
+                                        <hr class="my-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold fs-5">Total</span>
+                                            <span
+                                                class="fw-bold fs-4 text-primary">$<?php echo $this->getCart()->getTotalAmount(); ?></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <a href="<?php echo $this->getUrl('catalog/product/list') ?>"
+                                            class="btn btn-outline-primary rounded-pill">
+                                            <i class="fas fa-long-arrow-alt-left me-2"></i> Continue Shopping
+                                        </a>
                                     </div>
                                 </div>
-
-                                <div class="mt-4">
-                                    <a href="<?php echo $this->getUrl('catalog/product/list') ?>"
-                                        class="btn btn-outline-primary rounded-pill">
-                                        <i class="fas fa-long-arrow-alt-left me-2"></i> Continue Shopping
+                                <div class="col-lg-5 d-flex flex-column justify-content-between ps-lg-4 mt-4 mt-lg-0">
+                                    <div class="bg-light rounded-4 p-4 mb-4">
+                                        <div class="d-flex mb-3">
+                                            <div class="me-3 text-primary">
+                                                <i class="fas fa-truck fa-2x"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Free Shipping</h6>
+                                                <p class="text-muted small mb-0">On orders over $50</p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="me-3 text-primary">
+                                                <i class="fas fa-shield-alt fa-2x"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Secure Payment</h6>
+                                                <p class="text-muted small mb-0">100% secure payment</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="<?php echo $this->getUrl('*/cart_address/index'); ?>"
+                                        class="btn btn-primary btn-lg w-100 text-uppercase py-3 rounded-pill shadow-lg"
+                                        onclick="document.getElementById('shipping-billing-form').submit();">
+                                        <i class="fas fa-lock me-2"></i> Procced To Checkout
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-lg-5 d-flex flex-column justify-content-between ps-lg-4 mt-4 mt-lg-0">
-                                <div class="bg-light rounded-4 p-4 mb-4">
-                                    <div class="d-flex mb-3">
-                                        <div class="me-3 text-primary">
-                                            <i class="fas fa-truck fa-2x"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-1">Free Shipping</h6>
-                                            <p class="text-muted small mb-0">On orders over $50</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="me-3 text-primary">
-                                            <i class="fas fa-shield-alt fa-2x"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-1">Secure Payment</h6>
-                                            <p class="text-muted small mb-0">100% secure payment</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="<?php echo $this->getUrl('*/cart_address/index'); ?>"
-                                    class="btn btn-primary btn-lg w-100 text-uppercase py-3 rounded-pill shadow-lg"
-                                    onclick="document.getElementById('shipping-billing-form').submit();">
-                                    <i class="fas fa-lock me-2"></i> Procced To Checkout
-                                </a>
-                            </div>
                         </div>
                     </div>
-                </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 </section>
+<script>
+    $(function() {
+
+        $(document).on('click', '.removeProduct', function(event) {
+            let itemId = $(this).closest('.row').find('input[type="hidden"][name="item_id"]').val();
+            $.ajax({
+                url: "http://localhost/ecommerceweb/checkout/cart/remove",
+                type: 'get',
+                data: {
+                    id: itemId
+                },
+                success: function(res) {
+                    console.log(res);
+                    let extractedContent = $(res).find("#cartItemsDiv").html();
+                    $("#cartItemsDiv").empty().html(extractedContent);
+                    let extractedContent2 = $(res).find("#orderSummarydiv").html();
+                    $("#orderSummarydiv").empty().html(extractedContent2);
+                },
+                error: function(err) {
+                    console.log(err);
+                },
+            });
+        });
+        // Function to handle the AJAX update
+        function updateCartQuantity(itemId, quantity) {
+            $.ajax({
+                url: "http://localhost/ecommerceweb/checkout/cart/update",
+                type: 'post',
+                data: {
+                    item_id: itemId,
+                    quantity: quantity
+                },
+                success: function(res) {
+                    let extractedContent = $(res).find("#cartItemsDiv").html();
+                    $("#cartItemsDiv").empty().html(extractedContent);
+                    let extractedContent2 = $(res).find("#orderSummarydiv").html();
+                    $("#orderSummarydiv").empty().html(extractedContent2);
+                },
+                error: function(err) {
+                    console.log(err);
+                },
+            });
+        }
+
+        // Handle Enter key press
+        $(document).on('keydown', 'input[type="number"][name="quantity"]', function(event) {
+            if (event.key === 'Enter') {
+                const itemId = $(this).closest('.input-group').find('input[name="item_id"]').val();
+                const quantity = $(this).val();
+                // console.log($(this).closest('.input-group'));
+                updateCartQuantity(itemId, quantity);
+            }
+        });
+
+        // Handle plus button click
+        $(document).on('click', '.input-group .btn:has(.fa-plus)', function() {
+            const inputField = $(this).closest('.input-group').find('input[type="number"]');
+            const itemId = $(this).closest('.input-group').find('input[name="item_id"]').val();
+            const quantity = inputField.val();
+            updateCartQuantity(itemId, quantity);
+        });
+
+        // Handle minus button click
+        $(document).on('click', '.input-group .btn:has(.fa-minus)', function() {
+            const inputField = $(this).closest('.input-group').find('input[type="number"]');
+            const itemId = $(this).closest('.input-group').find('input[name="item_id"]').val();
+            const quantity = inputField.val();
+            updateCartQuantity(itemId, quantity);
+        });
+    });
+</script>
