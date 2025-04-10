@@ -59,7 +59,7 @@ $summary = $this->getSummary();
                                 </tr>
                             </thead>
                             <tbody id="tablebody">
-                                <span id="uid" class="d-none"></span>
+                                <!-- <span id="uid" class="d-none"></span> -->
                                 <?php foreach ($users as $user): ?>
                                 <tr>
                                     <td><?php echo $user->getFirstName() ?></td>
@@ -73,16 +73,14 @@ $summary = $this->getSummary();
                                             ?>
                                         <?php if ($status == 'Pending'):
                                             ?>
-
-
-                                        <a class="approve" onclick="filluid(<?php echo $user->getCustomerId() ?>)">
+                                        <a class="approve" data-userid="<?= $user->getCustomerId() ?>">
                                             <i class="bi bi-check"></i>
                                         </a>
-                                        <a class="reject" onclick="filluid(<?php echo $user->getCustomerId() ?>)">
+                                        <a class="reject" data-userid="<?= $user->getCustomerId() ?>">
                                             <i class="bi bi-x"></i>
                                         </a>
                                         <?php else: ?>
-                                        <span><?php echo $status ?></span>
+                                        <span><?= $user->RegisterStatus(); ?></span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

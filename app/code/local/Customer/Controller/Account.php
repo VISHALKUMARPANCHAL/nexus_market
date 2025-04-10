@@ -81,6 +81,8 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
     {
         $data = $this->getRequest()->getParams();
         $customer_id = $this->getSession()->get('customer_id');
+        // Mage::log($_SESSION);
+        // die;
         if (!empty($customer_id)) {
             if (!($data['newpassword'] === $data['confirmpassword'])) {
                 echo json_encode(["success" => false, "message" => "new password and confirm password not match"]);

@@ -1,15 +1,17 @@
 
-function filluid(id) {
-    $('#uid').html(id);
-}
+// function filluid(id) {
+//     $('#uid').html(id);
+// }
 $(function() {
     $(document).on('click', '.approve', function(event) {
-        let uid = $('#uid').html().trim();
+        // let uid = $('#uid').html().trim();
+        let uid = $(this).data('userid');
         let upstatus = "Approved";
+        
         ajaxcall(uid, upstatus);
     });
     $(document).on('click', '.reject', function(event) {
-        let uid = $('#uid').html().trim();
+        let uid = $(this).data('userid');
         let upstatus = "Rejected";
         ajaxcall(uid, upstatus);
     });

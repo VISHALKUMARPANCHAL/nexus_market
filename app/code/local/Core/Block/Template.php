@@ -53,7 +53,7 @@ class Core_Block_Template
             }
             return $html;
         }
-        return isset($this->_child[$key]) ? ($this->_child[$key])->toHtml() : "";
+        return isset($this->_child[$key]) ? ($this->_child[$key]) : "";
     }
     public function setTemplate($template)
     {

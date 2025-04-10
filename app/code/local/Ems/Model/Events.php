@@ -33,6 +33,7 @@ class Ems_Model_Events extends Core_Model_Abstract
         $a = Mage::getModel('ems/registrations')
             ->getCollection()
             ->addFieldToFilter('event_id', $this->getEventId())
+            ->addFieldToFilter("status", ['NOT IN' => "Rejected"])
             ->getData();
         if (count($a) == $this->getCapacity()) {
             return true;

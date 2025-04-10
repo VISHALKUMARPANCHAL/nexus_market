@@ -52,8 +52,10 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
             ->addFieldToFilter("main_table.category_id", ['>' => 1])
             ->orderBy(['total DESC'])
             ->limit('1', '2')
-            ->prepareQuery();
-        Mage::log($a);
+            ->getFirstItem();
+        Mage::log($a->getData());
+        Mage::log($a->getCid());
+        Mage::log($a->getTotal());
     }
     public function importAction()
     {

@@ -64,7 +64,7 @@ class Core_Model_Resource_Abstract
             $primaryId = $data[$primarykey];
         }
         // echo '<pre>';
-        print_r($model);
+        // print_r($model);
         // print_r($primaryId);
         // echo '</pre>';
         // die;

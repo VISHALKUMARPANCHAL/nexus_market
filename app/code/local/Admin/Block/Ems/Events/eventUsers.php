@@ -8,7 +8,6 @@ class Admin_Block_Ems_Events_eventUsers extends Core_Block_Template
     public function getRegisteredUser()
     {
         $id = $this->getRequest()->getQuery('id');
-
         $registration = Mage::getModel('ems/registrations')
             ->getCollection()
             ->addFieldToFilter('event_id', $id)

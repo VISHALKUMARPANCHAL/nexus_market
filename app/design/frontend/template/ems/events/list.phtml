@@ -41,6 +41,8 @@ $pastevents = $this->getPastEvents();
                                         </a>
                                         <?php elseif ($event->isRegistred()): ?>
                                         <span><?php echo $event->status() ?></span>
+                                        <?php else: ?>
+                                        <span>event full</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
