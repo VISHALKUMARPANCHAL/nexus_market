@@ -8,7 +8,7 @@ $columns = $this->getColumns();
     <thead>
         <tr>
             <?php foreach ($columns as $column): ?>
-                <th><?php echo $column->getData()['lable'] ?></th>
+            <th><?php echo $column->getData()['lable'] ?></th>
             <?php endforeach; ?>
         </tr>
         <!-- <form action="" method="get"> -->
@@ -18,7 +18,7 @@ $columns = $this->getColumns();
         <tr id="filter">
             <?php foreach ($columns as $column):
             ?>
-                <th><?php
+            <th><?php
                     echo $column->getFilter()->render();
                     ?></th>
             <?php endforeach;
@@ -28,44 +28,44 @@ $columns = $this->getColumns();
     </thead>
     <tbody id="grid_data">
         <?php foreach ($this->getCollection()->getData() as $row): ?>
-            <tr>
-                <?php foreach ($columns as $column): ?>
-                    <td><?php
+        <tr>
+            <?php foreach ($columns as $column): ?>
+            <td><?php
                         $column->setRow($row);
                         echo $column->render();
                         ?></td>
-                <?php endforeach; ?>
-            </tr>
+            <?php endforeach; ?>
+        </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
 <script>
-    // console.log("123");
-    $(function() {
-        $(document).on('input', 'input', function(event) {
-            let dataobj = {};
-            let filterdata = $('#filter').find('input').each(function() {
-                dataobj[$(this).attr("name")] = $(this).val();
-            });
-            let queryString = $.param(dataobj);
-            let fullUrl = '?' + queryString;
-            window.history.pushState({}, '', fullUrl);
-            $.ajax({
-                url: `http://localhost${window.location.pathname}`,
-                type: 'get',
-                data: dataobj,
-                success: function(res) {
-                    $("#grid_data").empty().html($(res).find("#grid_data").html());
-                    $(".pagination ").empty().html($(res).find(".pagination ").html());
-                },
-                error: function(err) {
-                    console.log(err);
-                },
-            });
+// console.log("123");
+$(function() {
+    $(document).on('input', 'input', function(event) {
+        let dataobj = {};
+        let filterdata = $('#filter').find('input').each(function() {
+            dataobj[$(this).attr("name")] = $(this).val();
+        });
+        let queryString = $.param(dataobj);
+        let fullUrl = '?' + queryString;
+        window.history.pushState({}, '', fullUrl);
+        $.ajax({
+            url: `http://localhost${window.location.pathname}`,
+            type: 'get',
+            data: dataobj,
+            success: function(res) {
+                $("#grid_data").empty().html($(res).find("#grid_data").html());
+                $(".pagination ").empty().html($(res).find(".pagination ").html());
+            },
+            error: function(err) {
+                console.log(err);
+            },
         });
     });
-    $('select').on('change', function() {
-        $('form').submit();
-    });
+});
+$('select').on('change', function() {
+    $('form').submit();
+});
 </script>

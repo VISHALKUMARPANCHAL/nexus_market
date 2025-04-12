@@ -1,7 +1,6 @@
 <?php
 class Core_Model_Resource_Abstract
 {
-
     protected $_tableName;
     protected $_primaryKey;
     public function __construct()
@@ -29,11 +28,7 @@ class Core_Model_Resource_Abstract
     {
         $field = (is_null($field)) ? $this->_primaryKey : $field;
         $sql = "SELECT * FROM `{$this->_tableName}` WHERE {$field}='{$value}' LIMIT 1";
-        // echo $sql;
-        // die;
         return $this->getAdapter()->fetchRow($sql);
-        // echo "<pre>";
-        // print_r($data);
     }
     protected function _getDbColumns()
     {

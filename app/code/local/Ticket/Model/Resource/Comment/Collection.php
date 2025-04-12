@@ -1,0 +1,2 @@
+<?php
+class Ticket_Model_Resource_Comment_Collection extends Core_Model_Resource_Collection_Abstract {}

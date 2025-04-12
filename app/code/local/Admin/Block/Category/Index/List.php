@@ -1,5 +1,4 @@
 <?php
-
 class Admin_Block_Category_Index_List extends Admin_Block_Widget_Grid
 {
     public function __construct()

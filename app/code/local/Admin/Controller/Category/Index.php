@@ -18,6 +18,7 @@ class Admin_Controller_Category_Index extends Core_Controller_Admin_Action
     public function saveAction()
     {
         $product = Mage::getModel('catalog/category');
+        // Mage::log($product);
         $product->setData($this->getRequest()->getParam('catalog_category'));
         $product->save();
         $this->redirect('admin/category_index/list');

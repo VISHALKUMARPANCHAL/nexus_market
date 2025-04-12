@@ -106,6 +106,7 @@ class Catalog_Model_Product extends Core_Model_Abstract
             $collection2 = Mage::getModel("catalog/media_gallery")
                 ->getcollection()
                 ->addFieldToFilter("main_table.product_id", $this->getProductId());
+            // Mage::log($collection->getData());
             foreach ($collection->getData() as $_data) {
                 $this->{$_data->getName()} = $_data->getValue();
             }

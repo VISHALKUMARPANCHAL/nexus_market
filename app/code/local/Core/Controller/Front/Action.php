@@ -9,6 +9,10 @@ class Core_Controller_Front_Action
     {
         return Mage::getSingleton('core/session');
     }
+    public function getLayout()
+    {
+        return Mage::getBlockSingleton('core/layout');
+    }
     public function redirect($url)
     {
         header("Location:" . Mage::getBaseUrl() . $url);

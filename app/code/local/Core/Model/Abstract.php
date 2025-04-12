@@ -73,9 +73,11 @@ class Core_Model_Abstract
     public function getCollection()
     {
         $collection = new $this->_collectionClass;
+        // Mage::log($this);
         $collection->setResource($this->getResource())
             ->setModel($this)
             ->select();
+        // Mage::log($collection);
         return $collection;
     }
     public function save()

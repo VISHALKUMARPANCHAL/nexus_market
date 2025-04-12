@@ -1,0 +1,179 @@
+<style>
+table,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 8px;
+    vertical-align: top;
+    min-width: 150px;
+}
+
+.input-container {
+    display: flex;
+    gap: 6px;
+    margin-top: 5px;
+}
+</style>
+
+<h3>Recursive Q&A Table</h3>
+<table id="qaTable">
+    <thead id="tableHead"></thead>
+    <tbody id="qaBody"></tbody>
+</table>
+
+<div class="input-container" style="margin-top: 10px;">
+    <input id="rootInput" placeholder="Enter root question">
+    <button onclick="addRoot()">Add Root Question</button>
+</div>
+
+<script>
+let nodeId = 0;
+let tree = [];
+let currentInputRow = null;
+
+function createNode(text) {
+    return {
+        id: ++nodeId,
+        text,
+        children: [],
+    };
+}
+
+function addRoot() {
+    const input = document.getElementById("rootInput");
+    const text = input.value.trim();
+    if (!text) return;
+    tree.push(createNode(text));
+    // console.log(input.value);
+    ajaxCall(input.value, 0);
+    input.value = "";
+    render();
+}
+
+function getMaxDepth(nodes, level = 0) {
+    if (nodes.length === 0) return level;
+    return Math.max(...nodes.map(n => getMaxDepth(n.children, level + 1)));
+}
+
+function countLeafPaths(node) {
+    if (node.children.length === 0) return 1;
+    return node.children.reduce((sum, child) => sum + countLeafPaths(child), 0);
+}
+
+function getPaths(node, path = []) {
+    const newPath = [...path, node];
+    if (node.children.length === 0) return [newPath];
+    return node.children.flatMap(child => getPaths(child, newPath));
+}
+
+function getAllPaths() {
+    return tree.flatMap(root => getPaths(root));
+}
+
+function render() {
+    const tbody = document.getElementById("qaBody");
+    const thead = document.getElementById("tableHead");
+    tbody.innerHTML = "";
+    thead.innerHTML = "";
+
+    const maxDepth = getMaxDepth(tree);
+    const headRow = document.createElement("tr");
+    for (let i = 0; i <= maxDepth; i++) {
+        const th = document.createElement("th");
+        th.textContent = `Level ${i + 1}`;
+        headRow.appendChild(th);
+    }
+    thead.appendChild(headRow);
+
+    const paths = getAllPaths();
+    const rendered = new Map();
+
+    paths.forEach(path => {
+        const tr = document.createElement("tr");
+
+        for (let colIndex = 0; colIndex <= maxDepth; colIndex++) {
+            const node = path[colIndex];
+            const td = document.createElement("td");
+
+            if (node) {
+                const key = node.id + '-' + colIndex;
+                if (!rendered.has(key)) {
+                    td.rowSpan = countLeafPaths(node);
+                    td.innerHTML = `<div>${node.text}</div>`;
+                    const addBtn = document.createElement("button");
+                    addBtn.textContent = "Add Sub";
+                    addBtn.onclick = () => showNextColumnInput(tr, colIndex + 1, node);
+                    td.appendChild(document.createElement("br"));
+                    td.appendChild(addBtn);
+                    rendered.set(key, true);
+                    tr.appendChild(td);
+                }
+            } else {
+                tr.appendChild(td);
+            }
+        }
+
+        tbody.appendChild(tr);
+    });
+}
+
+function showNextColumnInput(tr, level, parentNode) {
+    // Remove existing input container from any row
+    if (currentInputRow) {
+        const existingInputs = currentInputRow.querySelectorAll(".input-container");
+        existingInputs.forEach(e => e.remove());
+    }
+
+    const tds = tr.children;
+    let td = tds[level];
+
+    // If there's no td for the level, create and append
+    if (!td) {
+        td = document.createElement("td");
+        tr.appendChild(td);
+    }
+
+    const inputWrap = document.createElement("div");
+    inputWrap.className = "input-container";
+
+    const input = document.createElement("input");
+    input.placeholder = "Sub-answer";
+
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = "Submit";
+    submitBtn.onclick = () => {
+        const value = input.value.trim();
+        if (value) {
+            parentNode.children.push(createNode(value));
+            render();
+        }
+    };
+
+    inputWrap.appendChild(input);
+    inputWrap.appendChild(submitBtn);
+    td.appendChild(inputWrap);
+    currentInputRow = tr;
+}
+
+render();
+
+function ajaxCall(ttl, pid) {
+    $.ajax({
+        url: "http://localhost/ecommerceweb/reply/comment/save",
+        type: 'post',
+        data: {
+            title: ttl,
+            parent_id: pid
+        },
+        success: function(res) {
+            console.log(res);
+        },
+        error: function(err) {
+            console.log(err);
+        },
+    });
+}
+</script>

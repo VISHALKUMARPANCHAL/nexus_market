@@ -41,7 +41,8 @@ class Core_Model_DB_Adapter
     public function fetchRow($query)
     {
         $result = mysqli_query($this->connect(), $query);
-
+        // echo 123;
+        // Mage::log($query);
         while ($row = $result->fetch_assoc()) {
             return $row;
         }

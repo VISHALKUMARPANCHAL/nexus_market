@@ -1,0 +1,166 @@
+<style>
+    /* body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    } */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+
+    th,
+    td {
+        border: 1px solid #333;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .main-question {
+        width: 150px;
+        font-weight: bold;
+        background-color: #f9f9f9;
+    }
+
+    .sub-question {
+        width: 100px;
+        font-weight: bold;
+        background-color: #f9f9f9;
+    }
+
+    .answer-cell {
+        width: 80px;
+        text-align: center;
+    }
+
+    input[type="text"] {
+        width: 90%;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    .add-column-btn {
+        background-color: #2196F3;
+    }
+
+    .add-subquestion-btn {
+        background-color: #9C27B0;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    .controls {
+        margin: 20px 0;
+        display: flex;
+        gap: 10px;
+    }
+</style>
+
+
+
+
+<div class="controls">
+    <button type="button" class="btn add-subquestion-btn" id="addSubquestion">+ Add new answer</button>
+    <button type="button" class="btn" id="addNewColumn">Submit (add new column)</button>
+
+</div>
+
+<form id="gridForm">
+    <table id="questionTable">
+        <thead>
+            <tr id="headerRow">
+                <th>Main Question</th>
+                <th>Subanswer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Main question with first subquestion -->
+            <tr>
+                <td class="main-question" rowspan="1">Q-1</td>
+                <td class="answer-cell"><input type="text" name="Q1_A1_1"></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn">Submit</button>
+</form>
+
+
+
+<script>
+    let questionCount = 1;
+    let answerCount = 1;
+
+    const questionTable = document.getElementById('questionTable');
+    const tbody = questionTable.querySelector('tbody');
+    const headerRow = document.getElementById('headerRow');
+    document.addEventListener('DOMContentLoaded', function() {
+        const addSubquestionBtn = document.getElementById('addSubquestion');
+        const questionTable = document.getElementById('questionTable');
+        const tbody = questionTable.querySelector('tbody');
+        const mainQuestionCell = tbody.querySelector('.main-question');
+        let subquestionCount = 1;
+
+        addSubquestionBtn.addEventListener('click', function() {
+            subquestionCount++;
+
+            // Update rowspan of main question cell
+            mainQuestionCell.setAttribute('rowspan', subquestionCount);
+
+            // Create new row for answer
+            const newRow = document.createElement('tr');
+            newRow.innerHTML =
+                `<td class="answer-cell"><input type="text" name="Q1_A${subquestionCount}_1"></td>`;
+
+            // Append new row to tbody
+            tbody.appendChild(newRow);
+        });
+    });
+    document.getElementById('addNewColumn').addEventListener('click', function() {
+        questionCount++;
+
+        // Add new header cell
+        const newHeader = document.createElement('th');
+        newHeader.textContent = 'Subanswer';
+        headerRow.appendChild(newHeader);
+
+        // Update each row: add a new cell at the end
+        const rows = tbody.querySelectorAll('tr');
+        let rowIndex = 1;
+        rows.forEach((row, index) => {
+            if (index === 0) {
+                const newMainCell = document.createElement('td');
+                newMainCell.className = 'main-question';
+                newMainCell.textContent = `Q-${questionCount}`;
+                row.appendChild(newMainCell);
+            }
+            const newAnswerCell = document.createElement('td');
+            newAnswerCell.innerHTML = `<input type="text" name="Q${questionCount}_A${rowIndex}">`;
+            row.appendChild(newAnswerCell);
+            rowIndex++;
+        });
+    });
+</script>
