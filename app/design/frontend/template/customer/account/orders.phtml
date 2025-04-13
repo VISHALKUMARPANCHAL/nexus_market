@@ -1,0 +1,74 @@
+<?php
+$orders = $this->getAllOrders();
+?>
+<div class="card rounded-3 shadow-sm mb-4 border-0 hover-shadow">
+    <div class="card-header bg-gradient bg-white d-flex justify-content-between align-items-center py-3 border-bottom">
+        <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-shopping-bag me-2"></i>All Orders</h5>
+        <a href="<?php echo $this->getUrl('*/*/dashboard') ?>" class="btn btn-sm btn-primary">Back to dashboard</a>
+    </div>
+    <div class="card-body bg-white p-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($orders as $order): ?>
+                    <tr>
+                        <td><strong class="text-primary">#<?php echo $order->getOrderId() ?></strong>
+                        </td>
+                        <td><i class="far fa-calendar-alt me-1"></i>
+                            <?php echo $order->getCreatedAt() ?>
+                        </td>
+                        <td><span class="text-success">$<?php echo $order->getCouponDiscount() ?></span>
+                        </td>
+                        <td><strong>$<?php echo $order->getTotalAmount() ?></strong></td>
+                        <?php
+                            $class = "";
+                            $icon = "";
+                            if ($order->getOrderStatus() === "Pending") {
+                                $class = "warning";
+                                $icon = "clock";
+                            } else if ($order->getOrderStatus() === "Processing") {
+                                $class = "primary";
+                                $icon = "cog";
+                            } else if ($order->getOrderStatus() === "Shipped") {
+                                $class = "info";
+                                $icon = "truck";
+                            } else if ($order->getOrderStatus() === "Delivered") {
+                                $class = "success";
+                                $icon = "check-circle";
+                            } else if ($order->getOrderStatus() === "Cancelled") {
+                                $class = "danger";
+                                $icon = "times-circle";
+                            }
+                            ?>
+                        <td>
+                            <span class="badge bg-<?php echo $class; ?> rounded-pill">
+                                <i class="fas fa-<?php echo $icon; ?> me-1"></i>
+                                <?php echo $order->getOrderStatus() ?>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->getUrl("*/*/view?id={$order->getOrderId()}") ?>"
+                                class="btn btn-sm btn-outline-primary me-1">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <!-- <a href="#" class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-download"></i>
+                                        </a> -->
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

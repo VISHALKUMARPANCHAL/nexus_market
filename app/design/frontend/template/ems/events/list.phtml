@@ -28,24 +28,24 @@ $pastevents = $this->getPastEvents();
                             </thead>
                             <tbody>
                                 <?php foreach ($events as $event): ?>
-                                <tr>
-                                    <td><?php echo $event->getTitle() ?></td>
-                                    <td><?php echo $event->getDescription() ?></td>
-                                    <td><?php echo $event->getDate() ?></td>
-                                    <td><?php echo $event->getLocation() ?></td>
-                                    <td>
-                                        <?php if (!$event->isRegistred() && !$event->isExeed()): ?>
-                                        <a href="./register?id=<?php echo $event->getEventId() ?>"
-                                            onclick="return confirm('sure to register for event')">
-                                            <button>register</button>
-                                        </a>
-                                        <?php elseif ($event->isRegistred()): ?>
-                                        <span><?php echo $event->status() ?></span>
-                                        <?php else: ?>
-                                        <span>event full</span>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><?php echo $event->getTitle() ?></td>
+                                        <td><?php echo $event->getDescription() ?></td>
+                                        <td><?php echo $event->getDate() ?></td>
+                                        <td><?php echo $event->getLocation() ?></td>
+                                        <td>
+                                            <?php if (!$event->isRegistred() && !$event->isExeed()): ?>
+                                                <a href="./register?id=<?php echo $event->getEventId() ?>"
+                                                    onclick="return confirm('sure to register for event')">
+                                                    <button>register</button>
+                                                </a>
+                                            <?php elseif ($event->isRegistred()): ?>
+                                                <span><?php echo $event->status() ?></span>
+                                            <?php else: ?>
+                                                <span>event full</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -70,13 +70,13 @@ $pastevents = $this->getPastEvents();
                             </thead>
                             <tbody>
                                 <?php foreach ($pastevents as $event): ?>
-                                <tr>
-                                    <td><?php echo $event->getTitle() ?></td>
-                                    <td><?php echo $event->getDescription() ?></td>
-                                    <td><?php echo $event->getDate() ?></td>
-                                    <td><?php echo $event->getLocation() ?></td>
-                                    <td><?php echo $event->getStatus() ?></td>
-                                </tr>
+                                    <tr>
+                                        <td><?php echo $event->getTitle() ?></td>
+                                        <td><?php echo $event->getDescription() ?></td>
+                                        <td><?php echo $event->getDate() ?></td>
+                                        <td><?php echo $event->getLocation() ?></td>
+                                        <td><?php echo $event->getStatus() ?></td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -86,3 +86,9 @@ $pastevents = $this->getPastEvents();
         </div>
     </div>
 </div>
+<a href="<?php echo $this->getUrl('customer/account/dashboard') ?>">
+    <button
+        class="btn btn-primary d-flex align-items-center gap-2 px-4 py-2 fs-5 fw-semibold rounded-pill shadow-lg transition transform-hover">
+        Back to dashboard
+    </button>
+</a>

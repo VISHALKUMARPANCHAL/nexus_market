@@ -29,6 +29,44 @@ class Customer_Controller_Account extends Core_Controller_Customer_Action
         $layout->getChild('content')->addChild('index', $index);
         $layout->toHtml();
     }
+    public function ordersAction()
+    {
+        $layout = Mage::getBlock('core/layout');
+        $order = $layout->createBlock('customer/account_orders');
+        $layout->getChild('content')->addChild('order', $order);
+        $layout->toHtml();
+    }
+    public function viewAction()
+    {
+        $orderId = $this->getRequest()->getQuery('id');
+        $order = Mage::getModel('sales/order')
+            ->load($orderId);
+
+        $view = $this->getLayout()
+            ->createBlock('customer/account_view')
+            ->setOrder($order);
+
+        $this->getLayout()->getChild('head')
+            ->addCss("page/admin/sales/order/view.css");
+
+        $this->getLayout()->getChild("content")
+            ->addChild("view", $view);
+
+        $orderinfo = $this->getLayout()
+            ->createBlock('customer/account_view_orderinfo');
+        $view->addChild("orderinfo", $orderinfo);
+
+        $iteminfo = $this->getLayout()
+            ->createBlock('customer/account_view_iteminfo');
+        $view->addChild("iteminfo", $iteminfo);
+
+        $addressinfo = $this->getLayout()
+            ->createBlock('customer/account_view_addressinfo');
+        $view->addChild("addressinfo", $addressinfo);
+
+
+        $this->getLayout()->toHtml();
+    }
     public function changepasswordAction()
     {
         $layout = Mage::getBlock('core/layout');

@@ -3,29 +3,29 @@
         <h5 class="mb-4 text-primary fw-bold">Filters</h5>
         <label><b>Categories</b></label>
         <?php foreach ($this->getcategories() as $category): ?>
-        <div class="filter-option">
-            <label>
-                <input type="checkbox" name="id" value="<?php echo htmlspecialchars($category->getCategoryId()); ?>"
-                    class="filter-checkbox">
-                <?php echo htmlspecialchars($category->getName()); ?>
-            </label>
-        </div>
+            <div class="filter-option">
+                <label>
+                    <input type="checkbox" name="id" value="<?php echo htmlspecialchars($category->getCategoryId()); ?>"
+                        class="filter-checkbox">
+                    <?php echo htmlspecialchars($category->getName()); ?>
+                </label>
+            </div>
         <?php endforeach; ?>
         <?php foreach ($this->getAttribute() as $attribute): ?>
-        <div class="filter-option">
-            <label><b><?php echo ($attribute->getName()) ?></b></label><br>
-            <?php $attrs = $this->getValues($attribute->getAttributeId());
+            <div class="filter-option">
+                <label><b><?php echo ($attribute->getName()) ?></b></label><br>
+                <?php $attrs = $this->getValues($attribute->getAttributeId());
                 foreach ($attrs as $attr): ?>
-            <label>
-                <input type="checkbox" name="<?php echo htmlspecialchars($attribute->getName()); ?>"
-                    value="<?php echo htmlspecialchars($attr); ?>" class="filter-checkbox">
-                <?php echo htmlspecialchars(ucfirst($attr)); ?>
-            </label><br>
-            <?php endforeach; ?>
-        </div>
+                    <label>
+                        <input type="checkbox" name="<?php echo htmlspecialchars($attribute->getName()); ?>"
+                            value="<?php echo htmlspecialchars($attr); ?>" class="filter-checkbox">
+                        <?php echo htmlspecialchars(ucfirst($attr)); ?>
+                    </label><br>
+                <?php endforeach; ?>
+            </div>
         <?php endforeach; ?>
         <div class="d-grid gap-2">
-            <button class="btn btn-outline-secondary" onclick="clearFilters()">Clear All Filters</button>
+            <!-- <button class="btn btn-outline-secondary" onclick="clearFilters()">Clear All Filters</button> -->
         </div>
     </div>
 </div>

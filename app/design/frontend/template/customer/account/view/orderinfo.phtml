@@ -1,6 +1,5 @@
 <?php
 $orderData = $this->getOrdeInfo();
-// Mage::log($orderData);
 
 ?>
 <div class="card-header order-header">
@@ -29,37 +28,10 @@ $orderData = $this->getOrdeInfo();
                 $icon = "times-circle";
             }
             ?>
-
-
             <span class="badge bg-<?php echo $class; ?> rounded-pill">
                 <i class="fas fa-<?php echo $icon; ?> me-1"></i>
                 <?php echo $orderData->getOrderStatus() ?>
             </span>
-            <button type="button" class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <form action="<?php echo $this->getUrl('*/*/updatestatus') ?>" method="post"
-                class="dropdown-menu dropdown-menu-end">
-                <input type="hidden" value="<?php echo $orderData->getOrderId() ?>" name="order_id">
-
-                <li><button type="submit" name="order_status" value="Pending"
-                        class="dropdown-item text-warning m-0 shadow-none">Pending</button></li>
-                <li><button type="submit" name="order_status" value="Processing"
-                        class="dropdown-item text-primary m-0 shadow-none">Processing</button>
-                </li>
-                <li><button type="submit" name="order_status" value="Shipped"
-                        class="dropdown-item text-info m-0 shadow-none">Shipped</button></li>
-                <li><button type="submit" name="order_status" value="Delivered"
-                        class="dropdown-item text-success m-0 shadow-none">Delivered</button>
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><button type="submit" name="order_status" value="Cancelled"
-                        class="dropdown-item text-danger m-0 shadow-none">Cancelled</button>
-                </li>
-            </form>
             <small class="text-muted ms-2">Placed on: <?php echo $orderData->getUpdatedAt(); ?></small>
         </div>
     </div>

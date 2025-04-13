@@ -3,7 +3,7 @@
         <div class="col-md-8">
             <div class="card shadow-lg border-0 rounded-3">
                 <div class="card-body p-5">
-                    <h1 class="text-center text-primary mb-5 fw-bold">Hello, Admin <i
+                    <h1 class="text-center text-primary mb-5 fw-bold">Hello, <?php echo ucwords($this->getName()) ?> <i
                             class="bi bi-emoji-smile text-warning"></i></h1>
 
                     <div class="row justify-content-center gap-4 mt-4">
@@ -13,7 +13,7 @@
                                 <a href="<?php echo $this->getUrl('*/category_index/list'); ?>"
                                     class="text-decoration-none">
                                     <button class="btn btn-primary btn-lg py-3 fw-semibold shadow-sm w-100">
-                                        <i class="bi bi-folder me-2"></i> Category List
+                                        <i class="bi bi-folder me-2"></i> Category
                                     </button>
                                 </a>
                             </div>
@@ -26,7 +26,7 @@
                                 <a href="<?php echo $this->getUrl('*/product_index/list'); ?>"
                                     class="text-decoration-none">
                                     <button class="btn btn-success btn-lg py-3 fw-semibold shadow-sm w-100">
-                                        <i class="bi bi-box me-2"></i> Product List
+                                        <i class="bi bi-box me-2"></i> Product
                                     </button>
                                 </a>
                             </div>
@@ -39,7 +39,19 @@
                                 <a href="<?php echo $this->getUrl('*/sales_order/index'); ?>"
                                     class="text-decoration-none">
                                     <button class="btn btn-info btn-lg py-3 fw-semibold shadow-sm w-100 text-white">
-                                        <i class="bi bi-cart me-2"></i> All Orders
+                                        <i class="bi bi-cart me-2"></i> Orders
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <?php if ($this->getAllowedPermission('menu/order')): ?>
+                        <div class="col-md-5">
+                            <div class="d-grid">
+                                <a href="<?php echo $this->getUrl('*/ems_events/list'); ?>"
+                                    class="text-decoration-none">
+                                    <button class="btn btn-warning btn-lg py-3 fw-semibold shadow-sm w-100 text-white">
+                                        <i class="bi bi-calendar-event fs-5"></i> Event
                                     </button>
                                 </a>
                             </div>

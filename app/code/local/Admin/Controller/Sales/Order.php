@@ -34,15 +34,7 @@ class Admin_Controller_Sales_Order extends Core_Controller_Admin_Action
 
         $addressinfo = $this->getLayout()
             ->createBlock('admin/sales_order_view_addressinfo');
-        // $view->addChild("addressinfo", $addressinfo);
-        // Mage::log($this->getLayout());
-
-        $this->getLayout()->getChild('head')
-            ->addCss("page/admin/sales/order/view.css");
-
-        $this->getLayout()->getChild("content")
-            ->addChild("view", $view);
-        // Mage::log($this->getLayout());
+        $view->addChild("addressinfo", $addressinfo);
         $this->getLayout()->toHtml();
     }
     public function updatestatusAction()

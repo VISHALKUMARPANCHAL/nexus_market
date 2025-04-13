@@ -6,6 +6,12 @@ $summary = $this->getSummary();
 ?>
 
 <br>
+
+<a href="<?php echo $this->getUrl('*/ems_events/list'); ?>">
+    <button type="button" class="btn btn-outline-primary">back to event list</button>
+</a>
+
+
 <span id="eid" class="d-none"><?php echo $this->getRequest()->getQuery('id') ?></span>
 <div class="container mw-100">
     <div class="row">

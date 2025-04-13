@@ -1,80 +1,29 @@
 <?php
 class Admin_Block_Sales_Order_Index extends Admin_Block_Widget_Grid
 {
+    protected $_collection;
+
     public function __construct()
     {
-        $this->addColumn(
-            "order_id",
-            [
-                "render" => "text",
-                "filter" => "number",
-                "data_index" => "order_id",
-                "lable" => "Order Id"
-            ]
-        );
-        $this->addColumn(
-            "customer_id",
-            [
-                "render" => "text",
-                "filter" => "number",
-                "data_index" => "customer_id",
-                "lable" => "Customer Id"
-            ]
-        );
-        $this->addColumn(
-            "email",
-            [
-                "render" => "text",
-                "filter" => "text",
-                "data_index" => "email",
-                "lable" => "Email"
-            ]
-        );
-        $this->addColumn(
-            "total_amount",
-            [
-                "render" => "text",
-                "filter" => "number",
-                "data_index" => "total_amount",
-                "lable" => "Total Amount"
-            ]
-        );
-        $this->addColumn(
-            "payment_method",
-            [
-                "render" => "text",
-                "filter" => "text",
-                "data_index" => "payment_method",
-                "lable" => "Payment Method"
-            ]
-        );
-        $this->addColumn(
-            "order_status",
-            [
-                "render" => "dropdown",
-                "filter" => "dropdown",
-                "data_index" => "order_status",
-                "lable" => "Status",
-                "options" => ["Pending", "Processing", "Shipped", "Delevered", "Cancelled"]
-            ]
-        );
-        $this->addColumn(
-            "view",
-            [
-                "render" => "link",
-                "callback" => "getViewUrl",
-                "lable" => "View"
-            ]
-        );
-
-        $product = Mage::getModel('sales/order')
-            ->getCollection();
-        $this->setCollection($product);
-        Parent::__construct();
+        $this->_template = "admin/sales/order/index.phtml";
+        $toolbar = $this->getLayout()->createBlock('admin/grid_toolbar');
+        $this->addChild('toolbar', $toolbar);
+        $this->init();
     }
-
-    public function getViewUrl($data)
+    public function init()
     {
-        return $this->getUrl("*/*/view?id=$data->order_id");
+        $this->_collection = Mage::getModel('sales/order')
+            ->getCollection();
+        $this->getChild('toolbar')->prepareToolbar();
+    }
+    public function getCollection()
+    {
+        return $this->_collection;
+    }
+    public function getOrderData()
+    {
+        return $this->getCollection()
+            ->orderBy(["created_at DESC"])
+            ->getData();
     }
 }

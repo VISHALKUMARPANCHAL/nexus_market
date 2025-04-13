@@ -1,5 +1,6 @@
 <?php
 $products = $this->getData();
+// Mage::log($products);
 ?>
 <br>
 <div class="container mw-100">
@@ -9,6 +10,8 @@ $products = $this->getData();
                 <div class="card-header bg-primary">
                     <h2 class="m-0 text-white">Product Admin</h2>
                 </div>
+                <?php $this->getChildHtml('toolbar') ?>
+
                 <div class="card-body">
                     <a href="./new" class="btn btn-success btn-insert">
                         <i class="fas fa-plus-circle me-2"></i>Insert New Product
@@ -77,7 +80,6 @@ $products = $this->getData();
                             </tbody>
                         </table>
                     </div>
-                    <?php $this->getChildHtml('toolbar') ?>
                 </div>
             </div>
         </div>

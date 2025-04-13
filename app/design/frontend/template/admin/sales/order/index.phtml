@@ -15,7 +15,8 @@ $orders = $this->getOrderData();
                 <div class="col-md-6 text-md-end">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 justify-content-md-end">
-                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a
+                                    href="<?php echo $this->getUrl('admin/dashboard/index') ?>">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Orders</li>
                         </ol>
                     </nav>
@@ -84,9 +85,12 @@ $orders = $this->getOrderData();
                     <div class="col-md-6">
                         <h5 class="mb-0"><i class="fas fa-list me-2"></i>All Orders</h5>
                     </div>
-                    <div class="col-md-6 text-md-end">
-                        <span class="badge bg-primary rounded-pill">Total: <?php echo count($orders) ?> orders</span>
-                    </div>
+                    <?php $this->getChildHtml('toolbar') ?>
+
+                    <!-- <div class="col-md-6 text-md-end">
+                        <span class="badge bg-primary rounded-pill">Total: <?php //echo count($orders) 
+                                                                            ?> orders</span>
+                    </div> -->
                 </div>
             </div>
             <div class="card-body p-0">
@@ -108,85 +112,94 @@ $orders = $this->getOrderData();
                         <tbody>
                             <!-- Order 56 from your data -->
                             <?php foreach ($orders as $order): ?>
-                                <tr>
-                                    <td><a href="#"
-                                            class="fw-bold text-decoration-none"><?php echo $order->getOrderId() ?></a></td>
-                                    <td><?php echo $order->getUpdatedAt() ?></td>
-                                    <td>
-                                        <span class="badge badge-light"><?php echo $order->getCustomerId() ?></span>
-                                        <!-- <small class="d-block text-muted">-</small> -->
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-secondary"><?php echo $order->getPaymentMethod() ?></span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-secondary"><?php echo $order->getShippingMethod() ?></span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-info text-dark"><?php echo $order->getCouponCode() ?></span>
-                                        <small class="d-block">-₹<?php echo $order->getCouponDiscount() ?></small>
-                                    </td>
-                                    <td>
-                                        <span class="fw-bold">₹<?php echo $order->getTotalAmount() ?></span>
-                                    </td>
-                                    <td>
-                                        <?php
+                            <tr>
+                                <td><a href="#"
+                                        class="fw-bold text-decoration-none"><?php echo $order->getOrderId() ?></a></td>
+                                <td><?php echo $order->getUpdatedAt() ?></td>
+                                <td>
+                                    <span class="badge badge-light"><?php echo $order->getCustomerId() ?></span>
+                                    <!-- <small class="d-block text-muted">-</small> -->
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary"><?php echo $order->getPaymentMethod() ?></span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary"><?php echo $order->getShippingMethod() ?></span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info text-dark"><?php echo $order->getCouponCode() ?></span>
+                                    <small class="d-block">-₹<?php echo $order->getCouponDiscount() ?></small>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">₹<?php echo $order->getTotalAmount() ?></span>
+                                </td>
+                                <td>
+                                    <?php
                                         $class = "";
+                                        $icon = "";
                                         if ($order->getOrderStatus() === "Pending") {
                                             $class = "warning";
+                                            $icon = "clock";
                                         } else if ($order->getOrderStatus() === "Processing") {
                                             $class = "primary";
+                                            $icon = "cog";
                                         } else if ($order->getOrderStatus() === "Shipped") {
                                             $class = "info";
+                                            $icon = "truck";
                                         } else if ($order->getOrderStatus() === "Delivered") {
                                             $class = "success";
+                                            $icon = "check-circle";
                                         } else if ($order->getOrderStatus() === "Cancelled") {
                                             $class = "danger";
+                                            $icon = "times-circle";
                                         }
                                         ?>
-                                        <span class="order-status status-pending bg-<?php echo $class ?>"></span>
-                                        <span><?php echo $order->getOrderStatus() ?></span>
-                                        <button type="button"
-                                            class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="visually-hidden">Toggle Dropdown</span>
-                                        </button>
-                                        <form action="<?php echo $this->getUrl('*/*/updatestatus') ?>" method="post"
-                                            class="dropdown-menu dropdown-menu-end">
-                                            <input type="hidden" value="<?php echo $order->getOrderId() ?>" name="order_id">
 
-                                            <li><button type="submit" name="order_status" value="Pending"
-                                                    class="dropdown-item text-warning m-0 shadow-none">Pending</button></li>
-                                            <li><button type="submit" name="order_status" value="Processing"
-                                                    class="dropdown-item text-primary m-0 shadow-none">Processing</button>
-                                            </li>
-                                            <li><button type="submit" name="order_status" value="Shipped"
-                                                    class="dropdown-item text-info m-0 shadow-none">Shipped</button></li>
-                                            <li><button type="submit" name="order_status" value="Delivered"
-                                                    class="dropdown-item text-success m-0 shadow-none">Delivered</button>
-                                            </li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><button type="submit" name="order_status" value="Cancelled"
-                                                    class="dropdown-item text-danger m-0 shadow-none">Cancelled</button>
-                                            </li>
-                                        </form>
-                                    </td>
 
-                                    <td class="text-end">
-                                        <div class="btn-group">
-                                            <a href="<?php echo Mage::getBaseUrl() . "admin/sales_order/" . "view/?id={$order->getOrderId()}" ?>"
-                                                class="btn btn-xs btn-outline-primary">View</a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <span class="badge bg-<?php echo $class; ?> rounded-pill">
+                                        <i class="fas fa-<?php echo $icon; ?> me-1"></i>
+                                        <?php echo $order->getOrderStatus() ?>
+                                    </span>
+                                    <button type="button"
+                                        class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <form action="<?php echo $this->getUrl('*/*/updatestatus') ?>" method="post"
+                                        class="dropdown-menu dropdown-menu-end">
+                                        <input type="hidden" value="<?php echo $order->getOrderId() ?>" name="order_id">
+
+                                        <li><button type="submit" name="order_status" value="Pending"
+                                                class="dropdown-item text-warning m-0 shadow-none">Pending</button></li>
+                                        <li><button type="submit" name="order_status" value="Processing"
+                                                class="dropdown-item text-primary m-0 shadow-none">Processing</button>
+                                        </li>
+                                        <li><button type="submit" name="order_status" value="Shipped"
+                                                class="dropdown-item text-info m-0 shadow-none">Shipped</button></li>
+                                        <li><button type="submit" name="order_status" value="Delivered"
+                                                class="dropdown-item text-success m-0 shadow-none">Delivered</button>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><button type="submit" name="order_status" value="Cancelled"
+                                                class="dropdown-item text-danger m-0 shadow-none">Cancelled</button>
+                                        </li>
+                                    </form>
+                                </td>
+
+                                <td class="text-end">
+                                    <div class="btn-group">
+                                        <a href="<?php echo Mage::getBaseUrl() . "admin/sales_order/" . "view/?id={$order->getOrderId()}" ?>"
+                                            class="btn btn-xs btn-outline-primary">View</a>
+                                    </div>
+                                </td>
+                            </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <?php $this->getChildHtml('toolbar') ?>
         </div>
     </div>
 </div>

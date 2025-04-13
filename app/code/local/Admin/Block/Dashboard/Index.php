@@ -14,4 +14,12 @@ class Admin_Block_Dashboard_Index extends Core_Block_Template
             return false;
         }
     }
+    public function getName()
+    {
+        $aid = Mage::getSingleton('core/session')
+            ->get('admin_id');
+        return Mage::getModel('admin/user')
+            ->load($aid)
+            ->getUsername();
+    }
 }

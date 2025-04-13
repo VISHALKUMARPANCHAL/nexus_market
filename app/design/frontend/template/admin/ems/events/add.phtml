@@ -6,7 +6,18 @@ $events = $this->getEvents();
 // Mage::log($events);
 // die;
 ?>
-<h1>Add an event</h1>
+<style>
+#addeventh {
+    text-align: center;
+    background-color: #ffffc6;
+}
+
+#addeventsub {
+
+    width: 28pc;
+}
+</style>
+<h1 id="addeventh"><?php echo ($id) ? "Update" : "Add" ?> an event</h1>
 <form action="<?php echo $this->getUrl('*/*/addPost') ?>" method="post">
     <input type="hidden" name="events[event_id]" id="" value="<?php echo ($id) ? $events->getEventId() : "" ?>">
     <input type="text" placeholder="title" name="events[title]"
@@ -18,5 +29,5 @@ $events = $this->getEvents();
         value="<?php echo ($id) ? $events->getLocation() : "" ?>">
     <input type="number" name="events[capacity]" placeholder="capacity"
         value="<?php echo ($id) ? $events->getCapacity() : "" ?>">
-    <input type="submit" value="add">
+    <input type="submit" value="<?php echo ($id) ? "Update" : "Add" ?>" id="addeventsub">
 </form>
