@@ -1,0 +1,21 @@
+table,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 8px;
+    vertical-align: top;
+    min-width: 150px;
+}
+
+.input-container {
+    display: flex;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.control-panel {
+    margin-bottom: 15px;
+}

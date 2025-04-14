@@ -1,0 +1,23 @@
+<?php
+$data = $this->getData();
+$id = $this->getId();
+?>
+
+
+<form action="<?php echo $this->getUrl('*/*/save') ?>" method="post">
+    <input type="hidden" name="ticket[ticket_id]" value="<?php echo $data->getTicketId() ?>">
+    <div class="mb-4">
+        <label for="name" class="form-label fw-bold">Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="name" name="ticket[title]" value="<?php echo $data->getTitle() ?>"
+            required>
+    </div>
+    <!-- <div class="mb-4">
+        <label for="description" class="form-label fw-bold">Description</label>
+        <textarea class="form-control" id="description" name="catalog_category[description]" rows="4"></textarea>
+    </div> -->
+    <div class="d-flex mt-4 align-items-center">
+        <button type="submit" class="btn btn-primary ms-9">
+            <i class="fas fa-save me-2"></i>Save Ticket
+        </button>
+    </div>
+</form>
