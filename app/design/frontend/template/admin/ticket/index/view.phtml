@@ -1,44 +1,11 @@
 <?php
-$tree = $this->buildCommentTree();
-$head = 0;
-// function tableHead($tree, $curentdepth = 1)
-// {
-//     $maxdepth = $curentdepth;
-//     foreach ($tree as $value) {
-//         if (!empty($value['children'])) {
-//             $childrendepth = tableHead($value['children'], $curentdepth + 1);
-//             if ($childrendepth > $maxdepth) {
-//                 $maxdepth = $childrendepth;
-//             }
-//         }
-//     }
-//     return $maxdepth;
-// }
-function tableHead($tree, $curentdepth = 1)
-{
-    $maxdepth = $curentdepth;
-    foreach ($tree as $value) {
-        if (!empty($value['children'])) {
-            $childrendepth = tableHead($value['children'], $curentdepth + 1);
-            if ($childrendepth > $maxdepth) {
-                $maxdepth = $childrendepth;
-            }
-        }
-    }
-    return $maxdepth;
-}
 
-Mage::log($tree);
+$ticket = $this->getTicket();
 
-// echo '<th>';
-// echo 1;
-// echo '</th>';
-
-echo '<table>';
-echo '<thead>';
-echo '<tr>';
-echo tableHead($tree);
-echo '<tr>';
-echo '</tr>';
-echo '</thead>';
-echo '</table>';
+$tableArray = $this->dataArray();
+$tree = $this->buildTree($tableArray);
+// Mage::log($tree);
+echo $this->render($tree, $ticket);
+?>
+<button id="saveall">saveAll</button>
+<span id="ticketId" class="d-none"><?php echo $this->getId() ?></span>

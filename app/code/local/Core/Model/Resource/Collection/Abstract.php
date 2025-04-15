@@ -42,8 +42,10 @@ class Core_Model_Resource_Collection_Abstract
     }
     public function addFieldToFilter($field, $condition)
     {
-        if (!is_array($condition)) {
+        if (!is_array($condition) && $condition != '') {
             $condition = ['eq' => $condition];
+        } else if (!is_array($condition) && $condition == '') {
+            $condition = ['is' => $condition];
         }
         $this->_select['WHERE'][$field][] = $condition;
         return $this;
@@ -210,6 +212,9 @@ class Core_Model_Resource_Collection_Abstract
                         break;
                     case 'EQ':
                         $where = "{$field} = '{$_value}'";
+                        break;
+                    case 'IS':
+                        $where = "{$field} IS NULL";
                         break;
 
                     default:

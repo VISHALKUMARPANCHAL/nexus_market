@@ -1,10 +1,17 @@
 <?php
 class Admin_Block_Ticket_Index_View extends Core_Block_Template
 {
-    protected $_comments = null;
+    protected $_arr = [];
     public function __construct()
     {
         $this->setTemplate('admin/ticket/index/view.phtml');
+    }
+
+    function getTicket()
+    {
+        return Mage::getModel('ticket/ticket')
+            ->load($this->getId())
+            ->getTitle();
     }
     public function getData()
     {
@@ -17,71 +24,134 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
     }
     public function getComments()
     {
-        // if (!is_array($this->_comments)) {
-        // $this->_comments = [];
         return Mage::getModel('ticket/comment')
             ->getCollection()
-            ->addFieldToFilter('ticket_id', $this->getId())
-            ->orderBy(['node_id'])
-            ->getData();
-        //     foreach ($comments as $comment) {
-        //         array_push($this->_comments, $comment->getData());
-        //     }
-        // }
-        // return $this->_comments;
-        // Mage::log($this->_comments);
+            ->addFieldToFilter('ticket_id', $this->getId());
     }
-    public function buildCommentTree()
+    public function getCommentTitle($id)
     {
-        $lookup = [];
-        foreach ($this->getComments() as $comment) {
-            $id = $comment->getCommentId();
-            $lookup[$id] = [
-                'id' => $id,
-                // 'ticket_id' => $comment->getTicketId(),
-                'parent_id' => $comment->getParentId(),
-                'comment' => $comment->getComment(),
-                // 'created_at' => $comment->getCreatedAt(),
-                'children' => []
-            ];
+        return $this->getComments()
+            ->addFieldToFilter('comment_id', $id)
+            ->getFirstItem()
+            ->getComment();
+    }
+    public function dataArray($id = null)
+    {
+        if (is_null($id)) {
+            $data = $this->getComments()->addFieldToFilter('parent_id', $id)->getData();
+        } else {
+            $data = $this->getComments()->addFieldToFilter('parent_id', $id)->getData();
         }
+        if (!$data) {
+            $this->_arr[$id] = [];
+            return;
+        }
+        foreach ($data as $d) {
+            $this->_arr[is_null($id) ? 0 : $id][] = $d->getCommentId();
+            $this->dataArray($d->getCommentId());
+        }
+        return $this->_arr;
+    }
 
+
+
+
+
+
+
+
+    function buildTree($tableArray, $parentId = 0)
+    {
         $tree = [];
-        foreach ($lookup as $id => &$node) {
-            $parentId = $node['parent_id'];
-            if ($parentId == 0 || $parentId === null || $parentId == "") {
-                $tree[] = &$node;
-            } else {
-                if (isset($lookup[$parentId])) {
-                    $lookup[$parentId]['children'][] = &$node;
-                }
+        if (isset($tableArray[$parentId])) {
+            foreach ($tableArray[$parentId] as $id) {
+                $node = [
+                    'id' => $id,
+                    'children' => $this->buildTree($tableArray, $id)
+                ];
+                $tree[] = $node;
             }
         }
         return $tree;
     }
+    function getPaths($tree, $path = [], &$rows = [], &$rowspans = [])
+    {
+        foreach ($tree as $t) {
+            $currpath = array_merge($path, [$t['id']]);
+            if (empty($t['children'])) {
+                $rows[] = $currpath;
+            } else {
+                $countBefore = count($rows);
+                $this->getPaths($t['children'], $currpath, $rows, $rowspans);
+                $temp = count($rows) - $countBefore;
+                $level = count($path);
+                // Mage::log($path);
+                // Mage::log($temp);
+                $rowspans[$level][$t['id']] = $temp;
+            }
+        }
+    }
+    function render($tree, $ticket)
+    {
+        $rows = [];
+        $rowspans = [];
+        $html = '';
+        $this->getPaths($tree, [], $rows, $rowspans);
+        // Mage::log($rows);
+        // Mage::log($rowspans);
+        if (!empty($rows)) {
+            if (!empty($rowspans)) {
+                $last = max(array_keys($rowspans)) + 1;
+            } else {
+                $last = 0;
+            }
+            $totalRows = count($rows);
 
-    // public function countNodes($node, &$counts)
-    // {
-    //     $count = 1;
-    //     if (!empty($node['children'])) {
-    //         foreach ($node['children'] as $child) {
-    //             if (empty($node['children'])) {
-    //                 return 1;
-    //             }
-    //             $count += $this->countNodes($child, $counts);
-    //         }
-    //     }
-    //     $counts[$node['id']] = $count - 1;
-    //     return $count;
-    // }
+            $html = '<table border="1" cellpadding="10">';
+            $html .= '<tr>';
+            $html .= '<td rowspan="' . $totalRows . '">';
+            $html .= $ticket;
+            $html .= '</td>';
 
-    // public function buildCounts()
-    // {
-    //     $data = $this->buildCommentTree();
-    //     $counts = [];
-    //     foreach ($data as $item) {
-    //         $this->countNodes($item, $counts);
-    //     }
-    //     return $counts;
-    // }
+            foreach ($rows[0] as $key => $val) {
+                $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
+                $html .= '<td rowspan="' . $span . '">' . $this->getCommentTitle($val);
+                if ($key == $last) {
+                    $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button></td>";
+                    $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+                }
+                $html .= '</td>';
+                $printed[$key][$val] = true;
+            }
+            $html .= '</tr>';
+
+            for ($i = 1; $i < $totalRows; $i++) {
+                $html .= '<tr>';
+                foreach ($rows[$i] as $key => $val) {
+                    if (!isset($printed[$key][$val])) {
+                        $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
+                        $html .= '<td rowspan="' . $span . '">' . $this->getCommentTitle($val);
+                        if ($key == $last) {
+                            $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button>";
+                            $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+                        }
+                        $html .= '</td>';
+                        $printed[$key][$val] = true;
+                    }
+                }
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+        } else {
+            $html .= '<table>';
+            $html .= '<tr>';
+            $html .= "<td>{$ticket}</td>";
+            $html .= "<td data-node-id=0><button onclick='openTextbox()'>add comment</button></td>";
+            $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+
+            $html .= '</tr>';
+            $html .= '</table>';
+        }
+        return $html;
+    }
 }
