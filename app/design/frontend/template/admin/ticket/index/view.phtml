@@ -1,11 +1,18 @@
+<div class="d-flex">
+    <a href="<?php echo '?id=' . $this->getId() ?>&showcompleted=true"><button id="showcompleted"
+            class='bg-warning'>show
+            completed</button></a>
+    <a href="<?php echo '?id=' . $this->getId() ?>"><button id="showall" class='bg-secondary'>hide
+            completed</button></a>
+    <button id="saveall" class='bg-primary'>saveAll</button>
+</div>
+
 <?php
 
 $ticket = $this->getTicket();
-
 $tableArray = $this->dataArray();
+// Mage::log($tableArray);
 $tree = $this->buildTree($tableArray);
-// Mage::log($tree);
 echo $this->render($tree, $ticket);
 ?>
-<button id="saveall">saveAll</button>
 <span id="ticketId" class="d-none"><?php echo $this->getId() ?></span>

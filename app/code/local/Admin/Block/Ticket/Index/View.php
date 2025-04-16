@@ -24,24 +24,24 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
     }
     public function getComments()
     {
-        return Mage::getModel('ticket/comment')
+        $comment = Mage::getModel('ticket/comment')
             ->getCollection()
             ->addFieldToFilter('ticket_id', $this->getId());
+        $fleg = $this->getRequest()->getQuery('showcompleted');
+        if (!($fleg == 'true')) {
+            $comment->addFieldToFilter('is_active', 1);
+        }
+        return $comment;
     }
     public function getCommentTitle($id)
     {
         return $this->getComments()
             ->addFieldToFilter('comment_id', $id)
-            ->getFirstItem()
-            ->getComment();
+            ->getFirstItem();
     }
     public function dataArray($id = null)
     {
-        if (is_null($id)) {
-            $data = $this->getComments()->addFieldToFilter('parent_id', $id)->getData();
-        } else {
-            $data = $this->getComments()->addFieldToFilter('parent_id', $id)->getData();
-        }
+        $data = $this->getComments()->addFieldToFilter('parent_id', $id)->getData();
         if (!$data) {
             $this->_arr[$id] = [];
             return;
@@ -52,12 +52,6 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
         }
         return $this->_arr;
     }
-
-
-
-
-
-
 
 
     function buildTree($tableArray, $parentId = 0)
@@ -97,7 +91,7 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
         $rowspans = [];
         $html = '';
         $this->getPaths($tree, [], $rows, $rowspans);
-        // Mage::log($rows);
+        // Mage::log($tree);
         // Mage::log($rowspans);
         if (!empty($rows)) {
             if (!empty($rowspans)) {
@@ -113,14 +107,19 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
             $html .= $ticket;
             $html .= '</td>';
 
+            // Mage::log($rows);
             foreach ($rows[0] as $key => $val) {
                 $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
-                $html .= '<td rowspan="' . $span . '">' . $this->getCommentTitle($val);
-                if ($key == $last) {
-                    $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button></td>";
+                // Mage::log($this->getCommentTitle($val)->getIsActive());
+                // die;
+
+                $html .= sprintf("<td class='%s' rowspan='%s' data-complete-id=%s>%s", ($this->getCommentTitle($val)->getIsActive()) ? "" : "bg-success", $span, $val, $this->getCommentTitle($val)->getComment());
+                if ($key == $last && $this->getCommentTitle($val)->getIsActive()) {
                     $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+                    $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button></td>";
+                } else {
+                    $html .= '</td>';
                 }
-                $html .= '</td>';
                 $printed[$key][$val] = true;
             }
             $html .= '</tr>';
@@ -130,12 +129,14 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
                 foreach ($rows[$i] as $key => $val) {
                     if (!isset($printed[$key][$val])) {
                         $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
-                        $html .= '<td rowspan="' . $span . '">' . $this->getCommentTitle($val);
-                        if ($key == $last) {
-                            $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button>";
+                        // Mage::log($val);
+                        $html .= sprintf("<td class='%s' rowspan='%s' data-complete-id='%s'>%s", ($this->getCommentTitle($val)->getIsActive()) ? "" : "bg-success", $span, $val, $this->getCommentTitle($val)->getComment());
+                        if ($key == $last && $this->getCommentTitle($val)->getIsActive()) {
                             $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+                            $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button></td>";
+                        } else {
+                            $html .= '</td>';
                         }
-                        $html .= '</td>';
                         $printed[$key][$val] = true;
                     }
                 }
@@ -147,7 +148,7 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
             $html .= '<tr>';
             $html .= "<td>{$ticket}</td>";
             $html .= "<td data-node-id=0><button onclick='openTextbox()'>add comment</button></td>";
-            $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+            // $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
 
             $html .= '</tr>';
             $html .= '</table>';
