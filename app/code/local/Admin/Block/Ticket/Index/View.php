@@ -6,13 +6,6 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
     {
         $this->setTemplate('admin/ticket/index/view.phtml');
     }
-
-    function getTicket()
-    {
-        return Mage::getModel('ticket/ticket')
-            ->load($this->getId())
-            ->getTitle();
-    }
     public function getData()
     {
         return Mage::getModel('ticket/ticket')
@@ -24,9 +17,19 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
     }
     public function getComments()
     {
+        $limit = $this->getRequest()->getQuery('limit');
         $comment = Mage::getModel('ticket/comment')
             ->getCollection()
             ->addFieldToFilter('ticket_id', $this->getId());
+        if ($limit != '') {
+            $max = Mage::getModel('ticket/comment')
+                ->getCollection()
+                ->addFieldToFilter('ticket_id', $this->getId())
+                ->select(['MAX(level)' => "maximum"])
+                ->getFirstItem()
+                ->getMaximum();
+            $comment->addFieldToFilter('level', ['>' => $max - $limit]);
+        }
         $fleg = $this->getRequest()->getQuery('showcompleted');
         if (!($fleg == 'true')) {
             $comment->addFieldToFilter('is_active', 1);
@@ -39,7 +42,7 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
             ->addFieldToFilter('comment_id', $id)
             ->getFirstItem();
     }
-    public function dataArray($id = null)
+    public function dataArray($id)
     {
         $data = $this->getComments()->addFieldToFilter('parent_id', $id)->getData();
         if (!$data) {
@@ -47,21 +50,19 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
             return;
         }
         foreach ($data as $d) {
-            $this->_arr[is_null($id) ? 0 : $id][] = $d->getCommentId();
+            $this->_arr[$id][] = $d->getCommentId();
             $this->dataArray($d->getCommentId());
         }
-        return $this->_arr;
     }
 
-
-    function buildTree($tableArray, $parentId = 0)
+    function buildTree($parentId = 0)
     {
         $tree = [];
-        if (isset($tableArray[$parentId])) {
-            foreach ($tableArray[$parentId] as $id) {
+        if (isset($this->_arr[$parentId])) {
+            foreach ($this->_arr[$parentId] as $id) {
                 $node = [
                     'id' => $id,
-                    'children' => $this->buildTree($tableArray, $id)
+                    'children' => $this->buildTree($id)
                 ];
                 $tree[] = $node;
             }
@@ -72,6 +73,7 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
     {
         foreach ($tree as $t) {
             $currpath = array_merge($path, [$t['id']]);
+            // Mage::log($currpath);
             if (empty($t['children'])) {
                 $rows[] = $currpath;
             } else {
@@ -85,74 +87,108 @@ class Admin_Block_Ticket_Index_View extends Core_Block_Template
             }
         }
     }
-    function render($tree, $ticket)
+    function getMinimulLevel()
     {
+        $ids = [];
+        $minimum = $this->getComments()
+            ->select(['MIN(level)' => "minimum"])
+            ->getFirstItem()
+            ->getMinimum();
+        // Mage::log($minimum);
+        $comments = $this->getComments()
+            ->addFieldToFilter('level', $minimum)
+            ->getData();
+        foreach ($comments as $comment) {
+            array_push($ids, $comment->getCommentId());
+        }
+        return $ids;
+    }
+    public function getMaximumLevel()
+    {
+        return $this->getComments()
+            ->select(['MAX(level)' => "maximum"])
+            ->getFirstItem()
+            ->getMaximum();
+    }
+    function render()
+    {
+        $ids = $this->getMinimulLevel();
+        foreach ($ids as $id) {
+            $this->_arr[0][] = $id;
+            $this->dataArray($id);
+        }
+        $tree = $this->buildTree();
+        // Mage::log($this->_arr);
+        $ticket = $this->getData()->getTitle();
         $rows = [];
         $rowspans = [];
         $html = '';
         $this->getPaths($tree, [], $rows, $rowspans);
-        // Mage::log($tree);
+        // Mage::log($rows);
         // Mage::log($rowspans);
+        if (!empty($rowspans)) {
+            $last = max(array_keys($rowspans)) + 1;
+        } else {
+            $last = 0;
+        }
+        $totalRows = count($rows);
+        if ($totalRows == 0) {
+            $totalRows = 1;
+        }
+        $html = '<table border="1">';
+        $html .= '<tr>';
+        $html .= "<td rowspan='$totalRows'>";
+        $html .= $ticket;
+        $html .= '</td>';
         if (!empty($rows)) {
-            if (!empty($rowspans)) {
-                $last = max(array_keys($rowspans)) + 1;
-            } else {
-                $last = 0;
-            }
-            $totalRows = count($rows);
-
-            $html = '<table border="1" cellpadding="10">';
-            $html .= '<tr>';
-            $html .= '<td rowspan="' . $totalRows . '">';
-            $html .= $ticket;
-            $html .= '</td>';
-
-            // Mage::log($rows);
             foreach ($rows[0] as $key => $val) {
                 $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
-                // Mage::log($this->getCommentTitle($val)->getIsActive());
-                // die;
-
-                $html .= sprintf("<td class='%s' rowspan='%s' data-complete-id=%s>%s", ($this->getCommentTitle($val)->getIsActive()) ? "" : "bg-success", $span, $val, $this->getCommentTitle($val)->getComment());
+                $html .= sprintf(
+                    "<td class='%s' rowspan='%s' data-complete-id=%s>%s",
+                    ($this->getCommentTitle($val)->getIsActive()) ? "" : "bg-success",
+                    $span,
+                    $val,
+                    $this->getCommentTitle($val)->getComment()
+                );
                 if ($key == $last && $this->getCommentTitle($val)->getIsActive()) {
                     $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
-                    $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button></td>";
+                    $html .= "<td data-node-id={$val}><button onclick='openTextbox(this)'>add comment</button></td>";
                 } else {
                     $html .= '</td>';
                 }
                 $printed[$key][$val] = true;
             }
-            $html .= '</tr>';
-
-            for ($i = 1; $i < $totalRows; $i++) {
-                $html .= '<tr>';
-                foreach ($rows[$i] as $key => $val) {
-                    if (!isset($printed[$key][$val])) {
-                        $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
-                        // Mage::log($val);
-                        $html .= sprintf("<td class='%s' rowspan='%s' data-complete-id='%s'>%s", ($this->getCommentTitle($val)->getIsActive()) ? "" : "bg-success", $span, $val, $this->getCommentTitle($val)->getComment());
-                        if ($key == $last && $this->getCommentTitle($val)->getIsActive()) {
-                            $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
-                            $html .= "<td data-node-id={$val}><button onclick='openTextbox()'>add comment</button></td>";
-                        } else {
-                            $html .= '</td>';
-                        }
-                        $printed[$key][$val] = true;
-                    }
-                }
-                $html .= '</tr>';
-            }
-            $html .= '</table>';
         } else {
-            $html .= '<table>';
-            $html .= '<tr>';
-            $html .= "<td>{$ticket}</td>";
-            $html .= "<td data-node-id=0><button onclick='openTextbox()'>add comment</button></td>";
-            // $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
-
-            $html .= '</tr>';
-            $html .= '</table>';
+            $html .= "<td data-node-id=0><button onclick='openTextbox(this)'>add comment</button></td>";
         }
+        // Mage::log($printed);
+        $html .= '</tr>';
+        // echo $totalRows;
+        for ($i = 1; $i < $totalRows; $i++) {
+            $html .= '<tr>';
+            foreach ($rows[$i] as $key => $val) {
+                if (!isset($printed[$key][$val])) {
+                    $span = isset($rowspans[$key][$val]) ? $rowspans[$key][$val] : 1;
+                    // Mage::log($val);
+                    $html .= sprintf(
+                        "<td class='%s' rowspan='%s' data-complete-id='%s'>%s",
+                        ($this->getCommentTitle($val)->getIsActive()) ? "" : "bg-success",
+                        $span,
+                        $val,
+                        $this->getCommentTitle($val)->getComment()
+                    );
+                    if ($key == $last && $this->getCommentTitle($val)->getIsActive()) {
+                        $html .= "<button onclick='complete(this)' class='bg-success'>Complete</button></td>";
+                        $html .= "<td data-node-id={$val}><button onclick='openTextbox(this)'>add comment</button></td>";
+                    } else {
+                        $html .= '</td>';
+                    }
+                    $printed[$key][$val] = true;
+                }
+            }
+            $html .= '</tr>';
+        }
+        $html .= '</table>';
         return $html;
     }
 }

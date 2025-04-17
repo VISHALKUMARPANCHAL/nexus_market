@@ -35,8 +35,7 @@ class Admin_Controller_Ticket_Index extends Core_Controller_Admin_Action
     public function updateAction()
     {
         $data = $this->getRequest()->getParams();
-        Mage::log($data);
-        // die;
+        // Mage::log($data);
         Mage::getModel('ticket/comment')
             ->setData($data)
             ->setIsActive(0)

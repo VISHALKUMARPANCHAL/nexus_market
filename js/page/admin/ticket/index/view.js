@@ -1,67 +1,30 @@
-function openTextbox() {
-    const td = event.target.closest("td");
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Enter comment";
-    td.appendChild(document.createElement("br"));
-    td.appendChild(input);
+function openTextbox(btn) {
+    const td = $(btn).parent();
+    const input =$("<input type='text' placeholder='Enter comment'>");
+    $(td).append($("<br/>"));
+    $(td).append(input);
 }
 function complete(btn) {
-    let tds=$(btn).parent().parent().find('td');
-    tds.each(function (index,td){
-        if($(td).attr('rowspan')==1){
-            // console.log($(td).data('complete-id'));
-            ajaxCallForComplete($(td).data('complete-id'));
-        }
-    })
-}
-function completesave(btn,mainParentbtn) {
-    let tds=$(btn).closest('tr').find('td');
-    let maintd=$(mainParentbtn).closest('tr').find('td')[0];
-    
-    // let tds=$(btn).closest('tr').find('td');
-    tds.each(function (index,td) { 
-        // console.log(maintd);
-        let row_span=parseInt($(maintd).attr('rowspan'))||1;
-        // console.log(row_span);
-        
-        if(row_span>1){
-            $(maintd).attr('rowspan',row_span-1);
-        }
-        });
-    tds.each(function (index,td){
-        if($(td).attr('rowspan')==1){
-            console.log($(td).data('complete-id'));
-            ajaxCallForComplete($(td).data('complete-id'));
-        }
-    });
+    let comment_id=$(btn).parent().data('complete-id');
+    ajaxCallForComplete(comment_id);
 }
 
 $('#saveall').on('click', function() {
     let btns=$('button');
-    let mainbtn=[];
     btns.each(function(i,btn){
         let input=$(btn).parent().next().find('input');
         if($(btn).text()=="Complete" && (input.length==0 || input.val()=='')){
-            mainbtn.push(btn);
+            complete(btn);
         }
     });
-    console.log(mainbtn);
-    btns.each(function(i,btn){
-        let input=$(btn).parent().next().find('input');
-        if($(btn).text()=="Complete" && (input.length==0 || input.val()=='')){
-            completesave(btn,mainbtn[0]);
-        }
-    });
-    
     $('input[type="text"]').each(function(index, element) {
         let val = $(element).val();
+        let level = parseInt($('#maxlevel').text())+1;
         if(val!=''){
             let parentId = $(element).parent().data('node-id');
-            ajaxCall(val, parentId);
+            ajaxCall(val, parentId,level);
         }
     });
-
 })
 
 function ajaxCallForComplete(cid) {
@@ -80,7 +43,7 @@ function ajaxCallForComplete(cid) {
         },
     });
 }
-function ajaxCall(cmt, pid) {
+function ajaxCall(cmt, pid,lvl) {
     let tid = $('#ticketId').html().trim();
     $.ajax({
         url: "http://localhost/ecommerceweb/admin/ticket_index/savecomment",
@@ -88,7 +51,8 @@ function ajaxCall(cmt, pid) {
         data: {
             comment: cmt,
             parent_id: pid,
-            ticket_id: tid
+            ticket_id: tid,
+            level: lvl
         },
         success: function(res) {
             console.log(res);
